@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+:root {
+  --panel-background: #e8e3cd;
+	--panel-stroke: #9f9a86;
+  --font: "Roboto"
+}
+
+body {
+	background-color: var(--panel-background);
+}
+
+path, line, text {
+	color: var(--panel-stroke);
+}
+
+g {
+  font-family: var(--font);
+  fill: var(--panel-stroke);
+  font-size: 12px;
+}
+
+.fieldPlot {
+	float: left;
+  border-radius: 10px;
+	border-color: var(--panel-stroke);
+	border-width: 1px;
+	border-style: solid;
+}
+
+.fieldPanel {
+  float: left;
+  margin-left: 10px;
+  margin-right: 10px;
+  max-width: 400px;
+  border-radius: 10px;
+	border-color: var(--panel-stroke);
+	border-width: 1px;
+	border-style: solid;
+}
+
+.buttonStrip {
+  display: inline-block;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+
+button, button:focus, button:active {
+  font-family: var(--font);
+  font-size: 12px;
+  border-color: var(--panel-stroke);
+  border-radius: 5px;
+  padding: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  outline: none;
+}
+
+select, select:focus, select:active {
+  font-family: var(--font);
+  font-size: 12px;
+  border-color: var(--panel-stroke);
+  border-radius: 5px;
+  padding: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  outline: none;
+}
+
+button:hover {
+  border-color: hsl(0, 0%, 0%);
+  color: hsl(0, 0%, 0%) !important;
+}

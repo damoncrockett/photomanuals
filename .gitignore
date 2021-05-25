@@ -1,0 +1,8 @@
+.DS_Store
+fonts
+node_modules
+dist
+src/assets/json/specimens
+utils/__pycache__
+utils/.ipynb_checkpoints
+utils/*.ipynb
