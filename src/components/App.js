@@ -18,8 +18,8 @@ class App extends Component {
   }
 
   getData() {
-    fetch('http://localhost:8888/_data.json')
-    //fetch('_data.json')
+    //fetch('http://localhost:8888/_data.json')
+    fetch('_data.json')
       .then(response => response.json())
       .then(data => this.setState({
         data: data
@@ -65,6 +65,10 @@ class App extends Component {
               <option value='month'>month</option>
               <option value='specattr'>specattr</option>
               <option value='sprocess'>sprocess</option>
+              <option value='hue'>hue</option>
+              <option value='saturation'>saturation</option>
+              <option value='brightness'>brightness</option>
+              <option value='cluster'>cluster</option>
             </select>
           </div>
         </div>

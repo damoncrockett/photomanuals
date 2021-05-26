@@ -3,6 +3,7 @@ fonts
 node_modules
 dist
 src/assets/json/specimens
+src/assets/json/specimens_resized
 utils/__pycache__
 utils/.ipynb_checkpoints
 utils/*.ipynb
