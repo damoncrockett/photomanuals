@@ -34,11 +34,13 @@ class Tabletop extends Component {
 
     this.drawSVG = this.drawSVG.bind(this);
     this.drawTabletop = this.drawTabletop.bind(this);
+    this.sortTabletop = this.sortTabletop.bind(this);
     this.handleMouseover = this.handleMouseover.bind(this);
     this.handleMouseout = this.handleMouseout.bind(this);
     this.handleZoom = this.handleZoom.bind(this);
     this.svgNode = React.createRef();
     this.svgPanel = React.createRef();
+    this.svgInfoBox = React.createRef();
   }
 
   componentDidMount() {
@@ -51,11 +53,24 @@ class Tabletop extends Component {
       this.drawTabletop();
     }
 
+    if (prevProps.data !== null && prevProps.orderBy !== this.props.orderBy) {
+      this.sortTabletop();
+    }
+
+    if (prevProps.data !== null && prevProps.asc !== this.props.asc) {
+      this.sortTabletop();
+    }
+
+    if (prevProps.data !== null && prevProps.ncol !== this.props.ncol) {
+      this.sortTabletop();
+    }
+
   }
 
   drawSVG() {
     const svgNode = this.svgNode.current;
     const svgPanel = this.svgPanel.current;
+    const svgInfoBox = this.svgInfoBox.current;
 
     select(svgNode)
       .selectAll('g.plotCanvas')
@@ -71,6 +86,14 @@ class Tabletop extends Component {
       .enter()
       .append('g')
       .attr('class', 'panelCanvas') // purely semantic
+      .attr('transform', `translate(${margin.left},${margin.top})`);
+
+    select(svgInfoBox)
+      .selectAll('g.infoBox')
+      .data([0]) // bc enter selection, prevents appending new 'g' on re-render
+      .enter()
+      .append('g')
+      .attr('class', 'infoBox') // purely semantic
       .attr('transform', `translate(${margin.left},${margin.top})`);
 
     select(svgNode)
@@ -126,14 +149,44 @@ class Tabletop extends Component {
       item.x = x[i];
       item.y = y[i];
     });
+
     data = orderBy( data, ['KM'], ['asc'] );
 
     select(svgNode)
       .select('g.plotCanvas')
       .selectAll('image')
       .data(data)
-      .attr('x', d => d.x * squareSide )
-      .attr('y', d => d.y * squareSide )
+      .attr('x', d => d.x * squareSide - marginInt / 2 )
+      .attr('y', d => d.y * squareSide - marginInt / 2 )
+
+    }
+
+  sortTabletop() {
+    const transitionSettings = transition().duration(3000);
+    const svgNode = this.svgNode.current;
+
+    const n = this.props.data.length;
+    const ncol = this.props.ncol;
+    const coords = gridCoords(n,ncol)
+    const x = coords[0];
+    const y = coords[1];
+
+    let data = this.props.data;
+    data = orderBy(data, [this.props.orderBy], [this.props.asc] );
+    data.forEach((item, i) => {
+      item.x = x[i];
+      item.y = y[i];
+    });
+
+    data = orderBy( data, ['KM'], ['asc'] );
+
+    select(svgNode)
+      .select('g.plotCanvas')
+      .selectAll('image')
+      .data(data)
+      .transition(transitionSettings)
+        .attr('x', d => d.x * squareSide - marginInt / 2 )
+        .attr('y', d => d.y * squareSide - marginInt / 2 )
 
     }
 
@@ -141,10 +194,78 @@ class Tabletop extends Component {
   handleMouseover(e, d) {
 
     const svgPanel = this.svgPanel.current;
+    const svgInfoBox = this.svgInfoBox.current;
 
     select('#t' + d.KM + '_spec')
       .attr('width', squareSide * 1.125 )
       .attr('height', squareSide * 1.125 )
+
+    select(svgPanel)
+      .select('g.panelCanvas')
+      .append('image')
+      .attr('xlink:href', "http://localhost:8888/" + d.fullspecpath)
+      //.attr('xlink:href', d.specpath)
+      .attr('width', svgW * 0.75 )
+      .attr('height', svgH * 0.75 )
+      .attr('x', -marginInt )
+      .attr('y', -marginInt )
+      .attr('id', 't' + d.KM + '_fullspec')
+
+    select(svgInfoBox)
+      .select('g.infoBox')
+      .append('text')
+      .attr('x', 0 )
+      .attr('y', 0 )
+      .attr('id', 't' + d.KM + '_title')
+      .text(d.title)
+
+    select(svgInfoBox)
+      .select('g.infoBox')
+      .append('text')
+      .attr('x', 0 )
+      .attr('y', 15 )
+      .attr('id', 't' + d.KM + '_author')
+      .text(d.author)
+
+    select(svgInfoBox)
+      .select('g.infoBox')
+      .append('text')
+      .attr('x', 0 )
+      .attr('y', 30 )
+      .attr('id', 't' + d.KM + '_year')
+      .text(d.year)
+
+    select(svgInfoBox)
+      .select('g.infoBox')
+      .append('text')
+      .attr('x', 0 )
+      .attr('y', 45 )
+      .attr('id', 't' + d.KM + '_month')
+      .text(d.month)
+
+    select(svgInfoBox)
+      .select('g.infoBox')
+      .append('text')
+      .attr('x', 0 )
+      .attr('y', 60 )
+      .attr('id', 't' + d.KM + '_page')
+      .text(d.page)
+
+    select(svgInfoBox)
+      .select('g.infoBox')
+      .append('text')
+      .attr('x', 0 )
+      .attr('y', 75 )
+      .attr('id', 't' + d.KM + '_specattr')
+      .text(d.specattr)
+
+    select(svgInfoBox)
+      .select('g.infoBox')
+      .append('text')
+      .attr('x', 0 )
+      .attr('y', 90 )
+      .attr('id', 't' + d.KM + '_sprocess')
+      .text(d.sprocess)
 
     }
 
@@ -153,6 +274,15 @@ class Tabletop extends Component {
       select('#t' + d.KM + '_spec')
         .attr('width', squareSide )
         .attr('height', squareSide )
+
+      select('#t' + d.KM + '_fullspec').remove()
+      select('#t' + d.KM + '_title').remove()
+      select('#t' + d.KM + '_author').remove()
+      select('#t' + d.KM + '_year').remove()
+      select('#t' + d.KM + '_month').remove()
+      select('#t' + d.KM + '_page').remove()
+      select('#t' + d.KM + '_specattr').remove()
+      select('#t' + d.KM + '_sprocess').remove()
 
     }
 
@@ -169,8 +299,15 @@ class Tabletop extends Component {
         <div className='fieldPanel'>
           <svg
           ref={this.svgPanel}
-          width={375}
-          height={240}
+          width={svgW * 0.75}
+          height={svgH * 0.75}
+          />
+        </div>
+        <div className='infoBox'>
+          <svg
+          ref={this.svgInfoBox}
+          width={svgW * 0.6}
+          height={svgH * 0.2}
           />
         </div>
       </div>

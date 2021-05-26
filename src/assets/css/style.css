@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 
 :root {
-  --panel-background: #e8e3cd;
-	--panel-stroke: #9f9a86;
+  --panel-background: #b5cbb7;
+	--panel-stroke: #818479;
   --font: "Roboto"
 }
 
@@ -22,7 +22,6 @@ g {
 
 .fieldPlot {
 	float: left;
-  border-radius: 10px;
 	border-color: var(--panel-stroke);
 	border-width: 1px;
 	border-style: solid;
@@ -31,12 +30,32 @@ g {
 .fieldPanel {
   float: left;
   margin-left: 10px;
-  margin-right: 10px;
-  max-width: 400px;
-  border-radius: 10px;
+  margin-bottom: 10px;
 	border-color: var(--panel-stroke);
 	border-width: 1px;
 	border-style: solid;
+  background-color: var(--panel-stroke);
+}
+
+.infoBox {
+  float: left;
+  margin-left: 10px;
+	border-color: var(--panel-stroke);
+	border-width: 1px;
+	border-style: solid;
+  background-color: #e4e9b2;
+}
+
+.selectPanel {
+  float: left;
+  margin-top: 10px;
+  margin-left: 10px;
+	max-width: 250px;
+	background-color: #d2e4c4;
+	border-color: var(--panel-stroke);
+	border-width: 1px;
+	border-style: solid;
+  text-align: center; /* for centering buttonStrip */
 }
 
 .buttonStrip {

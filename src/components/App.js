@@ -13,6 +13,7 @@ class App extends Component {
     };
 
     this.getData = this.getData.bind(this);
+    this.handleOrderBy = this.handleOrderBy.bind(this);
 
   }
 
@@ -29,7 +30,20 @@ class App extends Component {
     this.getData();
   }
 
+  handleOrderBy(e) {
+    const orderBy = e.target.value
+    this.setState({ orderBy: orderBy });
+  }
+
   render() {
+
+    const bkgd = '#b5cbb7';
+    const stroke = '#818479';
+
+    const selectStyle = {
+      backgroundColor: bkgd,
+      color: stroke
+    };
 
     return (
       <div className='app'>
@@ -40,6 +54,19 @@ class App extends Component {
             orderBy={this.state.orderBy}
             asc={this.state.asc}
           />
+        </div>
+        <div className='selectPanel'>
+          <div className='buttonStrip'>
+            <select style={selectStyle} value={this.state.orderBy} onChange={this.handleOrderBy}>
+              <option value='KM'>KM</option>
+              <option value='title'>title</option>
+              <option value='author'>author</option>
+              <option value='year'>year</option>
+              <option value='month'>month</option>
+              <option value='specattr'>specattr</option>
+              <option value='sprocess'>sprocess</option>
+            </select>
+          </div>
         </div>
       </div>
     );
