@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --mode production",
     "start": "webpack serve --hot --mode development",
-    "deploy": "aws s3 sync ~/photomanuals/dist/ s3://ipch.app/photomanuals/"
+    "deploy": "aws s3 sync ~/photomanuals/dist/ s3://ipch.app/photomanuals/",
+    "sync": "aws s3 sync ~/photomanuals/src/assets/json/ s3://ipch.app/photomanuals/"
   },
   "repository": {
     "type": "git",

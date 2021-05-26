@@ -4,6 +4,7 @@ node_modules
 dist
 src/assets/json/specimens
 src/assets/json/specimens_resized
+src/assets/json/specimens_resized_panel
 utils/__pycache__
 utils/.ipynb_checkpoints
 utils/*.ipynb

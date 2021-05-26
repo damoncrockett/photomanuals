@@ -211,6 +211,8 @@ class Tabletop extends Component {
       .attr('y', -marginInt )
       .attr('id', 't' + d.KM + '_fullspec')
 
+    console.log(d.fullspecpath);
+
     select(svgInfoBox)
       .select('g.infoBox')
       .append('text')
