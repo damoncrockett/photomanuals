@@ -94,7 +94,7 @@ class Tabletop extends Component {
       .enter()
       .append('g')
       .attr('class', 'infoBox') // purely semantic
-      .attr('transform', `translate(${margin.left},${margin.top})`);
+      .attr('transform', `translate(${margin.left/2},${margin.top/1.5})`);
 
     select(svgNode)
       .call(zoom()

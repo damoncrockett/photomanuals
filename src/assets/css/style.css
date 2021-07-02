@@ -37,15 +37,6 @@ g {
   background-color: var(--panel-stroke);
 }
 
-.infoBox {
-  float: left;
-  margin-left: 2px;
-	border-color: var(--panel-stroke);
-	border-width: 1px;
-	border-style: solid;
-  background-color: #e4e9b2;
-}
-
 .infoPanel {
   float: left;
   margin-left: 10px;
