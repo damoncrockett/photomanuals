@@ -40,7 +40,7 @@ class Tabletop extends Component {
     this.handleZoom = this.handleZoom.bind(this);
     this.svgNode = React.createRef();
     this.svgPanel = React.createRef();
-    this.svgInfoBox = React.createRef();
+    this.svgInfoPanel = React.createRef();
   }
 
   componentDidMount() {
@@ -70,7 +70,7 @@ class Tabletop extends Component {
   drawSVG() {
     const svgNode = this.svgNode.current;
     const svgPanel = this.svgPanel.current;
-    const svgInfoBox = this.svgInfoBox.current;
+    const svgInfoPanel = this.svgInfoPanel.current;
 
     select(svgNode)
       .selectAll('g.plotCanvas')
@@ -88,7 +88,7 @@ class Tabletop extends Component {
       .attr('class', 'panelCanvas') // purely semantic
       .attr('transform', `translate(${margin.left},${margin.top})`);
 
-    select(svgInfoBox)
+    select(svgInfoPanel)
       .selectAll('g.infoBox')
       .data([0]) // bc enter selection, prevents appending new 'g' on re-render
       .enter()
@@ -165,12 +165,14 @@ class Tabletop extends Component {
     const transitionSettings = transition().duration(3000);
     const svgNode = this.svgNode.current;
 
+    // create grid coords
     const n = this.props.data.length;
     const ncol = this.props.ncol;
     const coords = gridCoords(n,ncol)
     const x = coords[0];
     const y = coords[1];
 
+    // attach to 'data'
     let data = this.props.data;
     data = orderBy(data, [this.props.orderBy], [this.props.asc] );
     data.forEach((item, i) => {
@@ -178,6 +180,7 @@ class Tabletop extends Component {
       item.y = y[i];
     });
 
+    // back to original sort, after coordinates attached
     data = orderBy( data, ['KM'], ['asc'] );
 
     select(svgNode)
@@ -194,7 +197,7 @@ class Tabletop extends Component {
   handleMouseover(e, d) {
 
     const svgPanel = this.svgPanel.current;
-    const svgInfoBox = this.svgInfoBox.current;
+    const svgInfoPanel = this.svgInfoPanel.current;
 
     select('#t' + d.KM + '_spec')
       .attr('width', squareSide * 1.125 )
@@ -213,7 +216,7 @@ class Tabletop extends Component {
 
     console.log(d.fullspecpath);
 
-    select(svgInfoBox)
+    select(svgInfoPanel)
       .select('g.infoBox')
       .append('text')
       .attr('x', 0 )
@@ -221,7 +224,7 @@ class Tabletop extends Component {
       .attr('id', 't' + d.KM + '_title')
       .text(d.title)
 
-    select(svgInfoBox)
+    select(svgInfoPanel)
       .select('g.infoBox')
       .append('text')
       .attr('x', 0 )
@@ -229,7 +232,7 @@ class Tabletop extends Component {
       .attr('id', 't' + d.KM + '_author')
       .text(d.author)
 
-    select(svgInfoBox)
+    select(svgInfoPanel)
       .select('g.infoBox')
       .append('text')
       .attr('x', 0 )
@@ -237,7 +240,7 @@ class Tabletop extends Component {
       .attr('id', 't' + d.KM + '_year')
       .text(d.year)
 
-    select(svgInfoBox)
+    select(svgInfoPanel)
       .select('g.infoBox')
       .append('text')
       .attr('x', 0 )
@@ -245,7 +248,7 @@ class Tabletop extends Component {
       .attr('id', 't' + d.KM + '_month')
       .text(d.month)
 
-    select(svgInfoBox)
+    select(svgInfoPanel)
       .select('g.infoBox')
       .append('text')
       .attr('x', 0 )
@@ -253,7 +256,7 @@ class Tabletop extends Component {
       .attr('id', 't' + d.KM + '_page')
       .text(d.page)
 
-    select(svgInfoBox)
+    select(svgInfoPanel)
       .select('g.infoBox')
       .append('text')
       .attr('x', 0 )
@@ -261,7 +264,7 @@ class Tabletop extends Component {
       .attr('id', 't' + d.KM + '_specattr')
       .text(d.specattr)
 
-    select(svgInfoBox)
+    select(svgInfoPanel)
       .select('g.infoBox')
       .append('text')
       .attr('x', 0 )
@@ -305,9 +308,9 @@ class Tabletop extends Component {
           height={svgH * 0.75}
           />
         </div>
-        <div className='infoBox'>
+        <div className='infoPanel'>
           <svg
-          ref={this.svgInfoBox}
+          ref={this.svgInfoPanel}
           width={svgW * 0.6}
           height={svgH * 0.2}
           />
