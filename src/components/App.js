@@ -7,6 +7,9 @@ class App extends Component {
 
     this.state = { // global state
       data: null,
+      col30: true,
+      col15: false,
+      col5: false,
       ncol: 30,
       orderBy: 'KM',
       asc: 'asc'
@@ -14,6 +17,9 @@ class App extends Component {
 
     this.getData = this.getData.bind(this);
     this.handleOrderBy = this.handleOrderBy.bind(this);
+    this.handle30 = this.handle30.bind(this);
+    this.handle15 = this.handle15.bind(this);
+    this.handle5 = this.handle5.bind(this);
 
   }
 
@@ -35,6 +41,18 @@ class App extends Component {
     this.setState({ orderBy: orderBy });
   }
 
+  handle30() {
+    this.setState({ ncol: 30, col30: true, col15: false, col5: false });
+  }
+
+  handle15() {
+    this.setState({ ncol: 15, col30: false, col15: true, col5: false });
+  }
+
+  handle5() {
+    this.setState({ ncol: 5, col30: false, col15: false, col5: true });
+  }
+
   render() {
 
     const bkgd = '#b5cbb7';
@@ -43,6 +61,21 @@ class App extends Component {
     const selectStyle = {
       backgroundColor: bkgd,
       color: stroke
+    };
+
+    const style30 = {
+      backgroundColor: this.state.col30 ? 'white' : bkgd,
+      color: this.state.col30 ? 'black' : stroke
+    };
+
+    const style15 = {
+      backgroundColor: this.state.col15 ? 'white' : bkgd,
+      color: this.state.col15 ? 'black' : stroke
+    };
+
+    const style5 = {
+      backgroundColor: this.state.col5 ? 'white' : bkgd,
+      color: this.state.col5 ? 'black' : stroke
     };
 
     return (
@@ -70,6 +103,11 @@ class App extends Component {
               <option value='brightness'>brightness</option>
               <option value='cluster'>cluster</option>
             </select>
+          <div className='buttonStrip'>
+             <button onClick={this.handle30} style={style30}>30</button>
+             <button onClick={this.handle15} style={style15}>15</button>
+             <button onClick={this.handle5} style={style5}>5</button>
+           </div>
           </div>
         </div>
       </div>

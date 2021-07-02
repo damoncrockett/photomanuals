@@ -12,11 +12,8 @@ console.log(screenW);
 console.log(screenH);
 const marginInt = Math.round( screenH / 45 );
 const margin = {top: marginInt, right: marginInt, bottom: marginInt, left: marginInt};
-const plotH = Math.round( screenH / 2.25 );
-const plotW = plotH;
+const plotW = Math.round( screenH / 2.25 );
 const svgW = plotW + margin.left + margin.right;
-const svgH = plotH + margin.top + margin.bottom;
-const squareSide = Math.round( screenH / 64 );
 
 const clusterColors = {
   0: 'rgba(255,0,0,0.5)', //red
@@ -32,25 +29,31 @@ class Tabletop extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      squareSide: 0,
+      svgH: 0
+    }
+
+    this.setSize = this.setSize.bind(this);
     this.drawSVG = this.drawSVG.bind(this);
     this.drawTabletop = this.drawTabletop.bind(this);
     this.sortTabletop = this.sortTabletop.bind(this);
     this.handleMouseover = this.handleMouseover.bind(this);
     this.handleMouseout = this.handleMouseout.bind(this);
-    this.handleZoom = this.handleZoom.bind(this);
+    //this.handleZoom = this.handleZoom.bind(this);
     this.svgNode = React.createRef();
     this.svgPanel = React.createRef();
     this.svgInfoPanel = React.createRef();
   }
 
   componentDidMount() {
-    this.drawSVG();
+
   }
 
   componentDidUpdate(prevProps, prevState) {
     // conditional prevents infinite loop
     if (prevProps.data === null && prevProps.data !== this.props.data) {
-      this.drawTabletop();
+      this.setSize();
     }
 
     if (prevProps.data !== null && prevProps.orderBy !== this.props.orderBy) {
@@ -62,9 +65,28 @@ class Tabletop extends Component {
     }
 
     if (prevProps.data !== null && prevProps.ncol !== this.props.ncol) {
-      this.sortTabletop();
+      this.setSize();
     }
 
+  }
+
+  setSize() {
+    const n = this.props.data.length;
+    const ncol = this.props.ncol;
+    const squareSideDivisor = ncol * 2.133;
+    const squareSide = Math.round( screenH / squareSideDivisor );
+
+    const nrow = Math.ceil( n / ncol );
+    const plotH = squareSide * nrow;
+    const svgH = plotH + margin.top + margin.bottom;
+
+    this.setState(
+      { squareSide: squareSide, svgH: svgH },
+      () => {
+        this.drawSVG();
+        this.drawTabletop();
+      }
+    );
   }
 
   drawSVG() {
@@ -96,13 +118,16 @@ class Tabletop extends Component {
       .attr('class', 'infoBox') // purely semantic
       .attr('transform', `translate(${margin.left/2},${margin.top/1.25})`);
 
+/*
     select(svgNode)
       .call(zoom()
         .extent([[0, 0], [plotW, plotH]])
         .scaleExtent([0.25, 5])
         .on('zoom', this.handleZoom));
+*/
     }
 
+/*
   handleZoom(e) {
     const svgNode = this.svgNode.current;
 
@@ -117,11 +142,12 @@ class Tabletop extends Component {
     select(svgNode)
       .select('g.plotCanvas')
       .attr('transform', adjustedTransform.toString())
-
   }
+*/
 
   drawTabletop() {
     const svgNode = this.svgNode.current;
+    const squareSide = this.state.squareSide;
 
     select(svgNode)
       .select('g.plotCanvas')
@@ -156,12 +182,17 @@ class Tabletop extends Component {
       .select('g.plotCanvas')
       .selectAll('image')
       .data(data)
+      .attr('width', squareSide )
+      .attr('height', squareSide )
       .attr('x', d => d.x * squareSide - marginInt / 2 )
       .attr('y', d => d.y * squareSide - marginInt / 2 )
 
     }
 
   sortTabletop() {
+
+    const squareSide = this.state.squareSide;
+
     const transitionSettings = transition().duration(3000);
     const svgNode = this.svgNode.current;
 
@@ -196,6 +227,9 @@ class Tabletop extends Component {
   // note: 'e' here is the mouse event itself, which we don't need
   handleMouseover(e, d) {
 
+    const squareSide = this.state.squareSide;
+    const svgH = this.state.svgH;
+
     const svgPanel = this.svgPanel.current;
     const svgInfoPanel = this.svgInfoPanel.current;
 
@@ -206,10 +240,10 @@ class Tabletop extends Component {
     select(svgPanel)
       .select('g.panelCanvas')
       .append('image')
-      //.attr('xlink:href', "http://localhost:8888/" + d.fullspecpath)
       .attr('xlink:href', d.fullspecpath)
+      //.attr('xlink:href', "http://localhost:8888/" + d.fullspecpath)
       .attr('width', svgW * 0.75 )
-      .attr('height', svgH * 0.75 )
+      .attr('height', svgW * 0.75 )
       .attr('x', -marginInt )
       .attr('y', -marginInt )
       .attr('id', 't' + d.KM + '_fullspec')
@@ -276,22 +310,27 @@ class Tabletop extends Component {
 
   handleMouseout(e, d) {
 
-      select('#t' + d.KM + '_spec')
-        .attr('width', squareSide )
-        .attr('height', squareSide )
+    const squareSide = this.state.squareSide
 
-      select('#t' + d.KM + '_fullspec').remove()
-      select('#t' + d.KM + '_title').remove()
-      select('#t' + d.KM + '_author').remove()
-      select('#t' + d.KM + '_year').remove()
-      select('#t' + d.KM + '_month').remove()
-      select('#t' + d.KM + '_page').remove()
-      select('#t' + d.KM + '_specattr').remove()
-      select('#t' + d.KM + '_sprocess').remove()
+    select('#t' + d.KM + '_spec')
+      .attr('width', squareSide )
+      .attr('height', squareSide )
+
+    select('#t' + d.KM + '_fullspec').remove()
+    select('#t' + d.KM + '_title').remove()
+    select('#t' + d.KM + '_author').remove()
+    select('#t' + d.KM + '_year').remove()
+    select('#t' + d.KM + '_month').remove()
+    select('#t' + d.KM + '_page').remove()
+    select('#t' + d.KM + '_specattr').remove()
+    select('#t' + d.KM + '_sprocess').remove()
 
     }
 
   render() {
+
+    const svgH = this.state.svgH;
+
     return (
       <div>
         <div className='fieldPlot'>
@@ -305,14 +344,14 @@ class Tabletop extends Component {
           <svg
           ref={this.svgPanel}
           width={svgW * 0.75}
-          height={svgH * 0.75}
+          height={svgW * 0.75}
           />
         </div>
         <div className='infoPanel'>
           <svg
           ref={this.svgInfoPanel}
           width={svgW * 0.6}
-          height={svgH * 0.2}
+          height={svgW * 0.2}
           />
         </div>
       </div>
