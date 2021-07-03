@@ -5,6 +5,7 @@ import { zoom, zoomIdentity, zoomTransform } from 'd3-zoom';
 import { scaleLinear } from 'd3-scale';
 import { gridCoords } from '../lib/plottools';
 import { orderBy } from 'lodash';
+import { countBy } from 'lodash';
 
 const screenH = window.innerHeight * window.devicePixelRatio;
 const screenW = window.innerWidth * window.devicePixelRatio;
@@ -15,6 +16,7 @@ const margin = {top: marginInt, right: marginInt, bottom: marginInt, left: margi
 const plotW = Math.round( screenH / 2.25 );
 const svgW = plotW + margin.left + margin.right;
 
+const blankColor = 'rgba(0,0,0,0)';
 const clusterColors = {
   0: 'rgba(255,0,0,0.5)', //red
   1: 'rgba(0,255,0,0.5)', //green
@@ -22,7 +24,8 @@ const clusterColors = {
   3: 'rgba(255,255,0,0.5)', //yellow
   4: 'rgba(255,165,0,0.5)', //orange
   5: 'rgba(160,32,240,0.5)', //purple
-  6: 'rgba(255,0,255,0.5)' //magenta
+  6: 'rgba(255,0,255,0.5)', //magenta
+  7: 'rgba(0,0,0,0.5)' // grey
 };
 
 class Tabletop extends Component {
@@ -66,6 +69,14 @@ class Tabletop extends Component {
 
     if (prevProps.data !== null && prevProps.ncol !== this.props.ncol) {
       this.setSize();
+    }
+
+    if (prevProps.color !== this.props.color) {
+      this.drawTabletop();
+    }
+
+    if (prevProps.colorBy !== this.props.colorBy && this.props.color === true) {
+      this.drawTabletop();
     }
 
   }
@@ -149,7 +160,8 @@ class Tabletop extends Component {
 
     const svgNode = this.svgNode.current;
     const squareSide = this.state.squareSide;
-    const transitionSettings = transition().duration(3000);
+    const slowTransition = transition().duration(3000);
+    const fastTransition = transition().duration(3000);
 
     select(svgNode)
       .select('g.plotCanvas')
@@ -158,8 +170,21 @@ class Tabletop extends Component {
       .enter()
       .append('image')
       .attr('id', d => 't' + d.KM + '_spec')
-      .attr('xlink:href', d => "http://localhost:8888/" + d.specpath )
-      //.attr('xlink:href', d => d.specpath )
+      //.attr('xlink:href', d => "http://localhost:8888/" + d.specpath )
+      .attr('xlink:href', d => d.specpath )
+      .attr('width', squareSide )
+      .attr('height', squareSide )
+      .on('mouseover', this.handleMouseover)
+      .on('mouseout', this.handleMouseout)
+
+    select(svgNode)
+      .select('g.plotCanvas')
+      .selectAll('rect')
+      .data(this.props.data)
+      .enter()
+      .append('rect')
+      .attr('id', d => 't' + d.KM + '_rect')
+      .attr('fill', d => this.props.color ? clusterColors[d[this.props.colorBy]] : blankColor )
       .attr('width', squareSide )
       .attr('height', squareSide )
       .on('mouseover', this.handleMouseover)
@@ -184,11 +209,22 @@ class Tabletop extends Component {
       .select('g.plotCanvas')
       .selectAll('image')
       .data(data)
-      .transition(transitionSettings)
-        .attr('width', squareSide )
-        .attr('height', squareSide )
+      .transition(slowTransition)
         .attr('x', d => d.x * squareSide - marginInt / 2 )
         .attr('y', d => d.y * squareSide - marginInt / 2 )
+        .attr('width', squareSide )
+        .attr('height', squareSide )
+
+    select(svgNode)
+      .select('g.plotCanvas')
+      .selectAll('rect')
+      .data(data)
+      .attr('fill', d => this.props.color ? clusterColors[d[this.props.colorBy]] : blankColor )
+      .transition(slowTransition)
+        .attr('x', d => d.x * squareSide - marginInt / 2 )
+        .attr('y', d => d.y * squareSide - marginInt / 2 )
+        .attr('width', squareSide )
+        .attr('height', squareSide )
 
     }
 
@@ -224,6 +260,14 @@ class Tabletop extends Component {
         .attr('x', d => d.x * squareSide - marginInt / 2 )
         .attr('y', d => d.y * squareSide - marginInt / 2 )
 
+    select(svgNode)
+      .select('g.plotCanvas')
+      .selectAll('rect')
+      .data(data)
+      .transition(transitionSettings)
+        .attr('x', d => d.x * squareSide - marginInt / 2 )
+        .attr('y', d => d.y * squareSide - marginInt / 2 )
+
     }
 
   // note: 'e' here is the mouse event itself, which we don't need
@@ -239,11 +283,15 @@ class Tabletop extends Component {
       .attr('width', squareSide * 1.125 )
       .attr('height', squareSide * 1.125 )
 
+    select('#t' + d.KM + '_rect')
+      .attr('width', squareSide * 1.125 )
+      .attr('height', squareSide * 1.125 )
+
     select(svgPanel)
       .select('g.panelCanvas')
       .append('image')
-      //.attr('xlink:href', d.fullspecpath)
-      .attr('xlink:href', "http://localhost:8888/" + d.fullspecpath)
+      .attr('xlink:href', d.fullspecpath)
+      //.attr('xlink:href', "http://localhost:8888/" + d.fullspecpath)
       .attr('width', svgW * 0.75 )
       .attr('height', svgW * 0.75 )
       .attr('x', -marginInt )
@@ -316,6 +364,10 @@ class Tabletop extends Component {
       .attr('width', squareSide )
       .attr('height', squareSide )
 
+    select('#t' + d.KM + '_rect')
+      .attr('width', squareSide )
+      .attr('height', squareSide )
+
     select('#t' + d.KM + '_fullspec').remove()
     select('#t' + d.KM + '_title').remove()
     select('#t' + d.KM + '_author').remove()
@@ -350,7 +402,7 @@ class Tabletop extends Component {
         <div className='infoPanel'>
           <svg
           ref={this.svgInfoPanel}
-          width={svgW * 0.6}
+          width={svgW * 0.55}
           height={svgW * 0.2}
           />
         </div>

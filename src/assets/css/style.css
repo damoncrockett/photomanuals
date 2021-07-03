@@ -41,7 +41,7 @@ g {
 
 .infoPanel {
   position: fixed;
-  top: 75vh;
+  top: 76vh;
   left: 55vw;
   margin-left: 10px;
 	border-color: var(--panel-stroke);
@@ -52,11 +52,11 @@ g {
 
 .selectPanel {
   position: fixed;
-  top: 85vh;
-  left: 88vw;
+  top: 76vh;
+  left: 86vw;
   margin-top: 10px;
   margin-left: 10px;
-	max-width: 250px;
+	max-width: 150px;
 	background-color: #d2e4c4;
 	border-color: var(--panel-stroke);
 	border-width: 1px;
@@ -66,8 +66,8 @@ g {
 
 .buttonStrip {
   display: inline-block;
-  padding-bottom: 10px;
-  padding-top: 10px;
+  padding-bottom: 5px;
+  padding-top: 5px;
 }
 
 button, button:focus, button:active {
@@ -75,11 +75,11 @@ button, button:focus, button:active {
   font-size: 12px;
   border-color: var(--panel-stroke);
   border-radius: 5px;
-  padding: 5px;
-  margin-left: 5px;
-  margin-right: 5px;
-  margin-top: 5px;
-  margin-bottom: 5px;
+  padding: 2px;
+  margin-left: 2px;
+  margin-right: 2px;
+  margin-top: 2px;
+  margin-bottom: 2px;
   outline: none;
 }
 
@@ -88,11 +88,11 @@ select, select:focus, select:active {
   font-size: 12px;
   border-color: var(--panel-stroke);
   border-radius: 5px;
-  padding: 5px;
-  margin-left: 5px;
-  margin-right: 5px;
-  margin-top: 5px;
-  margin-bottom: 5px;
+  padding: 2px;
+  margin-left: 2px;
+  margin-right: 2px;
+  margin-top: 2px;
+  margin-bottom: 2px;
   outline: none;
 }
 
