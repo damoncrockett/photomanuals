@@ -146,8 +146,10 @@ class Tabletop extends Component {
 */
 
   drawTabletop() {
+
     const svgNode = this.svgNode.current;
     const squareSide = this.state.squareSide;
+    const transitionSettings = transition().duration(3000);
 
     select(svgNode)
       .select('g.plotCanvas')
@@ -156,8 +158,8 @@ class Tabletop extends Component {
       .enter()
       .append('image')
       .attr('id', d => 't' + d.KM + '_spec')
-      //.attr('xlink:href', d => "http://localhost:8888/" + d.specpath )
-      .attr('xlink:href', d => d.specpath )
+      .attr('xlink:href', d => "http://localhost:8888/" + d.specpath )
+      //.attr('xlink:href', d => d.specpath )
       .attr('width', squareSide )
       .attr('height', squareSide )
       .on('mouseover', this.handleMouseover)
@@ -182,17 +184,17 @@ class Tabletop extends Component {
       .select('g.plotCanvas')
       .selectAll('image')
       .data(data)
-      .attr('width', squareSide )
-      .attr('height', squareSide )
-      .attr('x', d => d.x * squareSide - marginInt / 2 )
-      .attr('y', d => d.y * squareSide - marginInt / 2 )
+      .transition(transitionSettings)
+        .attr('width', squareSide )
+        .attr('height', squareSide )
+        .attr('x', d => d.x * squareSide - marginInt / 2 )
+        .attr('y', d => d.y * squareSide - marginInt / 2 )
 
     }
 
   sortTabletop() {
 
     const squareSide = this.state.squareSide;
-
     const transitionSettings = transition().duration(3000);
     const svgNode = this.svgNode.current;
 
@@ -240,15 +242,13 @@ class Tabletop extends Component {
     select(svgPanel)
       .select('g.panelCanvas')
       .append('image')
-      .attr('xlink:href', d.fullspecpath)
-      //.attr('xlink:href', "http://localhost:8888/" + d.fullspecpath)
+      //.attr('xlink:href', d.fullspecpath)
+      .attr('xlink:href', "http://localhost:8888/" + d.fullspecpath)
       .attr('width', svgW * 0.75 )
       .attr('height', svgW * 0.75 )
       .attr('x', -marginInt )
       .attr('y', -marginInt )
       .attr('id', 't' + d.KM + '_fullspec')
-
-    console.log(d.fullspecpath);
 
     select(svgInfoPanel)
       .select('g.infoBox')
