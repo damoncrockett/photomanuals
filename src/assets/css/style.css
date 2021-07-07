@@ -22,9 +22,6 @@ g {
 
 .fieldPlot {
 	float: left;
-	border-color: var(--panel-stroke);
-	border-width: 1px;
-	border-style: solid;
 }
 
 .fieldPanel {

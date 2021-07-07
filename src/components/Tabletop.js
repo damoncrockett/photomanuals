@@ -34,7 +34,8 @@ class Tabletop extends Component {
 
     this.state = {
       squareSide: 0,
-      svgH: 0
+      svgH: 0,
+      clickId: null
     }
 
     this.setSize = this.setSize.bind(this);
@@ -43,14 +44,10 @@ class Tabletop extends Component {
     this.sortTabletop = this.sortTabletop.bind(this);
     this.handleMouseover = this.handleMouseover.bind(this);
     this.handleMouseout = this.handleMouseout.bind(this);
-    //this.handleZoom = this.handleZoom.bind(this);
+    this.handleClick = this.handleClick.bind(this);
     this.svgNode = React.createRef();
     this.svgPanel = React.createRef();
     this.svgInfoPanel = React.createRef();
-  }
-
-  componentDidMount() {
-
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -129,32 +126,8 @@ class Tabletop extends Component {
       .attr('class', 'infoBox') // purely semantic
       .attr('transform', `translate(${margin.left/2},${margin.top/1.25})`);
 
-/*
-    select(svgNode)
-      .call(zoom()
-        .extent([[0, 0], [plotW, plotH]])
-        .scaleExtent([0.25, 5])
-        .on('zoom', this.handleZoom));
-*/
     }
 
-/*
-  handleZoom(e) {
-    const svgNode = this.svgNode.current;
-
-    // because we apply this directly as a transform, we have to incl. margin
-    const zx = e.transform.x + marginInt;
-    const zy = e.transform.y + marginInt;
-    const zk = e.transform.k;
-    const adjustedTransform = zoomIdentity.translate(zx,zy).scale(zk);
-
-    // Not sure why g.plotCanvas is the selection, since d3.zoom
-    // is called on the just the svgNode. But it only works like this
-    select(svgNode)
-      .select('g.plotCanvas')
-      .attr('transform', adjustedTransform.toString())
-  }
-*/
 
   drawTabletop() {
 
@@ -184,11 +157,13 @@ class Tabletop extends Component {
       .enter()
       .append('rect')
       .attr('id', d => 't' + d.KM + '_rect')
+      .attr('class', 'highlight')
       .attr('fill', d => this.props.color ? clusterColors[d[this.props.colorBy]] : blankColor )
       .attr('width', squareSide )
       .attr('height', squareSide )
       .on('mouseover', this.handleMouseover)
       .on('mouseout', this.handleMouseout)
+      .on('click', this.handleClick)
 
     const n = this.props.data.length;
     const ncol = this.props.ncol;
@@ -217,7 +192,7 @@ class Tabletop extends Component {
 
     select(svgNode)
       .select('g.plotCanvas')
-      .selectAll('rect')
+      .selectAll('rect.highlight')
       .data(data)
       .attr('fill', d => this.props.color ? clusterColors[d[this.props.colorBy]] : blankColor )
       .transition(slowTransition)
@@ -226,7 +201,20 @@ class Tabletop extends Component {
         .attr('width', squareSide )
         .attr('height', squareSide )
 
+    if (this.state.clickId !== null) {
+
+      const targetCoords = data.filter(d => d.KM === this.state.clickId);
+      const targetX = targetCoords.map(d => d.x);
+      const targetY = targetCoords.map(d => d.y);
+
+      select('#target')
+        .transition(slowTransition)
+          .attr('x', targetX[0] * squareSide - marginInt / 2  )
+          .attr('y', targetY[0] * squareSide - marginInt / 2  )
+          .attr('width', squareSide )
+          .attr('height', squareSide )
     }
+  }
 
   sortTabletop() {
 
@@ -268,6 +256,19 @@ class Tabletop extends Component {
         .attr('x', d => d.x * squareSide - marginInt / 2 )
         .attr('y', d => d.y * squareSide - marginInt / 2 )
 
+    if ( this.state.clickId !== null ) {
+
+      const targetCoords = data.filter(d => d.KM === this.state.clickId);
+      const targetX = targetCoords.map(d => d.x);
+      const targetY = targetCoords.map(d => d.y);
+
+      select('#target')
+        .transition(transitionSettings)
+          .attr('x', targetX[0] * squareSide - marginInt / 2  )
+          .attr('y', targetY[0] * squareSide - marginInt / 2  )
+    }
+
+
     }
 
   // note: 'e' here is the mouse event itself, which we don't need
@@ -287,78 +288,75 @@ class Tabletop extends Component {
       .attr('width', squareSide * 1.125 )
       .attr('height', squareSide * 1.125 )
 
-    select(svgPanel)
-      .select('g.panelCanvas')
-      .append('image')
-      .attr('xlink:href', d.fullspecpath)
-      //.attr('xlink:href', "http://localhost:8888/" + d.fullspecpath)
-      .attr('width', svgW * 0.75 )
-      .attr('height', svgW * 0.75 )
-      .attr('x', -marginInt )
-      .attr('y', -marginInt )
-      .attr('id', 't' + d.KM + '_fullspec')
+    if ( this.props.click === false ) {
 
-    select(svgInfoPanel)
-      .select('g.infoBox')
-      .append('text')
-      .attr('x', 0 )
-      .attr('y', 0 )
-      .attr('id', 't' + d.KM + '_title')
-      .text(d.title)
+      select(svgPanel)
+        .select('g.panelCanvas')
+        .append('image')
+        .attr('xlink:href', d.fullspecpath)
+        //.attr('xlink:href', "http://localhost:8888/" + d.fullspecpath)
+        .attr('width', svgW * 0.75 )
+        .attr('height', svgW * 0.75 )
+        .attr('x', -marginInt )
+        .attr('y', -marginInt )
 
-    select(svgInfoPanel)
-      .select('g.infoBox')
-      .append('text')
-      .attr('x', 0 )
-      .attr('y', 15 )
-      .attr('id', 't' + d.KM + '_author')
-      .text(d.author)
+      select(svgInfoPanel)
+        .select('g.infoBox')
+        .append('text')
+        .attr('x', 0 )
+        .attr('y', 0 )
+        .text(d.title)
 
-    select(svgInfoPanel)
-      .select('g.infoBox')
-      .append('text')
-      .attr('x', 0 )
-      .attr('y', 30 )
-      .attr('id', 't' + d.KM + '_year')
-      .text(d.year)
+      select(svgInfoPanel)
+        .select('g.infoBox')
+        .append('text')
+        .attr('x', 0 )
+        .attr('y', 15 )
+        .text(d.author)
 
-    select(svgInfoPanel)
-      .select('g.infoBox')
-      .append('text')
-      .attr('x', 0 )
-      .attr('y', 45 )
-      .attr('id', 't' + d.KM + '_month')
-      .text(d.month)
+      select(svgInfoPanel)
+        .select('g.infoBox')
+        .append('text')
+        .attr('x', 0 )
+        .attr('y', 30 )
+        .text(d.year)
 
-    select(svgInfoPanel)
-      .select('g.infoBox')
-      .append('text')
-      .attr('x', 0 )
-      .attr('y', 60 )
-      .attr('id', 't' + d.KM + '_page')
-      .text(d.page)
+      select(svgInfoPanel)
+        .select('g.infoBox')
+        .append('text')
+        .attr('x', 0 )
+        .attr('y', 45 )
+        .text(d.month)
 
-    select(svgInfoPanel)
-      .select('g.infoBox')
-      .append('text')
-      .attr('x', 0 )
-      .attr('y', 75 )
-      .attr('id', 't' + d.KM + '_specattr')
-      .text(d.specattr)
+      select(svgInfoPanel)
+        .select('g.infoBox')
+        .append('text')
+        .attr('x', 0 )
+        .attr('y', 60 )
+        .text(d.page)
 
-    select(svgInfoPanel)
-      .select('g.infoBox')
-      .append('text')
-      .attr('x', 0 )
-      .attr('y', 90 )
-      .attr('id', 't' + d.KM + '_sprocess')
-      .text(d.sprocess)
+      select(svgInfoPanel)
+        .select('g.infoBox')
+        .append('text')
+        .attr('x', 0 )
+        .attr('y', 75 )
+        .text(d.specattr)
 
+      select(svgInfoPanel)
+        .select('g.infoBox')
+        .append('text')
+        .attr('x', 0 )
+        .attr('y', 90 )
+        .text(d.sprocess)
     }
+  }
 
   handleMouseout(e, d) {
 
-    const squareSide = this.state.squareSide
+    const squareSide = this.state.squareSide;
+    const svgNode = this.svgNode.current;
+    const svgPanel = this.svgPanel.current;
+    const svgInfoPanel = this.svgInfoPanel.current;
 
     select('#t' + d.KM + '_spec')
       .attr('width', squareSide )
@@ -368,16 +366,122 @@ class Tabletop extends Component {
       .attr('width', squareSide )
       .attr('height', squareSide )
 
-    select('#t' + d.KM + '_fullspec').remove()
-    select('#t' + d.KM + '_title').remove()
-    select('#t' + d.KM + '_author').remove()
-    select('#t' + d.KM + '_year').remove()
-    select('#t' + d.KM + '_month').remove()
-    select('#t' + d.KM + '_page').remove()
-    select('#t' + d.KM + '_specattr').remove()
-    select('#t' + d.KM + '_sprocess').remove()
+    if ( this.props.click === false ) {
+
+      select(svgNode)
+        .select('g.plotCanvas')
+        .selectAll('rect.target').remove()
+
+      select(svgPanel)
+        .select('g.panelCanvas')
+        .selectAll('image').remove()
+
+      select(svgInfoPanel)
+        .select('g.infoBox')
+        .selectAll('text').remove()
 
     }
+  }
+
+  handleClick(e, d) {
+
+    if ( this.props.click === true ) {
+
+      this.setState({ clickId: d.KM });
+
+      const svgPanel = this.svgPanel.current;
+      const svgInfoPanel = this.svgInfoPanel.current;
+      const svgNode = this.svgNode.current;
+      const squareSide = this.state.squareSide;
+
+      select(svgNode)
+        .select('g.plotCanvas')
+        .selectAll('rect.target').remove()
+
+      select(svgPanel)
+        .select('g.panelCanvas')
+        .selectAll('image').remove()
+
+      select(svgInfoPanel)
+        .select('g.infoBox')
+        .selectAll('text').remove()
+
+      select(svgNode)
+        .select('g.plotCanvas')
+        .selectAll('rect.target')
+        .data([0])
+        .enter()
+        .append('rect')
+        .attr('class', 'target')
+        .attr('id', 'target')
+        .attr('width', squareSide )
+        .attr('height', squareSide )
+        .attr('x', select('#t' + d.KM + '_spec').attr('x'))
+        .attr('y', select('#t' + d.KM + '_spec').attr('y'))
+        .attr('stroke', 'magenta')
+        .attr('stroke-width', 4)
+        .attr('fill', 'none')
+
+      select(svgPanel)
+        .select('g.panelCanvas')
+        .append('image')
+        .attr('xlink:href', d.fullspecpath)
+        //.attr('xlink:href', "http://localhost:8888/" + d.fullspecpath)
+        .attr('width', svgW * 0.75 )
+        .attr('height', svgW * 0.75 )
+        .attr('x', -marginInt )
+        .attr('y', -marginInt )
+
+      select(svgInfoPanel)
+        .select('g.infoBox')
+        .append('text')
+        .attr('x', 0 )
+        .attr('y', 0 )
+        .text(d.title)
+
+      select(svgInfoPanel)
+        .select('g.infoBox')
+        .append('text')
+        .attr('x', 0 )
+        .attr('y', 15 )
+        .text(d.author)
+
+      select(svgInfoPanel)
+        .select('g.infoBox')
+        .append('text')
+        .attr('x', 0 )
+        .attr('y', 30 )
+        .text(d.year)
+
+      select(svgInfoPanel)
+        .select('g.infoBox')
+        .append('text')
+        .attr('x', 0 )
+        .attr('y', 45 )
+        .text(d.month)
+
+      select(svgInfoPanel)
+        .select('g.infoBox')
+        .append('text')
+        .attr('x', 0 )
+        .attr('y', 60 )
+        .text(d.page)
+
+      select(svgInfoPanel)
+        .select('g.infoBox')
+        .append('text')
+        .attr('x', 0 )
+        .attr('y', 75 )
+        .text(d.specattr)
+
+      select(svgInfoPanel)
+        .select('g.infoBox')
+        .append('text')
+        .attr('x', 0 )
+        .attr('y', 90 )
+        .text(d.sprocess)
+      }
+  }
 
   render() {
 

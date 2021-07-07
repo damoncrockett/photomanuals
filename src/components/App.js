@@ -14,6 +14,7 @@ class App extends Component {
       orderBy: 'KM',
       colorBy: 'title_c',
       color: false,
+      click: false,
       asc: 'asc'
     };
 
@@ -21,6 +22,7 @@ class App extends Component {
     this.handleOrderBy = this.handleOrderBy.bind(this);
     this.handleColorBy = this.handleColorBy.bind(this);
     this.handleColor = this.handleColor.bind(this);
+    this.handleClick = this.handleClick.bind(this);
     this.handle30 = this.handle30.bind(this);
     this.handle15 = this.handle15.bind(this);
     this.handle5 = this.handle5.bind(this);
@@ -56,6 +58,12 @@ class App extends Component {
     }));
   }
 
+  handleClick() {
+    this.setState(state => ({
+      click: !this.state.click
+    }));
+  }
+
   handle30() {
     this.setState({ ncol: 30, col30: true, col15: false, col5: false });
   }
@@ -83,6 +91,11 @@ class App extends Component {
       color: this.state.color ? 'black' : stroke
     };
 
+    const clickStyle = {
+      backgroundColor: this.state.click ? 'white' : bkgd,
+      color: this.state.click ? 'black' : stroke
+    };
+
     const style30 = {
       backgroundColor: this.state.col30 ? 'white' : bkgd,
       color: this.state.col30 ? 'black' : stroke
@@ -107,6 +120,7 @@ class App extends Component {
             orderBy={this.state.orderBy}
             colorBy={this.state.colorBy}
             color={this.state.color}
+            click={this.state.click}
             asc={this.state.asc}
           />
         </div>
@@ -137,6 +151,9 @@ class App extends Component {
           </div>
           <div className='buttonStrip'>
              <button onClick={this.handleColor} style={colorStyle}>COLOR</button>
+          </div>
+          <div className='buttonStrip'>
+             <button onClick={this.handleClick} style={clickStyle}>CLICK</button>
           </div>
           <div className='buttonStrip'>
              <button onClick={this.handle30} style={style30}>30</button>
