@@ -1,13 +1,22 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 
 :root {
-  --panel-background: #b5cbb7;
-	--panel-stroke: #818479;
-  --font: "Roboto"
+  --panel-background: #001b2e;
+  --alt-background: #294c60;
+	--panel-stroke: hsl(0, 0%, 90%);
+  --font: "Roboto";
+  --border: hsl(0, 0%, 90%);
 }
 
 body {
 	background-color: var(--panel-background);
+}
+
+p {
+  font-family: var(--font);
+  fill: var(--panel-stroke);
+  font-size: 12px;
+  margin: 5px;
 }
 
 path, line, text {
@@ -20,6 +29,28 @@ g {
   font-size: 12px;
 }
 
+.mask {
+  background-color: rgba(0, 0, 0, 0.75);
+  overflow: hidden;
+  z-index: 9;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  right: 0;
+}
+
+.filterPanel {
+  background-color: rgba(255, 255, 255, 0.9);
+  position: fixed;
+  width: 70%;
+  height: 80vh;
+  overflow: auto;
+  left: 15vw;
+  top: 10vh;
+  z-index: 10;
+}
+
 .fieldPlot {
 	float: left;
 }
@@ -30,10 +61,10 @@ g {
   left: 55vw;
   margin-left: 10px;
   margin-bottom: 10px;
-	border-color: var(--panel-stroke);
+  background-color: var(--panel-background);
+  /*border-color: var(--border);
 	border-width: 1px;
-	border-style: solid;
-  background-color: var(--panel-stroke);
+	border-style: solid;*/
 }
 
 .infoPanel {
@@ -41,10 +72,10 @@ g {
   top: 76vh;
   left: 55vw;
   margin-left: 10px;
-	border-color: var(--panel-stroke);
+  background-color: var(--panel-background);
+  /*border-color: var(--border);
 	border-width: 1px;
-	border-style: solid;
-  background-color: #e4e9b2;
+	border-style: solid;*/
 }
 
 .selectPanel {
@@ -54,46 +85,44 @@ g {
   margin-top: 10px;
   margin-left: 10px;
 	max-width: 150px;
-	background-color: #d2e4c4;
-	border-color: var(--panel-stroke);
+	background-color: var(--panel-background);
+	/*border-color: var(--border);
 	border-width: 1px;
-	border-style: solid;
+	border-style: solid;*/
   text-align: center; /* for centering buttonStrip */
 }
 
 .buttonStrip {
   display: inline-block;
-  padding-bottom: 5px;
-  padding-top: 5px;
+}
+
+.panelBox {
+  margin: 20px;
 }
 
 button, button:focus, button:active {
   font-family: var(--font);
   font-size: 12px;
   border-color: var(--panel-stroke);
-  border-radius: 5px;
-  padding: 2px;
-  margin-left: 2px;
-  margin-right: 2px;
-  margin-top: 2px;
-  margin-bottom: 2px;
+  border-width: thin;
+  border-style: solid;
+  border-radius: 20px;
+  padding: 7px;
+  margin: 2px;
   outline: none;
 }
 
 select, select:focus, select:active {
   font-family: var(--font);
   font-size: 12px;
-  border-color: var(--panel-stroke);
-  border-radius: 5px;
-  padding: 2px;
-  margin-left: 2px;
-  margin-right: 2px;
-  margin-top: 2px;
-  margin-bottom: 2px;
+  border-color: var(--border);
+  border-radius: 20px;
+  padding: 7px;
+  margin: 2px;
   outline: none;
 }
 
 button:hover {
-  border-color: hsl(0, 0%, 0%);
-  color: hsl(0, 0%, 0%) !important;
+  border-color: hsl(0, 0%, 50%);
+  color: hsl(0, 0%, 50%) !important;
 }

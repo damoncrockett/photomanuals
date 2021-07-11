@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import { select } from 'd3-selection';
 import { transition } from 'd3-transition';
-import { zoom, zoomIdentity, zoomTransform } from 'd3-zoom';
-import { scaleLinear } from 'd3-scale';
 import { gridCoords } from '../lib/plottools';
 import { orderBy } from 'lodash';
-import { countBy } from 'lodash';
+import { intersection } from 'lodash';
 
 const screenH = window.innerHeight * window.devicePixelRatio;
 const screenW = window.innerWidth * window.devicePixelRatio;
@@ -17,6 +15,7 @@ const plotW = Math.round( screenH / 2.25 );
 const svgW = plotW + margin.left + margin.right;
 
 const blankColor = 'rgba(0,0,0,0)';
+const filteredColor = 'rgba(0,27,46,0.75)'; // the background color
 const clusterColors = {
   0: 'rgba(255,0,0,0.5)', //red
   1: 'rgba(0,255,0,0.5)', //green
@@ -56,15 +55,15 @@ class Tabletop extends Component {
       this.setSize();
     }
 
-    if (prevProps.data !== null && prevProps.orderBy !== this.props.orderBy) {
+    if (prevProps.orderBy !== this.props.orderBy) {
       this.sortTabletop();
     }
 
-    if (prevProps.data !== null && prevProps.asc !== this.props.asc) {
+    if (prevProps.asc !== this.props.asc) {
       this.sortTabletop();
     }
 
-    if (prevProps.data !== null && prevProps.ncol !== this.props.ncol) {
+    if (prevProps.ncol !== this.props.ncol) {
       this.setSize();
     }
 
@@ -73,6 +72,10 @@ class Tabletop extends Component {
     }
 
     if (prevProps.colorBy !== this.props.colorBy && this.props.color === true) {
+      this.drawTabletop();
+    }
+
+    if (prevProps.filterChangeSignal !== this.props.filterChangeSignal) {
       this.drawTabletop();
     }
 
@@ -128,13 +131,12 @@ class Tabletop extends Component {
 
     }
 
-
   drawTabletop() {
 
     const svgNode = this.svgNode.current;
     const squareSide = this.state.squareSide;
-    const slowTransition = transition().duration(3000);
-    const fastTransition = transition().duration(3000);
+    const slowTransition = transition().duration(1000);
+    const fastTransition = transition().duration(1000);
 
     select(svgNode)
       .select('g.plotCanvas')
@@ -143,8 +145,8 @@ class Tabletop extends Component {
       .enter()
       .append('image')
       .attr('id', d => 't' + d.KM + '_spec')
-      //.attr('xlink:href', d => "http://localhost:8888/" + d.specpath )
-      .attr('xlink:href', d => d.specpath )
+      .attr('xlink:href', d => "http://localhost:8888/" + d.specpath )
+      //.attr('xlink:href', d => d.specpath )
       .attr('width', squareSide )
       .attr('height', squareSide )
       .on('mouseover', this.handleMouseover)
@@ -152,11 +154,11 @@ class Tabletop extends Component {
 
     select(svgNode)
       .select('g.plotCanvas')
-      .selectAll('rect')
+      .selectAll('rect.highlight')
       .data(this.props.data)
       .enter()
       .append('rect')
-      .attr('id', d => 't' + d.KM + '_rect')
+      .attr('id', d => 't' + d.KM + '_highlight')
       .attr('class', 'highlight')
       .attr('fill', d => this.props.color ? clusterColors[d[this.props.colorBy]] : blankColor )
       .attr('width', squareSide )
@@ -165,13 +167,47 @@ class Tabletop extends Component {
       .on('mouseout', this.handleMouseout)
       .on('click', this.handleClick)
 
-    const n = this.props.data.length;
+    // we filter this.props.data for the _filter rects
+    const filterLists = this.props.filterLists;
+    let data = this.props.data; // we won't mutate it here, but later
+    let filterKMs = [];
+
+    // this is getting OR for each filter category (title, author, etc.)
+    Object.keys(filterLists).forEach((cat, i) => {
+      let catList = []; // probably not necessary to initialize as a list but whatevs
+      if ( filterLists[cat].length === 0 ) {
+        catList = data.map(d => d.KM);
+      } else {
+        catList = data.filter(d => filterLists[cat].includes(d[cat])).map(d => d.KM);
+      }
+      filterKMs = [ ...filterKMs, catList ];
+    });
+
+    // this gets AND across all categories
+    filterKMs = intersection(...filterKMs);
+
+    select(svgNode)
+      .select('g.plotCanvas')
+      .selectAll('rect.filter')
+      .data(this.props.data)
+      .enter()
+      .append('rect')
+      .attr('id', d => 't' + d.KM + '_filter')
+      .attr('class', 'filter')
+      .attr('fill', d => filterKMs.includes(d.KM) ? blankColor : filteredColor )
+      .attr('width', squareSide )
+      .attr('height', squareSide )
+      .on('mouseover', this.handleMouseover)
+      .on('mouseout', this.handleMouseout)
+      .on('click', this.handleClick)
+
+    // now the xy coords
+    const n = data.length;
     const ncol = this.props.ncol;
     const coords = gridCoords(n,ncol)
     const x = coords[0];
     const y = coords[1];
 
-    let data = this.props.data;
     data = orderBy(data, [this.props.orderBy], [this.props.asc] );
     data.forEach((item, i) => {
       item.x = x[i];
@@ -201,6 +237,18 @@ class Tabletop extends Component {
         .attr('width', squareSide )
         .attr('height', squareSide )
 
+    select(svgNode)
+      .select('g.plotCanvas')
+      .selectAll('rect.filter')
+      .data(data)
+      .attr('fill', d => filterKMs.includes(d.KM) ? blankColor : filteredColor )
+      .transition(slowTransition)
+        .attr('x', d => d.x * squareSide - marginInt / 2 )
+        .attr('y', d => d.y * squareSide - marginInt / 2 )
+        .attr('width', squareSide )
+        .attr('height', squareSide )
+
+    // if we have a click target, we have to move it, too
     if (this.state.clickId !== null) {
 
       const targetCoords = data.filter(d => d.KM === this.state.clickId);
@@ -219,7 +267,7 @@ class Tabletop extends Component {
   sortTabletop() {
 
     const squareSide = this.state.squareSide;
-    const transitionSettings = transition().duration(3000);
+    const transitionSettings = transition().duration(1000);
     const svgNode = this.svgNode.current;
 
     // create grid coords
@@ -250,7 +298,15 @@ class Tabletop extends Component {
 
     select(svgNode)
       .select('g.plotCanvas')
-      .selectAll('rect')
+      .selectAll('rect.highlight')
+      .data(data)
+      .transition(transitionSettings)
+        .attr('x', d => d.x * squareSide - marginInt / 2 )
+        .attr('y', d => d.y * squareSide - marginInt / 2 )
+
+    select(svgNode)
+      .select('g.plotCanvas')
+      .selectAll('rect.filter')
       .data(data)
       .transition(transitionSettings)
         .attr('x', d => d.x * squareSide - marginInt / 2 )
@@ -267,9 +323,7 @@ class Tabletop extends Component {
           .attr('x', targetX[0] * squareSide - marginInt / 2  )
           .attr('y', targetY[0] * squareSide - marginInt / 2  )
     }
-
-
-    }
+  }
 
   // note: 'e' here is the mouse event itself, which we don't need
   handleMouseover(e, d) {
@@ -284,7 +338,11 @@ class Tabletop extends Component {
       .attr('width', squareSide * 1.125 )
       .attr('height', squareSide * 1.125 )
 
-    select('#t' + d.KM + '_rect')
+    select('#t' + d.KM + '_highlight')
+      .attr('width', squareSide * 1.125 )
+      .attr('height', squareSide * 1.125 )
+
+    select('#t' + d.KM + '_filter')
       .attr('width', squareSide * 1.125 )
       .attr('height', squareSide * 1.125 )
 
@@ -293,8 +351,8 @@ class Tabletop extends Component {
       select(svgPanel)
         .select('g.panelCanvas')
         .append('image')
-        .attr('xlink:href', d.fullspecpath)
-        //.attr('xlink:href', "http://localhost:8888/" + d.fullspecpath)
+        //.attr('xlink:href', d.fullspecpath)
+        .attr('xlink:href', "http://localhost:8888/" + d.fullspecpath)
         .attr('width', svgW * 0.75 )
         .attr('height', svgW * 0.75 )
         .attr('x', -marginInt )
@@ -362,9 +420,13 @@ class Tabletop extends Component {
       .attr('width', squareSide )
       .attr('height', squareSide )
 
-    select('#t' + d.KM + '_rect')
+    select('#t' + d.KM + '_highlight')
       .attr('width', squareSide )
       .attr('height', squareSide )
+
+    select('#t' + d.KM + '_filter')
+      .attr('width', squareSide * 1.125 )
+      .attr('height', squareSide * 1.125 )
 
     if ( this.props.click === false ) {
 
@@ -425,8 +487,8 @@ class Tabletop extends Component {
       select(svgPanel)
         .select('g.panelCanvas')
         .append('image')
-        .attr('xlink:href', d.fullspecpath)
-        //.attr('xlink:href', "http://localhost:8888/" + d.fullspecpath)
+        //.attr('xlink:href', d.fullspecpath)
+        .attr('xlink:href', "http://localhost:8888/" + d.fullspecpath)
         .attr('width', svgW * 0.75 )
         .attr('height', svgW * 0.75 )
         .attr('x', -marginInt )
@@ -480,6 +542,7 @@ class Tabletop extends Component {
         .attr('x', 0 )
         .attr('y', 90 )
         .text(d.sprocess)
+
       }
   }
 
