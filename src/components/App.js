@@ -171,7 +171,7 @@ class App extends Component {
 
     const bkgd = '#001b2e';
     const stroke = 'hsl(0,0%,90%)';
-    const filterOptions = this.state.filterOptions;
+    const filterOptions = orderBy(this.state.filterOptions,'val','asc');
 
     const selectStyle = {
       backgroundColor: bkgd,
@@ -284,9 +284,9 @@ class App extends Component {
                 <div className='buttonStrip'>
                    {filterOptions.filter(d => d.cat==='title').map( (d,i) => {
                      if (!filterLists['title'].includes(d.val)) {
-                       return <button style={{backgroundColor:'white',color:'black',fontSize:10}} onClick={this.addToFilter('title')} key={i}>{d.val + ': '+d.ct}</button>
+                       return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:10}} onClick={this.addToFilter('title')} key={i}>{d.val}</button>
                      } else {
-                       return <button style={{backgroundColor:bkgd,color:stroke,fontSize:10}} onClick={this.rmFromFilter('title')} key={i}>{d.val + ': '+d.ct}</button>
+                       return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:10,borderColor:'magenta',}} onClick={this.rmFromFilter('title')} key={i}>{d.val}</button>
                      }
                    }
                  )}
@@ -297,9 +297,9 @@ class App extends Component {
                 <div className='buttonStrip'>
                    {filterOptions.filter(d => d.cat==='author').map( (d,i) => {
                      if (!filterLists['author'].includes(d.val)) {
-                       return <button style={{backgroundColor:'white',color:'black',fontSize:10}} onClick={this.addToFilter('author')} key={i}>{d.val + ': '+d.ct}</button>
+                       return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:10}} onClick={this.addToFilter('author')} key={i}>{d.val}</button>
                      } else {
-                       return <button style={{backgroundColor:bkgd,color:stroke,fontSize:10}} onClick={this.rmFromFilter('author')} key={i}>{d.val + ': '+d.ct}</button>
+                       return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:10,borderColor:'magenta'}} onClick={this.rmFromFilter('author')} key={i}>{d.val}</button>
                      }
                    }
                  )}
@@ -308,11 +308,11 @@ class App extends Component {
               <div className='panelBox'>
                 <p>YEAR</p>
                 <div className='buttonStrip'>
-                   {orderBy(filterOptions, 'val', 'asc' ).filter(d => d.cat==='year').map( (d,i) => {
+                   {filterOptions.filter(d => d.cat==='year').map( (d,i) => {
                      if (!filterLists['year'].includes(d.val)) {
-                       return <button style={{backgroundColor:'white',color:'black',fontSize:10}} onClick={this.addToFilter('year')} key={i}>{d.val + ': '+d.ct}</button>
+                       return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:10}} onClick={this.addToFilter('year')} key={i}>{d.val}</button>
                      } else {
-                       return <button style={{backgroundColor:bkgd,color:stroke,fontSize:10}} onClick={this.rmFromFilter('year')} key={i}>{d.val + ': '+d.ct}</button>
+                       return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:10,borderColor:'magenta'}} onClick={this.rmFromFilter('year')} key={i}>{d.val}</button>
                      }
                    }
                  )}
@@ -323,9 +323,9 @@ class App extends Component {
                 <div className='buttonStrip'>
                    {filterOptions.filter(d => d.cat==='specattr').map( (d,i) => {
                      if (!filterLists['specattr'].includes(d.val)) {
-                       return <button style={{backgroundColor:'white',color:'black',fontSize:10}} onClick={this.addToFilter('specattr')} key={i}>{d.val + ': '+d.ct}</button>
+                       return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:10}} onClick={this.addToFilter('specattr')} key={i}>{d.val}</button>
                      } else {
-                       return <button style={{backgroundColor:bkgd,color:stroke,fontSize:10}} onClick={this.rmFromFilter('specattr')} key={i}>{d.val + ': '+d.ct}</button>
+                       return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:10,borderColor:'magenta'}} onClick={this.rmFromFilter('specattr')} key={i}>{d.val}</button>
                      }
                    }
                  )}
@@ -336,9 +336,9 @@ class App extends Component {
                 <div className='buttonStrip'>
                    {filterOptions.filter(d => d.cat==='sprocess').map( (d,i) => {
                      if (!filterLists['sprocess'].includes(d.val)) {
-                       return <button style={{backgroundColor:'white',color:'black',fontSize:10}} onClick={this.addToFilter('sprocess')} key={i}>{d.val + ': '+d.ct}</button>
+                       return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:10}} onClick={this.addToFilter('sprocess')} key={i}>{d.val}</button>
                      } else {
-                       return <button style={{backgroundColor:bkgd,color:stroke,fontSize:10}} onClick={this.rmFromFilter('sprocess')} key={i}>{d.val + ': '+d.ct}</button>
+                       return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:10,borderColor:'magenta'}} onClick={this.rmFromFilter('sprocess')} key={i}>{d.val}</button>
                      }
                    }
                  )}
