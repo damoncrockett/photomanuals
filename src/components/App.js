@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Tabletop from './Tabletop';
 import { isEqual } from 'lodash';
+import { orderBy } from 'lodash';
 
 class App extends Component {
   constructor(props) {
@@ -307,7 +308,7 @@ class App extends Component {
               <div className='panelBox'>
                 <p>YEAR</p>
                 <div className='buttonStrip'>
-                   {filterOptions.filter(d => d.cat==='year').map( (d,i) => {
+                   {orderBy(filterOptions, 'val', 'asc' ).filter(d => d.cat==='year').map( (d,i) => {
                      if (!filterLists['year'].includes(d.val)) {
                        return <button style={{backgroundColor:'white',color:'black',fontSize:10}} onClick={this.addToFilter('year')} key={i}>{d.val + ': '+d.ct}</button>
                      } else {
