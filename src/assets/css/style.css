@@ -1,22 +1,57 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto');
+@import url('https://fonts.googleapis.com/css?family=Roboto+Slab');
+@import url('https://fonts.googleapis.com/css?family=Train+One');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+.material-icons {
+  font-family: 'Material Icons' !important;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
+
+.material-icons.md-48 { font-size: 48px; }
+.material-icons.md-light {
+  color: var(--panel-stroke);
+  background-color: var(--panel-background);
+}
+.material-icons.button {
+  position: fixed;
+  top: 0;
+  right: 0;
+  margin: 15px;
+}
 
 :root {
   --panel-background: #001b2e;
-  --alt-background: #294c60;
+  --alt-background: #00356b;
 	--panel-stroke: hsl(0, 0%, 90%);
   --font: "Roboto";
+  --title-font: "Train One";
+  --subtitle-font: "Roboto Slab";
   --border: hsl(0, 0%, 90%);
 }
 
 body {
 	background-color: var(--panel-background);
-}
-
-p {
-  font-family: var(--font);
-  fill: var(--panel-stroke);
-  font-size: 12px;
-  margin: 5px;
 }
 
 path, line, text {
@@ -29,36 +64,62 @@ g {
   font-size: 12px;
 }
 
-.mask {
-  background-color: rgba(0, 0, 0, 0.75);
-  overflow: hidden;
-  z-index: 9;
-  height: 100%;
-  width: 100%;
+p {
+  font-family: var(--font);
+  font-size: 12px;
+  margin: 5px;
+}
+
+.banner {
   position: fixed;
   top: 0;
-  right: 0;
+  left: 0;
+  width: 100%;
+  background-color: var(--panel-background);
+  z-index: 9;
+  padding: 15px;
+  /*
+  -moz-box-shadow:    inset 0 -5px 5px -5px var(--panel-stroke);
+  -webkit-box-shadow: inset 0 -5px 5px -5px var(--panel-stroke);
+  box-shadow:    inset 0 -5px 5px -5px var(--panel-stroke);
+  */
+}
+
+.title {
+  font-family: var(--title-font);
+  font-size: 72px;
+  color: var(--panel-stroke);
+  margin-left: 30px;
+}
+
+.subtitle {
+  font-family: var(--subtitle-font);
+  font-size: 18px;
+  color: var(--panel-stroke);
+  margin-left: 30px;
 }
 
 .filterPanel {
   background-color: rgba(255, 255, 255, 0.9);
   position: fixed;
-  width: 70%;
-  height: 80vh;
+  height: 100%;
+  width: 45%;
   overflow: auto;
-  left: 15vw;
-  top: 10vh;
+  top: 0;
+  left: 55vw;
   z-index: 10;
 }
 
 .fieldPlot {
 	float: left;
+  margin-top: 120px;
 }
 
 .fieldPanel {
   position: fixed;
-  top: 1vh;
+  top: 0;
   left: 55vw;
+  margin-top: 120px;
   margin-left: 10px;
   margin-bottom: 10px;
   background-color: var(--panel-background);
