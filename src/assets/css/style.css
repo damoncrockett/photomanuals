@@ -7,7 +7,7 @@
   font-family: 'Material Icons' !important;
   font-weight: normal;
   font-style: normal;
-  font-size: 24px;  /* Preferred icon size */
+  font-size: 4vh;  /* Preferred icon size */
   display: inline-block;
   line-height: 1;
   text-transform: none;
@@ -28,7 +28,6 @@
   font-feature-settings: 'liga';
 }
 
-.material-icons.md-48 { font-size: 48px; }
 .material-icons.md-light {
   color: var(--panel-stroke);
   background-color: var(--panel-background);
@@ -37,7 +36,7 @@
   position: fixed;
   top: 0;
   right: 0;
-  margin: 15px;
+  margin: 2vh;
 }
 
 :root {
@@ -61,13 +60,13 @@ path, line, text {
 g {
   font-family: var(--font);
   fill: var(--panel-stroke);
-  font-size: 12px;
+  font-size: 1.5vh;
 }
 
 p {
   font-family: var(--font);
-  font-size: 12px;
-  margin: 5px;
+  font-size: 1.5vh;
+  margin: 1vh;
 }
 
 .banner {
@@ -75,9 +74,10 @@ p {
   top: 0;
   left: 0;
   width: 100%;
+  /*background-color: rgba(0, 0, 255, 0.25);*/
   background-color: var(--panel-background);
   z-index: 9;
-  padding: 15px;
+  padding: 2vh;
   /*
   -moz-box-shadow:    inset 0 -5px 5px -5px var(--panel-stroke);
   -webkit-box-shadow: inset 0 -5px 5px -5px var(--panel-stroke);
@@ -87,16 +87,16 @@ p {
 
 .title {
   font-family: var(--title-font);
-  font-size: 72px;
+  font-size: 3vh;
   color: var(--panel-stroke);
-  margin-left: 30px;
+  margin-left: 3vh;
 }
 
 .subtitle {
   font-family: var(--subtitle-font);
-  font-size: 18px;
+  font-size: 1.5vh;
   color: var(--panel-stroke);
-  margin-left: 30px;
+  margin-left: 3vh;
 }
 
 .filterPanel {
@@ -112,17 +112,19 @@ p {
 
 .fieldPlot {
 	float: left;
-  margin-top: 120px;
+  margin-top: 9vh;
+  /*background-color: rgba(0, 255, 255, 0.25)*/
 }
 
 .fieldPanel {
   position: fixed;
   top: 0;
   left: 55vw;
-  margin-top: 120px;
-  margin-left: 10px;
-  margin-bottom: 10px;
+  margin-top: 10vh;
+  margin-left: 0.5vh;
+  margin-bottom: 0.5vh;
   background-color: var(--panel-background);
+  /*background-color: rgba(0, 255, 0, 0.25);*/
   /*border-color: var(--border);
 	border-width: 1px;
 	border-style: solid;*/
@@ -130,10 +132,11 @@ p {
 
 .infoPanel {
   position: fixed;
-  top: 76vh;
+  top: 77vh;
   left: 55vw;
-  margin-left: 10px;
+  margin-left: 0.5vh;
   background-color: var(--panel-background);
+  /*background-color: rgba(255, 0, 0, 0.25);*/
   /*border-color: var(--border);
 	border-width: 1px;
 	border-style: solid;*/
@@ -141,12 +144,13 @@ p {
 
 .selectPanel {
   position: fixed;
-  top: 76vh;
-  left: 86vw;
-  margin-top: 10px;
-  margin-left: 10px;
-	max-width: 150px;
+  top: 77vh;
+  left: 84vw;
+  margin-top: 0.5vh;
+  margin-left: 0.5vh;
+	max-width: 20vh;
 	background-color: var(--panel-background);
+  /*background-color: rgba(255, 255, 0, 0.25);*/
 	/*border-color: var(--border);
 	border-width: 1px;
 	border-style: solid;*/
@@ -158,28 +162,28 @@ p {
 }
 
 .panelBox {
-  margin: 20px;
+  margin: 0.5vh;
 }
 
 button, button:focus, button:active {
   font-family: var(--font);
-  font-size: 12px;
+  font-size: 1.5vh;
   border-color: var(--panel-stroke);
   border-width: thin;
   border-style: solid;
-  border-radius: 20px;
-  padding: 7px;
-  margin: 2px;
+  border-radius: 2vh;
+  padding: 1vh;
+  margin: 0.25vh;
   outline: none;
 }
 
 select, select:focus, select:active {
   font-family: var(--font);
-  font-size: 12px;
+  font-size: 1.5vh;
   border-color: var(--border);
-  border-radius: 20px;
-  padding: 7px;
-  margin: 2px;
+  border-radius: 2vh;
+  padding: 1vh;
+  margin: 0.25vh;
   outline: none;
 }
 

@@ -11,8 +11,11 @@ console.log(screenW);
 console.log(screenH);
 const marginInt = Math.round( screenH / 45 );
 const margin = {top: marginInt, right: marginInt, bottom: marginInt, left: marginInt};
-const plotW = Math.round( screenH / 2.25 );
+const plotW = Math.round( screenH / 2.4 );
 const svgW = plotW + margin.left + margin.right;
+const incr = 0.02 * svgW;
+const panelSide = svgW * 0.7;
+console.log(svgW);
 
 const blankColor = 'rgba(0,0,0,0)';
 const filteredColor = 'rgba(0,27,46,0.75)'; // the background color
@@ -84,7 +87,7 @@ class Tabletop extends Component {
   setSize() {
     const n = this.props.data.length;
     const ncol = this.props.ncol;
-    const squareSideDivisor = ncol * 2.133;
+    const squareSideDivisor = ncol * 2.275;
     const squareSide = Math.round( screenH / squareSideDivisor );
 
     const nrow = Math.ceil( n / ncol );
@@ -353,8 +356,8 @@ class Tabletop extends Component {
         .append('image')
         .attr('xlink:href', d.fullspecpath)
         //.attr('xlink:href', "http://localhost:8888/" + d.fullspecpath)
-        .attr('width', svgW * 0.75 )
-        .attr('height', svgW * 0.75 )
+        .attr('width', panelSide )
+        .attr('height', panelSide )
         .attr('x', -marginInt )
         .attr('y', -marginInt )
 
@@ -369,42 +372,42 @@ class Tabletop extends Component {
         .select('g.infoBox')
         .append('text')
         .attr('x', 0 )
-        .attr('y', 15 )
+        .attr('y', incr )
         .text(d.author)
 
       select(svgInfoPanel)
         .select('g.infoBox')
         .append('text')
         .attr('x', 0 )
-        .attr('y', 30 )
+        .attr('y', incr * 2 )
         .text(d.year)
 
       select(svgInfoPanel)
         .select('g.infoBox')
         .append('text')
         .attr('x', 0 )
-        .attr('y', 45 )
+        .attr('y', incr * 3 )
         .text(d.month)
 
       select(svgInfoPanel)
         .select('g.infoBox')
         .append('text')
         .attr('x', 0 )
-        .attr('y', 60 )
+        .attr('y', incr * 4 )
         .text(d.page)
 
       select(svgInfoPanel)
         .select('g.infoBox')
         .append('text')
         .attr('x', 0 )
-        .attr('y', 75 )
+        .attr('y', incr * 5 )
         .text(d.specattr)
 
       select(svgInfoPanel)
         .select('g.infoBox')
         .append('text')
         .attr('x', 0 )
-        .attr('y', 90 )
+        .attr('y', incr * 6 )
         .text(d.sprocess)
     }
   }
@@ -489,8 +492,8 @@ class Tabletop extends Component {
         .append('image')
         .attr('xlink:href', d.fullspecpath)
         //.attr('xlink:href', "http://localhost:8888/" + d.fullspecpath)
-        .attr('width', svgW * 0.75 )
-        .attr('height', svgW * 0.75 )
+        .attr('width', panelSide )
+        .attr('height', panelSide )
         .attr('x', -marginInt )
         .attr('y', -marginInt )
 
@@ -505,42 +508,42 @@ class Tabletop extends Component {
         .select('g.infoBox')
         .append('text')
         .attr('x', 0 )
-        .attr('y', 15 )
+        .attr('y', incr )
         .text(d.author)
 
       select(svgInfoPanel)
         .select('g.infoBox')
         .append('text')
         .attr('x', 0 )
-        .attr('y', 30 )
+        .attr('y', incr * 2 )
         .text(d.year)
 
       select(svgInfoPanel)
         .select('g.infoBox')
         .append('text')
         .attr('x', 0 )
-        .attr('y', 45 )
+        .attr('y', incr * 3 )
         .text(d.month)
 
       select(svgInfoPanel)
         .select('g.infoBox')
         .append('text')
         .attr('x', 0 )
-        .attr('y', 60 )
+        .attr('y', incr * 4 )
         .text(d.page)
 
       select(svgInfoPanel)
         .select('g.infoBox')
         .append('text')
         .attr('x', 0 )
-        .attr('y', 75 )
+        .attr('y', incr * 5 )
         .text(d.specattr)
 
       select(svgInfoPanel)
         .select('g.infoBox')
         .append('text')
         .attr('x', 0 )
-        .attr('y', 90 )
+        .attr('y', incr * 6 )
         .text(d.sprocess)
 
       }
@@ -562,8 +565,8 @@ class Tabletop extends Component {
         <div className='fieldPanel'>
           <svg
           ref={this.svgPanel}
-          width={svgW * 0.75}
-          height={svgW * 0.75}
+          width={panelSide}
+          height={panelSide}
           />
         </div>
         <div className='infoPanel'>
