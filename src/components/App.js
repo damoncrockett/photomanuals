@@ -29,11 +29,15 @@ class App extends Component {
         'specattr': [],
         'sprocess': []
       },
-      filterOptions: []
+      filterOptions: [],
+      nn: null,
+      nnMode: false
     };
 
     this.getData = this.getData.bind(this);
     this.getFilter = this.getFilter.bind(this);
+    this.getNN = this.getNN.bind(this);
+    this.handleNNmode = this.handleNNmode.bind(this);
     this.handleOrderBy = this.handleOrderBy.bind(this);
     this.handleColorBy = this.handleColorBy.bind(this);
     this.handleColor = this.handleColor.bind(this);
@@ -46,6 +50,7 @@ class App extends Component {
     this.handle15 = this.handle15.bind(this);
     this.handle5 = this.handle5.bind(this);
     this.handleMenu = this.handleMenu.bind(this);
+
 
   }
 
@@ -67,9 +72,27 @@ class App extends Component {
       }));
     }
 
+  getNN() {
+    //fetch('http://localhost:8888/_nn.json')
+    fetch('_nn.json')
+      .then(response => response.json())
+      .then(data => this.setState({
+        nn: data
+      }));
+    }
+
+  handleNNmode() {
+    if ( this.state.nnMode === false ) {
+      this.setState({ nnMode: true, click: false });
+    } else if ( this.state.nnMode === true ) {
+      this.setState({ nnMode: false });
+    }
+  }
+
   componentDidMount() {
     this.getData();
     this.getFilter();
+    this.getNN();
   }
 
   handleOrderBy(e) {
@@ -89,19 +112,20 @@ class App extends Component {
   }
 
   handleClick() {
-    this.setState(state => ({
-      click: !this.state.click
-    }));
+    if ( this.state.click === false ) {
+      this.setState({ click: true, nnMode: false });
+    } else if ( this.state.click === true ) {
+      this.setState({ click: false });
+    }
   }
 
-  handleFilter(e) {
+  handleFilter() {
 
-    this.setState({
+    this.setState(state => ({
       filter: false,
       filterLists: {'title':[],'author':[],'year':[],'specattr':[],'sprocess':[]},
       filterChangeSignal: !this.state.filterChangeSignal
-    })
-
+    }));
   }
 
   handleFilterModal(e) {
@@ -219,6 +243,11 @@ class App extends Component {
       color: this.state.col5 ? 'black' : stroke
     };
 
+    const nnStyle = {
+      backgroundColor: this.state.nnMode ? 'white' : bkgd,
+      color: this.state.nnMode ? 'black' : stroke
+    };
+
     const filterLists = this.state.filterLists;
 
     if ( this.state.filterModal === true ) {
@@ -240,6 +269,8 @@ class App extends Component {
               asc={this.state.asc}
               filterLists={this.state.filterLists}
               filterChangeSignal={this.state.filterChangeSignal}
+              nn={this.state.nn}
+              nnMode={this.state.nnMode}
             />
           </div>
           <div className='selectPanel'>
@@ -280,6 +311,9 @@ class App extends Component {
                <button onClick={this.handle30} style={style30}>30</button>
                <button onClick={this.handle15} style={style15}>15</button>
                <button onClick={this.handle5} style={style5}>5</button>
+            </div>
+            <div className='buttonStrip'>
+               <button onClick={this.handleNNmode} style={nnStyle}>NN</button>
             </div>
           </div>
           <div className='filterPanel'>
@@ -376,6 +410,8 @@ class App extends Component {
               asc={this.state.asc}
               filterLists={this.state.filterLists}
               filterChangeSignal={this.state.filterChangeSignal}
+              nn={this.state.nn}
+              nnMode={this.state.nnMode}
             />
           </div>
           <div className='selectPanel'>
@@ -416,6 +452,9 @@ class App extends Component {
                <button onClick={this.handle30} style={style30}>30</button>
                <button onClick={this.handle15} style={style15}>15</button>
                <button onClick={this.handle5} style={style5}>5</button>
+            </div>
+            <div className='buttonStrip'>
+               <button onClick={this.handleNNmode} style={nnStyle}>NN</button>
             </div>
           </div>
         </div>

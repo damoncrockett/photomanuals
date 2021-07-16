@@ -37,7 +37,8 @@ class Tabletop extends Component {
     this.state = {
       squareSide: 0,
       svgH: 0,
-      clickId: null
+      clickId: null,
+      nnData: null
     }
 
     this.setSize = this.setSize.bind(this);
@@ -81,7 +82,6 @@ class Tabletop extends Component {
     if (prevProps.filterChangeSignal !== this.props.filterChangeSignal) {
       this.drawTabletop();
     }
-
   }
 
   setSize() {
@@ -211,7 +211,12 @@ class Tabletop extends Component {
     const x = coords[0];
     const y = coords[1];
 
-    data = orderBy(data, [this.props.orderBy], [this.props.asc] );
+    if ( this.state.nnData !== null ) {
+      data = this.state.nnData;
+    } else {
+      data = orderBy(data, [this.props.orderBy], [this.props.asc] );
+    }
+
     data.forEach((item, i) => {
       item.x = x[i];
       item.y = y[i];
@@ -268,6 +273,9 @@ class Tabletop extends Component {
   }
 
   sortTabletop() {
+
+    // we only nullify nnDAta when we resort; otherwise we want its sort
+    this.setState({nnData: null});
 
     const squareSide = this.state.squareSide;
     const transitionSettings = transition().duration(1000);
@@ -496,6 +504,8 @@ class Tabletop extends Component {
         .attr('height', panelSide )
         .attr('x', -marginInt )
         .attr('y', -marginInt )
+        //.on('click', () => window.open("http://localhost:8888/" + d.tabspecpath, '_blank') )
+        .on('click', () => window.open(d.tabspecpath, '_blank') )
 
       select(svgInfoPanel)
         .select('g.infoBox')
@@ -546,8 +556,78 @@ class Tabletop extends Component {
         .attr('y', incr * 6 )
         .text(d.sprocess)
 
+      } else if (this.props.click === false && this.props.nnMode === true ) {
+
+        const squareSide = this.state.squareSide;
+        const transitionSettings = transition().duration(1000);
+        const svgNode = this.svgNode.current;
+
+        // create grid coords
+        const n = this.props.data.length;
+        const ncol = this.props.ncol;
+        const coords = gridCoords(n,ncol)
+        const x = coords[0];
+        const y = coords[1];
+
+        // attach to 'data'
+        const data = this.props.data;
+        const nn = this.props.nn[d.KM];
+        console.log(nn);
+        let nnData = [];
+
+        // build new array by nn sort order
+        nn.forEach((item, i) => {
+          nnData.push(data.filter(k => k.KM === item)[0]);
+        });
+
+        nnData.forEach((item, i) => {
+          item.x = x[i];
+          item.y = y[i];
+        });
+
+        // before we reorder by KM
+        this.setState({ nnData: nnData });
+
+        // back to original sort, after coordinates attached
+        nnData = orderBy( nnData, ['KM'], ['asc'] );
+
+        select(svgNode)
+          .select('g.plotCanvas')
+          .selectAll('image')
+          .data(nnData)
+          .transition(transitionSettings)
+            .attr('x', d => d.x * squareSide - marginInt / 2 )
+            .attr('y', d => d.y * squareSide - marginInt / 2 )
+
+        select(svgNode)
+          .select('g.plotCanvas')
+          .selectAll('rect.highlight')
+          .data(nnData)
+          .transition(transitionSettings)
+            .attr('x', d => d.x * squareSide - marginInt / 2 )
+            .attr('y', d => d.y * squareSide - marginInt / 2 )
+
+        select(svgNode)
+          .select('g.plotCanvas')
+          .selectAll('rect.filter')
+          .data(nnData)
+          .transition(transitionSettings)
+            .attr('x', d => d.x * squareSide - marginInt / 2 )
+            .attr('y', d => d.y * squareSide - marginInt / 2 )
+
+        if ( this.state.clickId !== null ) {
+
+          const targetCoords = data.filter(d => d.KM === this.state.clickId);
+          const targetX = targetCoords.map(d => d.x);
+          const targetY = targetCoords.map(d => d.y);
+
+          select('#target')
+            .transition(transitionSettings)
+              .attr('x', targetX[0] * squareSide - marginInt / 2  )
+              .attr('y', targetY[0] * squareSide - marginInt / 2  )
+        }
       }
-  }
+    }
 
   render() {
 
