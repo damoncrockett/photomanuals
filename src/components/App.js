@@ -27,7 +27,9 @@ class App extends Component {
         'author': [],
         'year': [],
         'specattr': [],
-        'sprocess': []
+        'specneg': [],
+        'sprocess': [],
+        'collection': []
       },
       filterOptions: [],
       nn: null,
@@ -123,7 +125,13 @@ class App extends Component {
 
     this.setState(state => ({
       filter: false,
-      filterLists: {'title':[],'author':[],'year':[],'specattr':[],'sprocess':[]},
+      filterLists: {'title': [],
+      'author': [],
+      'year': [],
+      'specattr': [],
+      'specneg': [],
+      'sprocess': [],
+      'collection': []},
       filterChangeSignal: !this.state.filterChangeSignal
     }));
   }
@@ -131,12 +139,13 @@ class App extends Component {
   handleFilterModal(e) {
 
     const label = e.target.innerText.split(":")[0];
+    console.log(label);
 
-    if ( label === 'FILTER' ) {
+    if ( label === 'filter_alt' ) {
       this.setState(state => ({
         filterModal: true
       }));
-    } else if ( label === 'CLOSE' ) {
+    } else if ( label === 'close' ) {
       this.setState(state => ({
         filterModal: false
       }));
@@ -170,7 +179,13 @@ class App extends Component {
       filterLists[cat] = filterLists[cat].filter(d => d!==label)
 
       // if the filterLists are all empty
-      if ( isEqual(filterLists,{'title':[],'author':[],'year':[],'specattr':[],'sprocess':[]}) ) {
+      if ( isEqual(filterLists,{'title': [],
+      'author': [],
+      'year': [],
+      'specattr': [],
+      'specneg': [],
+      'sprocess': [],
+      'collection': []}) ) {
         this.setState({filter:false})
       }
 
@@ -209,43 +224,43 @@ class App extends Component {
     };
 
     const colorStyle = {
-      backgroundColor: this.state.color ? 'white' : bkgd,
-      color: this.state.color ? 'black' : stroke
+      backgroundColor: this.state.color ? stroke : bkgd,
+      color: this.state.color ? bkgd : stroke
     };
 
     const clickStyle = {
-      backgroundColor: this.state.click ? 'white' : bkgd,
-      color: this.state.click ? 'black' : stroke
+      backgroundColor: this.state.click ? stroke : bkgd,
+      color: this.state.click ? bkgd : stroke
     };
 
     const filterModalStyle = {
-      backgroundColor: this.state.filterModal ? 'white' : bkgd,
-      color: this.state.filterModal ? 'black' : stroke
+      backgroundColor: this.state.filterModal ? stroke : bkgd,
+      color: this.state.filterModal ? bkgd : stroke
     };
 
     const filterStyle = {
-      backgroundColor: this.state.filter ? 'white' : bkgd,
-      color: this.state.filter ? 'black' : stroke
+      backgroundColor: this.state.filter ? stroke : bkgd,
+      color: this.state.filter ? bkgd : stroke
     };
 
     const style30 = {
-      backgroundColor: this.state.col30 ? 'white' : bkgd,
-      color: this.state.col30 ? 'black' : stroke
+      backgroundColor: this.state.col30 ? stroke : bkgd,
+      color: this.state.col30 ? bkgd : stroke
     };
 
     const style15 = {
-      backgroundColor: this.state.col15 ? 'white' : bkgd,
-      color: this.state.col15 ? 'black' : stroke
+      backgroundColor: this.state.col15 ? stroke : bkgd,
+      color: this.state.col15 ? bkgd : stroke
     };
 
     const style5 = {
-      backgroundColor: this.state.col5 ? 'white' : bkgd,
-      color: this.state.col5 ? 'black' : stroke
+      backgroundColor: this.state.col5 ? stroke : bkgd,
+      color: this.state.col5 ? bkgd : stroke
     };
 
     const nnStyle = {
-      backgroundColor: this.state.nnMode ? 'white' : bkgd,
-      color: this.state.nnMode ? 'black' : stroke
+      backgroundColor: this.state.nnMode ? stroke : bkgd,
+      color: this.state.nnMode ? bkgd : stroke
     };
 
     const filterLists = this.state.filterLists;
@@ -273,15 +288,21 @@ class App extends Component {
               nnMode={this.state.nnMode}
             />
           </div>
+          <div className='infoPanel' id='infoPanel'>
+            <div className='infoKeys' id='infoKeys'></div>
+            <div className='infoVals' id='infoVals'></div>
+          </div>
           <div className='selectPanel'>
             <div className='buttonStrip'>
-              <select style={selectStyle} value={this.state.orderBy} onChange={this.handleOrderBy}>
+              <select style={selectStyle} value={this.state.orderBy} onChange={this.handleOrderBy} title='sort'>
                 <option value='KM'>KM</option>
                 <option value='title'>title</option>
                 <option value='author'>author</option>
                 <option value='year'>year</option>
-                <option value='specattr'>specattr</option>
-                <option value='sprocess'>sprocess</option>
+                <option value='specattr'>printmaker</option>
+                <option value='specneg'>negativemaker</option>
+                <option value='sprocess'>process</option>
+                <option value='collection'>collection</option>
                 <option value='hue'>hue</option>
                 <option value='saturation'>saturation</option>
                 <option value='brightness'>brightness</option>
@@ -289,39 +310,38 @@ class App extends Component {
               </select>
             </div>
             <div className='buttonStrip'>
-              <select style={selectStyle} value={this.state.colorBy} onChange={this.handleColorBy}>
+              <select style={selectStyle} value={this.state.colorBy} onChange={this.handleColorBy} title='highlight category'>
                 <option value='title_c'>title</option>
                 <option value='author_c'>author</option>
-                <option value='year_c'>year</option>
-                <option value='specattr_c'>specattr</option>
-                <option value='sprocess_c'>sprocess</option>
+                <option value='decade_c'>decade</option>
+                <option value='specattr_c'>printmaker</option>
+                <option value='specneg_c'>negativemaker</option>
+                <option value='collection_c'>collection</option>
+                <option value='sprocess_c'>process</option>
                 <option value='cluster_c'>cluster</option>
               </select>
             </div>
             <div className='buttonStrip'>
-               <button onClick={this.handleColor} style={colorStyle}>COLOR</button>
+               <button title='highlight' className="material-icons md-light small" onClick={this.handleColor} style={colorStyle}>highlight</button>
+               <button title='click mode' className="material-icons md-light small" onClick={this.handleClick} style={clickStyle}>highlight_alt</button>
+               <button title='filter' className="material-icons md-light small" onClick={this.handleFilterModal} style={filterStyle}>filter_alt</button>
+               <button title='remove filter' className="material-icons md-light small" onClick={this.handleFilter} style={filterModalStyle}>remove_circle</button>
             </div>
             <div className='buttonStrip'>
-               <button onClick={this.handleClick} style={clickStyle}>CLICK</button>
+               <button title='zoomed out' className="material-icons md-light small" onClick={this.handle30} style={style30}>menu</button>
+               <button title='middle zoom' className="material-icons md-light small" onClick={this.handle15} style={style15}>view_headline</button>
+               <button title='zoomed in' className="material-icons md-light small" onClick={this.handle5} style={style5}>format_align_justify</button>
             </div>
             <div className='buttonStrip'>
-               <button onClick={this.handleFilterModal} style={filterStyle}>FILTER</button>
-            </div>
-            <div className='buttonStrip'>
-               <button onClick={this.handle30} style={style30}>30</button>
-               <button onClick={this.handle15} style={style15}>15</button>
-               <button onClick={this.handle5} style={style5}>5</button>
-            </div>
-            <div className='buttonStrip'>
-               <button onClick={this.handleNNmode} style={nnStyle}>NN</button>
+               <button title='nearest neighbor mode' className="material-icons md-light small" onClick={this.handleNNmode} style={nnStyle}>other_houses</button>
             </div>
           </div>
           <div className='filterPanel'>
-            <div className='buttonStrip'>
-               <button onClick={this.handleFilterModal} style={filterModalStyle}>CLOSE</button>
-            </div>
-            <div className='buttonStrip'>
-               <button onClick={this.handleFilter} style={filterModalStyle}>REMOVE FILTER</button>
+            <div className='filterButtonsTop'>
+              <div className='buttonStrip'>
+                 <button title='close pane' className="material-icons md-light small" onClick={this.handleFilterModal} style={filterModalStyle}>close</button>
+                 <button title='remove filter' className="material-icons md-light small" onClick={this.handleFilter} style={filterModalStyle}>remove_circle</button>
+              </div>
             </div>
             <div className='panelBox'>
               <p>BOOK TITLE</p>
@@ -363,13 +383,26 @@ class App extends Component {
               </div>
             </div>
             <div className='panelBox'>
-              <p>SPECIMEN ATTRIBUTION</p>
+              <p>PRINT MAKER</p>
               <div className='buttonStrip'>
                  {filterOptions.filter(d => d.cat==='specattr').map( (d,i) => {
                    if (!filterLists['specattr'].includes(d.val)) {
                      return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:'1.5vh',borderWidth:'medium'}} onClick={this.addToFilter('specattr')} key={i}>{d.val}</button>
                    } else {
                      return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:'1.5vh',borderColor:'magenta',borderWidth:'medium'}} onClick={this.rmFromFilter('specattr')} key={i}>{d.val}</button>
+                   }
+                 }
+               )}
+              </div>
+            </div>
+            <div className='panelBox'>
+              <p>NEGATIVE MAKER</p>
+              <div className='buttonStrip'>
+                 {filterOptions.filter(d => d.cat==='specneg').map( (d,i) => {
+                   if (!filterLists['specneg'].includes(d.val)) {
+                     return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:'1.5vh',borderWidth:'medium'}} onClick={this.addToFilter('specneg')} key={i}>{d.val}</button>
+                   } else {
+                     return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:'1.5vh',borderColor:'magenta',borderWidth:'medium'}} onClick={this.rmFromFilter('specneg')} key={i}>{d.val}</button>
                    }
                  }
                )}
@@ -383,6 +416,19 @@ class App extends Component {
                      return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:'1.5vh',borderWidth:'medium'}} onClick={this.addToFilter('sprocess')} key={i}>{d.val}</button>
                    } else {
                      return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:'1.5vh',borderColor:'magenta',borderWidth:'medium'}} onClick={this.rmFromFilter('sprocess')} key={i}>{d.val}</button>
+                   }
+                 }
+               )}
+              </div>
+            </div>
+            <div className='panelBox'>
+              <p>COLLECTION</p>
+              <div className='buttonStrip'>
+                 {filterOptions.filter(d => d.cat==='collection').map( (d,i) => {
+                   if (!filterLists['collection'].includes(d.val)) {
+                     return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:'1.5vh',borderWidth:'medium'}} onClick={this.addToFilter('collection')} key={i}>{d.val}</button>
+                   } else {
+                     return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:'1.5vh',borderColor:'magenta',borderWidth:'medium'}} onClick={this.rmFromFilter('collection')} key={i}>{d.val}</button>
                    }
                  }
                )}
@@ -414,15 +460,21 @@ class App extends Component {
               nnMode={this.state.nnMode}
             />
           </div>
+          <div className='infoPanel' id='infoPanel'>
+            <div className='infoKeys' id='infoKeys'></div>
+            <div className='infoVals' id='infoVals'></div>
+          </div>
           <div className='selectPanel'>
             <div className='buttonStrip'>
-              <select style={selectStyle} value={this.state.orderBy} onChange={this.handleOrderBy}>
+              <select style={selectStyle} value={this.state.orderBy} onChange={this.handleOrderBy} title='sort'>
                 <option value='KM'>KM</option>
                 <option value='title'>title</option>
                 <option value='author'>author</option>
                 <option value='year'>year</option>
-                <option value='specattr'>specattr</option>
-                <option value='sprocess'>sprocess</option>
+                <option value='specattr'>printmaker</option>
+                <option value='specneg'>negativemaker</option>
+                <option value='sprocess'>process</option>
+                <option value='collection'>collection</option>
                 <option value='hue'>hue</option>
                 <option value='saturation'>saturation</option>
                 <option value='brightness'>brightness</option>
@@ -430,31 +482,30 @@ class App extends Component {
               </select>
             </div>
             <div className='buttonStrip'>
-              <select style={selectStyle} value={this.state.colorBy} onChange={this.handleColorBy}>
+              <select style={selectStyle} value={this.state.colorBy} onChange={this.handleColorBy} title='highlight category'>
                 <option value='title_c'>title</option>
                 <option value='author_c'>author</option>
-                <option value='year_c'>year</option>
-                <option value='specattr_c'>specattr</option>
-                <option value='sprocess_c'>sprocess</option>
+                <option value='decade_c'>decade</option>
+                <option value='specattr_c'>printmaker</option>
+                <option value='specneg_c'>negativemaker</option>
+                <option value='collection_c'>collection</option>
+                <option value='sprocess_c'>process</option>
                 <option value='cluster_c'>cluster</option>
               </select>
             </div>
             <div className='buttonStrip'>
-               <button onClick={this.handleColor} style={colorStyle}>COLOR</button>
+               <button title='highlight' className="material-icons md-light small" onClick={this.handleColor} style={colorStyle}>highlight</button>
+               <button title='click mode' className="material-icons md-light small" onClick={this.handleClick} style={clickStyle}>highlight_alt</button>
+               <button title='filter' className="material-icons md-light small" onClick={this.handleFilterModal} style={filterStyle}>filter_alt</button>
+               <button title='remove filter' className="material-icons md-light small" onClick={this.handleFilter} style={filterModalStyle}>remove_circle</button>
             </div>
             <div className='buttonStrip'>
-               <button onClick={this.handleClick} style={clickStyle}>CLICK</button>
+              <button title='zoomed out' className="material-icons md-light small" onClick={this.handle30} style={style30}>menu</button>
+              <button title='middle zoom' className="material-icons md-light small" onClick={this.handle15} style={style15}>view_headline</button>
+              <button title='zoomed in' className="material-icons md-light small" onClick={this.handle5} style={style5}>format_align_justify</button>
             </div>
             <div className='buttonStrip'>
-               <button onClick={this.handleFilterModal} style={filterStyle}>FILTER</button>
-            </div>
-            <div className='buttonStrip'>
-               <button onClick={this.handle30} style={style30}>30</button>
-               <button onClick={this.handle15} style={style15}>15</button>
-               <button onClick={this.handle5} style={style5}>5</button>
-            </div>
-            <div className='buttonStrip'>
-               <button onClick={this.handleNNmode} style={nnStyle}>NN</button>
+               <button title='nearest neighbor mode' className="material-icons md-light small" onClick={this.handleNNmode} style={nnStyle}>other_houses</button>
             </div>
           </div>
         </div>

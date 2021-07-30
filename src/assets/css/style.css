@@ -32,6 +32,13 @@
   color: var(--panel-stroke);
   background-color: var(--panel-background);
 }
+
+.material-icons.small {
+  font-size: 2vh;
+  padding: 1vh;
+  margin: 0.25vh;
+}
+
 .material-icons.button {
   position: fixed;
   top: 0;
@@ -41,6 +48,7 @@
 
 :root {
   --panel-background: #001b2e;
+  --panel-background-alpha: rgba(0,27,46,0);
   --alt-background: #00356b;
 	--panel-stroke: hsl(0, 0%, 90%);
   --font: "Roboto";
@@ -51,10 +59,6 @@
 
 body {
 	background-color: var(--panel-background);
-}
-
-path, line, text {
-	color: var(--panel-stroke);
 }
 
 g {
@@ -110,6 +114,13 @@ p {
   z-index: 10;
 }
 
+.filterButtonsTop {
+  position: fixed;
+  top: 0.5vh;
+  left: 52vw;
+  max-width: 1vw;
+}
+
 .fieldPlot {
 	float: left;
   margin-top: 9vh;
@@ -133,23 +144,40 @@ p {
 .infoPanel {
   position: fixed;
   top: 77vh;
-  left: 55vw;
+  left: 60vw;
   margin-left: 0.5vh;
   background-color: var(--panel-background);
+  max-height: 1vh;
   /*background-color: rgba(255, 0, 0, 0.25);*/
   /*border-color: var(--border);
 	border-width: 1px;
 	border-style: solid;*/
 }
 
+.infoKeys {
+  float:left;
+  max-width: 1vw;
+}
+
+.infoVals {
+  float: left;
+  max-width: 1vw;
+}
+
 .selectPanel {
-  position: fixed;
+  /*position: fixed;
   top: 77vh;
   left: 84vw;
+  max-width: 20vh;*/
+
+  position: fixed;
+  bottom: 1vh;
+  left: 0vw;
+  max-width: 55vw;
+
   margin-top: 0.5vh;
-  margin-left: 0.5vh;
-	max-width: 20vh;
-	background-color: var(--panel-background);
+  margin-left: 3vh;
+	background-color: var(--panel-background-alpha);
   /*background-color: rgba(255, 255, 0, 0.25);*/
 	/*border-color: var(--border);
 	border-width: 1px;

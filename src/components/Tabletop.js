@@ -43,6 +43,7 @@ class Tabletop extends Component {
 
     this.setSize = this.setSize.bind(this);
     this.drawSVG = this.drawSVG.bind(this);
+    this.drawInfoKeys = this.drawInfoKeys.bind(this);
     this.drawTabletop = this.drawTabletop.bind(this);
     this.sortTabletop = this.sortTabletop.bind(this);
     this.handleMouseover = this.handleMouseover.bind(this);
@@ -50,13 +51,13 @@ class Tabletop extends Component {
     this.handleClick = this.handleClick.bind(this);
     this.svgNode = React.createRef();
     this.svgPanel = React.createRef();
-    this.svgInfoPanel = React.createRef();
   }
 
   componentDidUpdate(prevProps, prevState) {
     // conditional prevents infinite loop
     if (prevProps.data === null && prevProps.data !== this.props.data) {
       this.setSize();
+      this.drawInfoKeys();
     }
 
     if (prevProps.orderBy !== this.props.orderBy) {
@@ -106,7 +107,6 @@ class Tabletop extends Component {
   drawSVG() {
     const svgNode = this.svgNode.current;
     const svgPanel = this.svgPanel.current;
-    const svgInfoPanel = this.svgInfoPanel.current;
 
     select(svgNode)
       .selectAll('g.plotCanvas')
@@ -124,15 +124,38 @@ class Tabletop extends Component {
       .attr('class', 'panelCanvas') // purely semantic
       .attr('transform', `translate(${margin.left},${margin.top})`);
 
-    select(svgInfoPanel)
-      .selectAll('g.infoBox')
-      .data([0]) // bc enter selection, prevents appending new 'g' on re-render
-      .enter()
-      .append('g')
-      .attr('class', 'infoBox') // purely semantic
-      .attr('transform', `translate(${margin.left/2},${margin.top/1.25})`);
-
+    if ( this.props.ncol === 30 ) {
+      window.scrollTo(0,document.body.scrollHeight);
     }
+  }
+
+  drawInfoKeys() {
+    const keys = [
+      'book title',
+      'book author',
+      'year',
+      'printmaker',
+      'negative maker',
+      'photo process',
+      'collection'
+    ];
+
+    select('#infoKeys')
+      .selectAll('p')
+      .data(keys)
+      .enter()
+      .append('p')
+      .text(d => d)
+      .style('color', 'rgb(0,27,46)')
+      .style('background-color', 'rgba(255,255,255,0.9)')
+      .style('text-align', 'right')
+      .style('border-radius', '0.5vh')
+      .style('width','max-content')
+      .style('padding', '0.35vh')
+      .style('font-size', '1.25vh')
+      .style('margin', '0.25vh')
+      .style('float','right')
+  }
 
   drawTabletop() {
 
@@ -343,7 +366,6 @@ class Tabletop extends Component {
     const svgH = this.state.svgH;
 
     const svgPanel = this.svgPanel.current;
-    const svgInfoPanel = this.svgInfoPanel.current;
 
     select('#t' + d.KM + '_spec')
       .attr('width', squareSide * 1.125 )
@@ -369,54 +391,31 @@ class Tabletop extends Component {
         .attr('x', -marginInt )
         .attr('y', -marginInt )
 
-      select(svgInfoPanel)
-        .select('g.infoBox')
-        .append('text')
-        .attr('x', 0 )
-        .attr('y', 0 )
-        .text(d.title)
+      const keys = [
+        'title',
+        'author',
+        'year',
+        'specattr',
+        'specneg',
+        'sprocess',
+        'collection'
+      ];
 
-      select(svgInfoPanel)
-        .select('g.infoBox')
-        .append('text')
-        .attr('x', 0 )
-        .attr('y', incr )
-        .text(d.author)
+      select('#infoVals')
+        .selectAll('p')
+        .data(keys)
+        .enter()
+        .append('p')
+        .text(datum => d[datum])
+        .style('color', 'rgba(255,255,255,0.9)')
+        .style('text-align', 'left')
+        .style('width','max-content')
+        .style('padding', '0.35vh')
+        .style('font-size', '1.25vh')
+        .style('margin', '0.25vh')
+        .style('float','left')
 
-      select(svgInfoPanel)
-        .select('g.infoBox')
-        .append('text')
-        .attr('x', 0 )
-        .attr('y', incr * 2 )
-        .text(d.year)
 
-      select(svgInfoPanel)
-        .select('g.infoBox')
-        .append('text')
-        .attr('x', 0 )
-        .attr('y', incr * 3 )
-        .text(d.month)
-
-      select(svgInfoPanel)
-        .select('g.infoBox')
-        .append('text')
-        .attr('x', 0 )
-        .attr('y', incr * 4 )
-        .text(d.page)
-
-      select(svgInfoPanel)
-        .select('g.infoBox')
-        .append('text')
-        .attr('x', 0 )
-        .attr('y', incr * 5 )
-        .text(d.specattr)
-
-      select(svgInfoPanel)
-        .select('g.infoBox')
-        .append('text')
-        .attr('x', 0 )
-        .attr('y', incr * 6 )
-        .text(d.sprocess)
     }
   }
 
@@ -425,7 +424,6 @@ class Tabletop extends Component {
     const squareSide = this.state.squareSide;
     const svgNode = this.svgNode.current;
     const svgPanel = this.svgPanel.current;
-    const svgInfoPanel = this.svgInfoPanel.current;
 
     select('#t' + d.KM + '_spec')
       .attr('width', squareSide )
@@ -449,9 +447,10 @@ class Tabletop extends Component {
         .select('g.panelCanvas')
         .selectAll('image').remove()
 
-      select(svgInfoPanel)
-        .select('g.infoBox')
-        .selectAll('text').remove()
+      select('#infoVals')
+        .selectAll('p')
+        .remove()
+
 
     }
   }
@@ -463,7 +462,6 @@ class Tabletop extends Component {
       this.setState({ clickId: d.KM });
 
       const svgPanel = this.svgPanel.current;
-      const svgInfoPanel = this.svgInfoPanel.current;
       const svgNode = this.svgNode.current;
       const squareSide = this.state.squareSide;
 
@@ -475,9 +473,9 @@ class Tabletop extends Component {
         .select('g.panelCanvas')
         .selectAll('image').remove()
 
-      select(svgInfoPanel)
-        .select('g.infoBox')
-        .selectAll('text').remove()
+      select('#infoVals')
+        .selectAll('p')
+        .remove()
 
       select(svgNode)
         .select('g.plotCanvas')
@@ -507,54 +505,30 @@ class Tabletop extends Component {
         //.on('click', () => window.open("http://localhost:8888/" + d.tabspecpath, '_blank') )
         .on('click', () => window.open(d.tabspecpath, '_blank') )
 
-      select(svgInfoPanel)
-        .select('g.infoBox')
-        .append('text')
-        .attr('x', 0 )
-        .attr('y', 0 )
-        .text(d.title)
 
-      select(svgInfoPanel)
-        .select('g.infoBox')
-        .append('text')
-        .attr('x', 0 )
-        .attr('y', incr )
-        .text(d.author)
+      const keys = [
+        'title',
+        'author',
+        'year',
+        'specattr',
+        'specneg',
+        'sprocess',
+        'collection'
+      ];
 
-      select(svgInfoPanel)
-        .select('g.infoBox')
-        .append('text')
-        .attr('x', 0 )
-        .attr('y', incr * 2 )
-        .text(d.year)
-
-      select(svgInfoPanel)
-        .select('g.infoBox')
-        .append('text')
-        .attr('x', 0 )
-        .attr('y', incr * 3 )
-        .text(d.month)
-
-      select(svgInfoPanel)
-        .select('g.infoBox')
-        .append('text')
-        .attr('x', 0 )
-        .attr('y', incr * 4 )
-        .text(d.page)
-
-      select(svgInfoPanel)
-        .select('g.infoBox')
-        .append('text')
-        .attr('x', 0 )
-        .attr('y', incr * 5 )
-        .text(d.specattr)
-
-      select(svgInfoPanel)
-        .select('g.infoBox')
-        .append('text')
-        .attr('x', 0 )
-        .attr('y', incr * 6 )
-        .text(d.sprocess)
+      select('#infoVals')
+        .selectAll('p')
+        .data(keys)
+        .enter()
+        .append('p')
+        .text(datum => d[datum])
+        .style('color', 'rgba(255,255,255,0.9)')
+        .style('text-align', 'left')
+        .style('width','max-content')
+        .style('padding', '0.35vh')
+        .style('font-size', '1.25vh')
+        .style('margin', '0.25vh')
+        .style('float','left')
 
       } else if (this.props.click === false && this.props.nnMode === true ) {
 
@@ -572,7 +546,6 @@ class Tabletop extends Component {
         // attach to 'data'
         const data = this.props.data;
         const nn = this.props.nn[d.KM];
-        console.log(nn);
         let nnData = [];
 
         // build new array by nn sort order
@@ -590,6 +563,9 @@ class Tabletop extends Component {
 
         // back to original sort, after coordinates attached
         nnData = orderBy( nnData, ['KM'], ['asc'] );
+
+        // get back to the top
+        window.scrollTo(0,0);
 
         select(svgNode)
           .select('g.plotCanvas')
@@ -647,13 +623,6 @@ class Tabletop extends Component {
           ref={this.svgPanel}
           width={panelSide}
           height={panelSide}
-          />
-        </div>
-        <div className='infoPanel'>
-          <svg
-          ref={this.svgInfoPanel}
-          width={svgW * 0.55}
-          height={svgW * 0.2}
           />
         </div>
       </div>

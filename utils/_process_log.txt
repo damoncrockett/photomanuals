@@ -1,0 +1,18 @@
+core(PM Master Editing.xlsx) -> master
+
+extract(master) -> master_w_features
+
+color(master_w_features) -> master_w_features_color
+
+rawimg(master_w_features_color) -> master_w_features_color_tabspecpath
+
+filterButtons(master_w_features_color_tabspecpath) -> _filter.json
+
+json(master_w_features_color_tabspecpath) -> _data.json
+
+
+nn -> X & _nn.json [note: neither needs metadata, so md changes don't force rerun]
+resize [no inputs or outputs, apart from original images and resized images]
+
+
+
