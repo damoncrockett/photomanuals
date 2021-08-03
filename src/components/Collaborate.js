@@ -7,7 +7,7 @@ const screenW = window.innerWidth * window.devicePixelRatio;
 
 const filteredColor = 'rgba(0,27,46,0.75)'; // the background color
 
-class Page extends Component {
+class Collaborate extends Component {
   constructor(props) {
     super(props);
 
@@ -21,9 +21,9 @@ class Page extends Component {
 
 
   render() {
-    if (this.props.PageSwitch===true) {
+    if (this.props.CollabSwitch===true) {
       return (
-        <div className='landing'></div>
+        <div className='landing'><p>Collaborate</p></div>
       )
     } else {
       return null
@@ -31,4 +31,4 @@ class Page extends Component {
   }
 }
 
-export default Page;
+export default Collaborate;
