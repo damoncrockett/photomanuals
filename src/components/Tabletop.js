@@ -53,6 +53,12 @@ class Tabletop extends Component {
     this.svgPanel = React.createRef();
   }
 
+  // needed bc does not mount on site load like it used to
+  componentDidMount() {
+    this.setSize();
+    this.drawInfoKeys();
+  }
+
   componentDidUpdate(prevProps, prevState) {
     // conditional prevents infinite loop
     if (prevProps.data === null && prevProps.data !== this.props.data) {
@@ -171,8 +177,8 @@ class Tabletop extends Component {
       .enter()
       .append('image')
       .attr('id', d => 't' + d.KM + '_spec')
-      //.attr('xlink:href', d => "http://localhost:8888/" + d.specpath )
-      .attr('xlink:href', d => d.specpath )
+      .attr('xlink:href', d => "http://localhost:8888/" + d.specpath )
+      //.attr('xlink:href', d => d.specpath )
       .attr('width', squareSide )
       .attr('height', squareSide )
       .on('mouseover', this.handleMouseover)
@@ -384,8 +390,8 @@ class Tabletop extends Component {
       select(svgPanel)
         .select('g.panelCanvas')
         .append('image')
-        .attr('xlink:href', d.fullspecpath)
-        //.attr('xlink:href', "http://localhost:8888/" + d.fullspecpath)
+        //.attr('xlink:href', d.fullspecpath)
+        .attr('xlink:href', "http://localhost:8888/" + d.fullspecpath)
         .attr('width', panelSide )
         .attr('height', panelSide )
         .attr('x', -marginInt )
@@ -496,14 +502,14 @@ class Tabletop extends Component {
       select(svgPanel)
         .select('g.panelCanvas')
         .append('image')
-        .attr('xlink:href', d.fullspecpath)
-        //.attr('xlink:href', "http://localhost:8888/" + d.fullspecpath)
+        //.attr('xlink:href', d.fullspecpath)
+        .attr('xlink:href', "http://localhost:8888/" + d.fullspecpath)
         .attr('width', panelSide )
         .attr('height', panelSide )
         .attr('x', -marginInt )
         .attr('y', -marginInt )
-        //.on('click', () => window.open("http://localhost:8888/" + d.tabspecpath, '_blank') )
-        .on('click', () => window.open(d.tabspecpath, '_blank') )
+        .on('click', () => window.open("http://localhost:8888/" + d.tabspecpath, '_blank') )
+        //.on('click', () => window.open(d.tabspecpath, '_blank') )
 
 
       const keys = [

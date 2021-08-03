@@ -7,7 +7,6 @@
   font-family: 'Material Icons' !important;
   font-weight: normal;
   font-style: normal;
-  font-size: 4vh;  /* Preferred icon size */
   display: inline-block;
   line-height: 1;
   text-transform: none;
@@ -39,11 +38,23 @@
   margin: 0.25vh;
 }
 
-.material-icons.button {
+.material-icons.large, .material-icons.large:active, .material-icons.large:focus {
   position: fixed;
   top: 0;
   right: 0;
   margin: 2vh;
+  font-size: 4vh;
+  border-color: var(--panel-stroke);
+  border-width: thin;
+  border-style: solid;
+  border-radius: 2vh;
+  padding: 1vh;
+  outline: none;
+}
+
+.material-icons.large:hover {
+  border-color: hsl(0, 0%, 50%);
+  color: hsl(0, 0%, 50%) !important;
 }
 
 :root {
@@ -218,4 +229,12 @@ select, select:focus, select:active {
 button:hover {
   border-color: hsl(0, 0%, 50%);
   color: hsl(0, 0%, 50%) !important;
+}
+
+
+/* Other Pages */
+
+.landing {
+  background-color: var(--panel-background);
+  z-index: 8;
 }
