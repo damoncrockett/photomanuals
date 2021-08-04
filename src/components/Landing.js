@@ -23,7 +23,8 @@ class Landing extends Component {
   render() {
     if (this.props.LandingSwitch===true) {
       return (
-        <div className='landing'><p>Landing</p></div>
+        <div className='landingPage'>
+        </div>
       )
     } else {
       return null
