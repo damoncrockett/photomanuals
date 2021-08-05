@@ -197,10 +197,10 @@ class Site extends Component {
           <button className="title" onClick={this.handleLanding}>TIPPs</button>
           <span className="subtitle">TIPPED-IN PHOTOGRAPHIC PRINTS FROM EARLY PHOTOGRAPHY MANUALS</span>
           <div className="menu">
-            <button className="nav" id="introButton" onClick={this.handleIntro}>INTRODUCTION</button>
+            <button className="nav" id="introButton" onClick={this.handleIntro}>INTRO</button>
             <button className="nav" id="appButton" onClick={this.handleApp}>EXPLORE</button>
             <button className="nav" id="researchButton" onClick={this.handleInterp}>RESEARCH</button>
-            <button className="nav" id="collabButton" onClick={this.handleCollab}>COLLABORATE</button>
+            <button className="nav" id="collabButton" onClick={this.handleCollab}>CONTACT</button>
             <button className="nav" id="creditButton" onClick={this.handleCredits}>CREDITS</button>
           </div>
         </div>

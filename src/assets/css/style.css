@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@100&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@200&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Train+One');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
@@ -50,11 +50,13 @@
   color: var(--panel-stroke);
   background-color: var(--panel-background);
   border-color: var(--panel-background);
+  transition: text-shadow .3s;
 }
 
 .nav:hover {
   border-color: var(--panel-background);
   color: hsl(0, 0%, 100%);
+  text-shadow: 0 0 0.125vh hsl(0, 0%, 90%), 0 0 0.125vh hsl(0, 0%, 90%);
 }
 
 .material-icons.large:hover {
@@ -71,7 +73,7 @@
 
 #marker {
   background-color: rgba(0,0,0,0);
-  width: 8vw;
+  width: 5vw;
   height: 0.35vh;
   position: absolute;
   bottom: 0;
