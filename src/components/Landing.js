@@ -26,11 +26,7 @@ class Landing extends Component {
         <div className='landingPage'>
           <div className='landingBox'>
             <span className='landingBlurb'>
-              Lorem ipsum dolor sit amet,
-              consectetur adipiscing elit.
-              Donec ornare sodales enim,
-              ac aliquam ex porta non.
-              Proin arcu nisl, eleifend eu eleifend sed.
+              A materials-focused database that allows users to explore the photographic prints tipped into international photography journals and manuals published between 1855 and 1900.
             </span>
           </div>
         </div>

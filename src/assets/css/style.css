@@ -281,7 +281,7 @@ button:hover {
 .landingPage {
   height: 100vh;
   width: 100vw;
-  background-image: linear-gradient(90deg, rgba(0,0,0,0.6),rgba(0,0,0,0.6)), url('http://localhost:8888/hero.jpeg');
+  background-image: linear-gradient(90deg, rgba(0,0,0,0.6),rgba(0,0,0,0.6)), url('http://localhost:8888/hero.jpg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -299,6 +299,6 @@ button:hover {
 .landingBlurb {
   font-family: 'Lato';
   font-weight: 300;
-  font-size: 7vh;
+  font-size: 5vh;
   color: var(--panel-stroke);
 }
