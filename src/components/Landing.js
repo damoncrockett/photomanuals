@@ -24,6 +24,15 @@ class Landing extends Component {
     if (this.props.LandingSwitch===true) {
       return (
         <div className='landingPage'>
+          <div className='landingBox'>
+            <span className='landingBlurb'>
+              Lorem ipsum dolor sit amet,
+              consectetur adipiscing elit.
+              Donec ornare sodales enim,
+              ac aliquam ex porta non.
+              Proin arcu nisl, eleifend eu eleifend sed.
+            </span>
+          </div>
         </div>
       )
     } else {

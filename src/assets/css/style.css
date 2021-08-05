@@ -190,7 +190,7 @@ p {
 
 .infoPanel {
   position: fixed;
-  top: 77vh;
+  top: 80vh;
   left: 60vw;
   margin-left: 0.5vh;
   background-color: var(--panel-background);
@@ -281,8 +281,24 @@ button:hover {
 .landingPage {
   height: 100vh;
   width: 100vw;
-  background-image: linear-gradient(90deg, rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url('http://localhost:8888/hero.jpeg');
+  background-image: linear-gradient(90deg, rgba(0,0,0,0.6),rgba(0,0,0,0.6)), url('http://localhost:8888/hero.jpeg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+}
+
+.landingBox {
+  position: absolute;
+  top: 30%;
+  left: 20%;
+  max-width: 60%;
+  background-color: rgba(0,0,0,0);
+  text-align: center;
+}
+
+.landingBlurb {
+  font-family: 'Lato';
+  font-weight: 300;
+  font-size: 7vh;
+  color: var(--panel-stroke);
 }
