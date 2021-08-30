@@ -23,7 +23,12 @@ class Collaborate extends Component {
   render() {
     if (this.props.CollabSwitch===true) {
       return (
-        <div className='landing'><p>Collaborate</p></div>
+        <div className='landing'>
+          <div className='sectionTitle'>
+            <span>Collaborate</span>
+            <div className='sectionLine'></div>
+          </div>
+        </div>
       )
     } else {
       return null

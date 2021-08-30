@@ -1,7 +1,10 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@200&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@100&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@200&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@800&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Train+One');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
@@ -40,6 +43,11 @@
   margin: 0.25vh;
 }
 
+.material-icons.medium {
+  font-size: 3vh;
+  margin-left: 1vw;
+}
+
 .nav, .nav:active, .nav:focus {
   margin-right: 3vw;
   font-size: 1.5vh;
@@ -48,13 +56,13 @@
   padding: 0vh;
   outline: none;
   color: var(--panel-stroke);
-  background-color: var(--panel-background);
-  border-color: var(--panel-background);
+  background-color: var(--panel-background-light);
+  border-color: var(--panel-background-light);
   transition: text-shadow .3s;
 }
 
 .nav:hover {
-  border-color: var(--panel-background);
+  border-color: var(--panel-background-light);
   color: hsl(0, 0%, 100%);
   text-shadow: 0 0 0.125vh hsl(0, 0%, 90%), 0 0 0.125vh hsl(0, 0%, 90%);
 }
@@ -81,6 +89,7 @@
 
 :root {
   --panel-background: #001b2e;
+  --panel-background-light: hsl(205, 100%, 12%);
   --panel-background-alpha: rgba(0,27,46,0);
   --alt-background: #00356b;
 	--panel-stroke: hsl(0, 0%, 90%);
@@ -120,7 +129,7 @@ p {
   left: 0;
   width: 100%;
   /*background-color: rgba(0, 0, 255, 0.25);*/
-  background-color: var(--panel-background);
+  background-color: var(--panel-background-light);
   z-index: 9;
   padding: 0vh;
   /*
@@ -136,12 +145,12 @@ p {
   color: var(--panel-stroke);
   margin-left: 3vh;
   outline: none;
-  background-color: var(--panel-background);
-  border-color: var(--panel-background);
+  background-color: var(--panel-background-light);
+  border-color: var(--panel-background-light);
 }
 
 .title:hover {
-  border-color: var(--panel-background);
+  border-color: var(--panel-background-light);
   color: var(--panel-stroke);
 }
 
@@ -275,9 +284,6 @@ button:hover {
 .landing {
   background-color: var(--panel-background);
   color: var(--panel-stroke);
-  position: fixed;
-  top: 50vh;
-  right: 50vw;
 }
 
 .landingPage {
@@ -300,7 +306,70 @@ button:hover {
 
 .landingBlurb {
   font-family: 'Lato';
-  font-weight: 300;
+  font-weight: 200;
   font-size: 5vh;
   color: var(--panel-stroke);
+}
+
+.sectionTitle {
+  font-family: 'Lato';
+  font-weight: 300;
+  font-size: 4vh;
+  color: var(--panel-stroke);
+  margin-left: 16vw;
+  margin-top: 16vh;
+  float: left;
+}
+
+.sectionLine {
+  width: 68vw;
+  height: 0.125vh;
+  background-color: var(--panel-stroke);
+  margin-top: 3vh;
+  margin-bottom: 3vh;
+}
+
+.pubList {
+  width: 68vw;
+  margin-left: 16vw;
+}
+
+.publication {
+  font-family: 'Lato';
+  font-weight: 200;
+  color: var(--panel-stroke);
+  float: left;
+  margin-top: 1vh;
+  margin-bottom: 1vh;
+  width: 25vw;
+  margin-right: 5vw;
+  min-height: 20vw;
+}
+
+.pubTitle {
+  font-size: 2.5vh;
+  margin-top: 1vh;
+  margin-bottom: 2vh;
+}
+
+.pubAttribution {
+  font-size: 2vh;
+  margin-top: 1vh;
+  margin-bottom: 2vh;
+  font-style: italic;
+  color: hsl(0, 0%, 65%)
+}
+
+.pubBlurb {
+  font-size: 2vh;
+  margin-top: 1vh;
+  margin-bottom: 2vh;
+}
+
+.pubLink, .pubLink:active, .pubLink:focus {
+  font-size: 3vh;
+  color: #63aaff;
+  margin-top: 1vh;
+  margin-bottom: 3vh;
+  text-decoration: none;
 }

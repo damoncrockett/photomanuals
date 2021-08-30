@@ -23,7 +23,12 @@ class Credits extends Component {
   render() {
     if (this.props.CreditSwitch===true) {
       return (
-        <div className='landing'><p>Credits</p></div>
+        <div className='landing'>
+          <div className='sectionTitle'>
+            <span>Credits</span>
+            <div className='sectionLine'></div>
+          </div>
+        </div>
       )
     } else {
       return null

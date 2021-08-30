@@ -23,7 +23,116 @@ class Interpretation extends Component {
   render() {
     if (this.props.InterpSwitch===true) {
       return (
-        <div className='landing'><p>Interpretation</p></div>
+        <div className='landing'>
+          <div className='sectionTitle'>
+            <span>Published Research</span>
+            <div className='sectionLine'></div>
+          </div>
+          <div className='pubList'>
+            <div className='publication'>
+              <div className='pubTitle'>
+                <span>Material Matters: The Transatlantic Trade in Photographic Materials during the Nineteenth Century</span>
+              </div>
+              <div className='pubAttribution'>
+                <span>Katherine Mintie, Harvard University</span>
+              </div>
+              <div className='pubBlurb'>
+                <span>Examines the transatlantic circulation of photographic papers (both raw stock and coated papers) and lenses between the United States and Europe during the nineteenth century.</span>
+              </div>
+              <div className='pubLink'>
+                <a className='pubLink' href='https://editions.lib.umn.edu/panorama/article/re-reading-american-photographs/material-matters/'>
+                  <span>Read the Article</span>
+                  <span className='material-icons medium'>description</span>
+                </a>
+              </div>
+            </div>
+            <div className='publication'>
+              <div className='pubTitle'>
+                <span>A Portrait on the Move: Photography Literature and Transatlantic Exchanges in the Nineteenth Century</span>
+              </div>
+              <div className='pubAttribution'>
+                <span>Katherine Mintie, Harvard University</span>
+              </div>
+              <div className='pubBlurb'>
+                <span>Explores the international exchange of photographic prints through photography journals during the nineteenth century.</span>
+              </div>
+              <div className='pubLink'>
+                <a className='pubLink' href='https://editions.lib.umn.edu/panorama/article/a-portrait-on-the-move/'>
+                  <span>Read the Article</span>
+                  <span className='material-icons medium'>description</span>
+                </a>
+              </div>
+            </div>
+            <div className='publication'>
+              <div className='pubTitle'>
+                <span>Commercially Manufactured Plain Papers in the United States, 1860-1900</span>
+              </div>
+              <div className='pubAttribution'>
+                <span>Katherine Mintie, Harvard University</span>
+              </div>
+              <div className='pubBlurb'>
+                <span>Using evidence from nineteenth-century photography periodicals, the author shows that salted paper prints were used more widely in the United States than previously understood.</span>
+              </div>
+              <div className='pubLink'>
+                <a className='pubLink' href='https://www.tandfonline.com/doi/full/10.1080/01971360.2020.1729615'>
+                  <span>Read the Article</span>
+                  <span className='material-icons medium'>description</span>
+                </a>
+              </div>
+            </div>
+            <div className='publication'>
+              <div className='pubTitle'>
+                <span>Manufacturing Photography, 1860-1900</span>
+              </div>
+              <div className='pubAttribution'>
+                <span>Katherine Mintie, Harvard University</span>
+              </div>
+              <div className='pubBlurb'>
+                <span>A StoryMaps project to identify and map the manufacturers of various photographic materials–papers, dry plates, lenses, and other tool–used by photographers in the US and Europe during the nineteenth century.</span>
+              </div>
+              <div className='pubLink'>
+                <a className='pubLink' href='https://editions.lib.umn.edu/panorama/article/a-portrait-on-the-move/'>
+                  <span>Visit the Project</span>
+                  <span className='material-icons medium'>description</span>
+                </a>
+              </div>
+            </div>
+            <div className='publication'>
+              <div className='pubTitle'>
+                <span>The Hidden Value of Early Photographic Technology Manuals: Mapping the Genome of 19th Century Photography</span>
+              </div>
+              <div className='pubAttribution'>
+                <span>Adrienne Lundgren, Library of Congress</span>
+              </div>
+              <div className='pubBlurb'>
+                <span>From tintype plates to silver gelatin papers, 19th-century photographs were produced using manufactured supports and materials. These products are rarely identified and thus the history of this industry and the connection to their material output remains unexplored. Within the Library of Congress' vast holdings of photographic technology manuals, original 19th-century samples of identified photographic papers and products survive. Senior Photographic Conservator Adrienne Lundgren discusses how a pilot project to catalogue these samples revealed hidden trends in the early development of photography.</span>
+              </div>
+              <div className='pubLink'>
+                <a className='pubLink' href='https://www.loc.gov/item/webcast-8348'>
+                  <span>View the Presentation</span>
+                  <span className='material-icons medium'>description</span>
+                </a>
+              </div>
+            </div>
+            <div className='publication'>
+              <div className='pubTitle'>
+                <span>Platinum Toning of Silver Prints</span>
+              </div>
+              <div className='pubAttribution'>
+                <span>Ronel Namde, The J. Paul Getty Museum and Joan M. Walker, National Gallery of Art</span>
+              </div>
+              <div className='pubBlurb'>
+                <span>This article discusses the history of the use of platinum salts in the production of silver print papers.  This additive imparted increased permanency as well as an aesthetic shift allowing these relatively inexpensive papers to emulate more expensive platinum papers of the time.  Platinum toning could be employed in concert with virtually any silver-based process but in the United States was most often used on matte collodion printing-out papers.  This article features an “Aristo-Platino” sample from the Library of Congress dataset to illustrate this point.</span>
+              </div>
+              <div className='pubLink'>
+                <a className='pubLink' href='https://www.culturalheritage.org/publications/books-periodicals/shop/platinum-and-palladium-photographs'>
+                  <span>View the Book</span>
+                  <span className='material-icons medium'>description</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
       )
     } else {
       return null
