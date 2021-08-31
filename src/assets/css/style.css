@@ -48,6 +48,15 @@
   margin-left: 1vw;
 }
 
+.material-icons.large, .material-icons.large:focus, .material-icons.large:active {
+  font-size: 10vh;
+  color: var(--panel-stroke);
+}
+
+.material-icons.large:hover {
+  color: #63aaff;
+}
+
 .nav, .nav:active, .nav:focus {
   margin-right: 3vw;
   font-size: 1.5vh;
@@ -65,11 +74,6 @@
   border-color: var(--panel-background-light);
   color: hsl(0, 0%, 100%);
   text-shadow: 0 0 0.125vh hsl(0, 0%, 90%), 0 0 0.125vh hsl(0, 0%, 90%);
-}
-
-.material-icons.large:hover {
-  border-color: hsl(0, 0%, 50%);
-  color: hsl(0, 0%, 50%) !important;
 }
 
 .menu {
@@ -121,6 +125,10 @@ p {
   font-family: var(--font);
   font-size: 1.5vh;
   margin: 1vh;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 .banner {
@@ -287,19 +295,18 @@ button:hover {
 }
 
 .landingPage {
-  height: 100vh;
+  min-height: 100vh;
   width: 100vw;
   background-image: linear-gradient(90deg, rgba(0,0,0,0.6),rgba(0,0,0,0.6)), url('http://localhost:8888/hero.jpg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+  background-attachment: fixed;
 }
 
 .landingBox {
-  position: absolute;
-  top: 30%;
-  left: 20%;
-  max-width: 60%;
+  float: left;
+  margin-top: 30vh;
   background-color: rgba(0,0,0,0);
   text-align: center;
 }
@@ -309,6 +316,63 @@ button:hover {
   font-weight: 200;
   font-size: 5vh;
   color: var(--panel-stroke);
+  margin-left: 20vw;
+  max-width: 60vw;
+  text-align: center;
+  float: left;
+}
+
+.expandArrow, .expandArrow:focus, .expandArrow:active {
+  background-color: rgba(0,0,0,0);
+  position: absolute;
+  width: 100vw;
+  bottom: 5vh;
+  color: var(--panel-stroke);
+}
+
+#landingScrollPoint {
+  position: absolute;
+  bottom: 0px;
+}
+
+.landingContent {
+  font-family: 'Lato';
+  font-weight: 200;
+  font-size: 2.5vh;
+  color: var(--panel-stroke);
+  float:left;
+  margin-left: 20vw;
+  max-width: 60vw;
+  margin-top: 50vh;
+  margin-bottom: 20vh;
+}
+
+.landingSectionTitle {
+  font-family: 'Lato';
+  font-weight: 200;
+  font-size: 5vh;
+  color: var(--panel-stroke);
+  margin-bottom: 5vh;
+  margin-top: 5vh;
+  float: left;
+}
+
+.landingText {
+  float: left;
+  margin-bottom: 5vh;
+}
+
+.landingEmail {
+  color: #63aaff;
+}
+
+.landingLink, .landingLink:active, .landingLink:focus {
+  color: #63aaff;
+  text-decoration: none;
+}
+
+.landingLink:hover {
+  color: hsl(0, 0%, 50%);
 }
 
 .sectionTitle {
@@ -343,7 +407,7 @@ button:hover {
   margin-bottom: 1vh;
   width: 25vw;
   margin-right: 5vw;
-  min-height: 20vw;
+  min-height: 40vh;
 }
 
 .pubTitle {
@@ -357,7 +421,7 @@ button:hover {
   margin-top: 1vh;
   margin-bottom: 2vh;
   font-style: italic;
-  color: hsl(0, 0%, 65%)
+  color: hsl(0, 0%, 65%);
 }
 
 .pubBlurb {
@@ -372,4 +436,23 @@ button:hover {
   margin-top: 1vh;
   margin-bottom: 3vh;
   text-decoration: none;
+}
+
+.pubEmail {
+  color: #63aaff;
+}
+
+.collabFrame {
+  width: 68vw;
+  margin-left: 16vw;
+}
+
+.collabBlurb {
+  font-family: 'Lato';
+  font-weight: 200;
+  color: var(--panel-stroke);
+  font-size: 2.5vh;
+  float: left;
+  max-width: 42vw;
+  margin-top: 1vh;
 }

@@ -28,6 +28,11 @@ class Collaborate extends Component {
             <span>Collaborate</span>
             <div className='sectionLine'></div>
           </div>
+          <div className='collabFrame'>
+            <div className='collabBlurb'>
+              <span>TIPPs emerged through a long-term collaboration between the Library of Congress and the Lens Media Lab at Yale University. Building on the success of this model, we seek to expand the database through new partnerships, especially museums and libraries that hold significant collections of early photography literature. If you are interested in partnering with us, please send an email to <span className='pubEmail'>tipps@gmail.com.</span></span>
+            </div>
+          </div>
         </div>
       )
     } else {
