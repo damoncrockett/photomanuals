@@ -7,6 +7,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@800&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Train+One');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100&display=swap');
 
 .material-icons {
   font-family: 'Material Icons' !important;
@@ -54,7 +55,7 @@
 }
 
 .material-icons.large:hover {
-  color: #63aaff;
+  color: #bd5319;
 }
 
 .nav, .nav:active, .nav:focus {
@@ -100,6 +101,7 @@
   --font: "Roboto";
   --title-font: "Train One";
   --subtitle-font: "Roboto";
+  --text-font: "Roboto Slab";
   --border: hsl(0, 0%, 90%);
 }
 
@@ -249,9 +251,6 @@ html {
 	border-width: 1px;
 	border-style: solid;*/
   text-align: center; /* for centering buttonStrip */
-}
-
-.buttonStrip {
   display: inline-block;
 }
 
@@ -336,9 +335,8 @@ button:hover {
 }
 
 .landingContent {
-  font-family: 'Lato';
-  font-weight: 200;
-  font-size: 2.5vh;
+  font-family: var(--text-font);
+  font-size: 2.25vh;
   color: var(--panel-stroke);
   float:left;
   margin-left: 20vw;
@@ -405,7 +403,7 @@ button:hover {
   float: left;
   margin-top: 1vh;
   margin-bottom: 1vh;
-  width: 25vw;
+  width: 28vw;
   margin-right: 5vw;
   min-height: 40vh;
 }
@@ -428,6 +426,7 @@ button:hover {
   font-size: 2vh;
   margin-top: 1vh;
   margin-bottom: 2vh;
+  font-family: var(--text-font);
 }
 
 .pubLink, .pubLink:active, .pubLink:focus {
@@ -448,10 +447,10 @@ button:hover {
 }
 
 .collabBlurb {
-  font-family: 'Lato';
+  font-family: var(--text-font);
   font-weight: 200;
   color: var(--panel-stroke);
-  font-size: 2.5vh;
+  font-size: 2vh;
   float: left;
   max-width: 42vw;
   margin-top: 1vh;

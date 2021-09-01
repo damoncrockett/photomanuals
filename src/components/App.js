@@ -95,7 +95,7 @@ class App extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-  
+
   }
 
   handleOrderBy(e) {
@@ -139,8 +139,7 @@ class App extends Component {
 
   handleFilterModal(e) {
 
-    const label = e.target.innerText.split(":")[0];
-    console.log(label);
+    const label = e.target.innerText;
 
     if ( label === 'filter_alt' ) {
       this.setState(state => ({
@@ -158,7 +157,7 @@ class App extends Component {
     let filterLists = this.state.filterLists;
 
     return e => {
-      const label = e.target.innerText.split(":")[0];
+      const label = e.target.innerText;
 
       filterLists[cat] = [...filterLists[cat],label];
 
@@ -175,7 +174,7 @@ class App extends Component {
     let filterLists = this.state.filterLists;
 
     return e => {
-      const label = e.target.innerText.split(":")[0];
+      const label = e.target.innerText;
 
       filterLists[cat] = filterLists[cat].filter(d => d!==label)
 
@@ -263,242 +262,95 @@ class App extends Component {
     const filterLists = this.state.filterLists;
 
     if (this.props.AppSwitch===true) {
-      if ( this.state.filterModal === true ) {
-        return (
-          <div className='app'>
-            <div className='field'>
-              <Tabletop
-                data={this.state.data}
-                ncol={this.state.ncol}
-                orderBy={this.state.orderBy}
-                colorBy={this.state.colorBy}
-                color={this.state.color}
-                click={this.state.click}
-                asc={this.state.asc}
-                filterLists={this.state.filterLists}
-                filterChangeSignal={this.state.filterChangeSignal}
-                nn={this.state.nn}
-                nnMode={this.state.nnMode}
-              />
-            </div>
-            <div className='infoPanel' id='infoPanel'>
-              <div className='infoKeys' id='infoKeys'></div>
-              <div className='infoVals' id='infoVals'></div>
-            </div>
-            <div className='selectPanel'>
-              <div className='buttonStrip'>
-                <select style={selectStyle} value={this.state.orderBy} onChange={this.handleOrderBy} title='sort'>
-                  <option value='KM'>KM</option>
-                  <option value='title'>title</option>
-                  <option value='author'>author</option>
-                  <option value='year'>year</option>
-                  <option value='specattr'>printmaker</option>
-                  <option value='specneg'>negativemaker</option>
-                  <option value='sprocess'>process</option>
-                  <option value='collection'>collection</option>
-                  <option value='hue'>hue</option>
-                  <option value='saturation'>saturation</option>
-                  <option value='brightness'>brightness</option>
-                  <option value='cluster'>cluster</option>
-                </select>
-              </div>
-              <div className='buttonStrip'>
-                <select style={selectStyle} value={this.state.colorBy} onChange={this.handleColorBy} title='highlight category'>
-                  <option value='title_c'>title</option>
-                  <option value='author_c'>author</option>
-                  <option value='decade_c'>decade</option>
-                  <option value='specattr_c'>printmaker</option>
-                  <option value='specneg_c'>negativemaker</option>
-                  <option value='collection_c'>collection</option>
-                  <option value='sprocess_c'>process</option>
-                  <option value='cluster_c'>cluster</option>
-                </select>
-              </div>
-              <div className='buttonStrip'>
-                 <button title='highlight' className="material-icons md-light small" onClick={this.handleColor} style={colorStyle}>highlight</button>
-                 <button title='click mode' className="material-icons md-light small" onClick={this.handleClick} style={clickStyle}>highlight_alt</button>
-                 <button title='filter' className="material-icons md-light small" onClick={this.handleFilterModal} style={filterStyle}>filter_alt</button>
-                 <button title='remove filter' className="material-icons md-light small" onClick={this.handleFilter} style={filterModalStyle}>remove_circle</button>
-              </div>
-              <div className='buttonStrip'>
-                 <button title='zoomed out' className="material-icons md-light small" onClick={this.handle30} style={style30}>menu</button>
-                 <button title='middle zoom' className="material-icons md-light small" onClick={this.handle15} style={style15}>view_headline</button>
-                 <button title='zoomed in' className="material-icons md-light small" onClick={this.handle5} style={style5}>format_align_justify</button>
-              </div>
-              <div className='buttonStrip'>
-                 <button title='nearest neighbor mode' className="material-icons md-light small" onClick={this.handleNNmode} style={nnStyle}>other_houses</button>
-              </div>
-            </div>
-            <div className='filterPanel'>
-              <div className='filterButtonsTop'>
-                <div className='buttonStrip'>
-                   <button title='close pane' className="material-icons md-light small" onClick={this.handleFilterModal} style={filterModalStyle}>close</button>
-                   <button title='remove filter' className="material-icons md-light small" onClick={this.handleFilter} style={filterModalStyle}>remove_circle</button>
-                </div>
-              </div>
-              <div className='panelBox'>
-                <p>BOOK TITLE</p>
-                <div className='buttonStrip'>
-                   {filterOptions.filter(d => d.cat==='title').map( (d,i) => {
-                     if (!filterLists['title'].includes(d.val)) {
-                       return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:'1.5vh',borderWidth:'medium'}} onClick={this.addToFilter('title')} key={i}>{d.val}</button>
-                     } else {
-                       return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:'1.5vh',borderColor:'magenta',borderWidth:'medium'}} onClick={this.rmFromFilter('title')} key={i}>{d.val}</button>
-                     }
-                   }
-                 )}
-                </div>
-              </div>
-              <div className='panelBox'>
-                <p>BOOK AUTHOR</p>
-                <div className='buttonStrip'>
-                   {filterOptions.filter(d => d.cat==='author').map( (d,i) => {
-                     if (!filterLists['author'].includes(d.val)) {
-                       return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:'1.5vh',borderWidth:'medium'}} onClick={this.addToFilter('author')} key={i}>{d.val}</button>
-                     } else {
-                       return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:'1.5vh',borderColor:'magenta',borderWidth:'medium'}} onClick={this.rmFromFilter('author')} key={i}>{d.val}</button>
-                     }
-                   }
-                 )}
-                </div>
-              </div>
-              <div className='panelBox'>
-                <p>YEAR</p>
-                <div className='buttonStrip'>
-                   {filterOptions.filter(d => d.cat==='year').map( (d,i) => {
-                     if (!filterLists['year'].includes(d.val)) {
-                       return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:'1.5vh',borderWidth:'medium'}} onClick={this.addToFilter('year')} key={i}>{d.val}</button>
-                     } else {
-                       return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:'1.5vh',borderColor:'magenta',borderWidth:'medium'}} onClick={this.rmFromFilter('year')} key={i}>{d.val}</button>
-                     }
-                   }
-                 )}
-                </div>
-              </div>
-              <div className='panelBox'>
-                <p>PRINT MAKER</p>
-                <div className='buttonStrip'>
-                   {filterOptions.filter(d => d.cat==='specattr').map( (d,i) => {
-                     if (!filterLists['specattr'].includes(d.val)) {
-                       return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:'1.5vh',borderWidth:'medium'}} onClick={this.addToFilter('specattr')} key={i}>{d.val}</button>
-                     } else {
-                       return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:'1.5vh',borderColor:'magenta',borderWidth:'medium'}} onClick={this.rmFromFilter('specattr')} key={i}>{d.val}</button>
-                     }
-                   }
-                 )}
-                </div>
-              </div>
-              <div className='panelBox'>
-                <p>NEGATIVE MAKER</p>
-                <div className='buttonStrip'>
-                   {filterOptions.filter(d => d.cat==='specneg').map( (d,i) => {
-                     if (!filterLists['specneg'].includes(d.val)) {
-                       return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:'1.5vh',borderWidth:'medium'}} onClick={this.addToFilter('specneg')} key={i}>{d.val}</button>
-                     } else {
-                       return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:'1.5vh',borderColor:'magenta',borderWidth:'medium'}} onClick={this.rmFromFilter('specneg')} key={i}>{d.val}</button>
-                     }
-                   }
-                 )}
-                </div>
-              </div>
-              <div className='panelBox'>
-                <p>PHOTO PROCESS</p>
-                <div className='buttonStrip'>
-                   {filterOptions.filter(d => d.cat==='sprocess').map( (d,i) => {
-                     if (!filterLists['sprocess'].includes(d.val)) {
-                       return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:'1.5vh',borderWidth:'medium'}} onClick={this.addToFilter('sprocess')} key={i}>{d.val}</button>
-                     } else {
-                       return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:'1.5vh',borderColor:'magenta',borderWidth:'medium'}} onClick={this.rmFromFilter('sprocess')} key={i}>{d.val}</button>
-                     }
-                   }
-                 )}
-                </div>
-              </div>
-              <div className='panelBox'>
-                <p>COLLECTION</p>
-                <div className='buttonStrip'>
-                   {filterOptions.filter(d => d.cat==='collection').map( (d,i) => {
-                     if (!filterLists['collection'].includes(d.val)) {
-                       return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:'1.5vh',borderWidth:'medium'}} onClick={this.addToFilter('collection')} key={i}>{d.val}</button>
-                     } else {
-                       return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:'1.5vh',borderColor:'magenta',borderWidth:'medium'}} onClick={this.rmFromFilter('collection')} key={i}>{d.val}</button>
-                     }
-                   }
-                 )}
-                </div>
-              </div>
-            </div>
+      return (
+        <div className='app'>
+          <div className='field'>
+            <Tabletop
+              data={this.state.data}
+              ncol={this.state.ncol}
+              orderBy={this.state.orderBy}
+              colorBy={this.state.colorBy}
+              color={this.state.color}
+              click={this.state.click}
+              asc={this.state.asc}
+              filterLists={this.state.filterLists}
+              filterChangeSignal={this.state.filterChangeSignal}
+              nn={this.state.nn}
+              nnMode={this.state.nnMode}
+            />
           </div>
-        );
-      } else {
-        return (
-          <div className='app'>
-            <div className='field'>
-              <Tabletop
-                data={this.state.data}
-                ncol={this.state.ncol}
-                orderBy={this.state.orderBy}
-                colorBy={this.state.colorBy}
-                color={this.state.color}
-                click={this.state.click}
-                asc={this.state.asc}
-                filterLists={this.state.filterLists}
-                filterChangeSignal={this.state.filterChangeSignal}
-                nn={this.state.nn}
-                nnMode={this.state.nnMode}
-              />
-            </div>
-            <div className='infoPanel' id='infoPanel'>
-              <div className='infoKeys' id='infoKeys'></div>
-              <div className='infoVals' id='infoVals'></div>
-            </div>
-            <div className='selectPanel'>
-              <div className='buttonStrip'>
-                <select style={selectStyle} value={this.state.orderBy} onChange={this.handleOrderBy} title='sort'>
-                  <option value='KM'>KM</option>
-                  <option value='title'>title</option>
-                  <option value='author'>author</option>
-                  <option value='year'>year</option>
-                  <option value='specattr'>printmaker</option>
-                  <option value='specneg'>negativemaker</option>
-                  <option value='sprocess'>process</option>
-                  <option value='collection'>collection</option>
-                  <option value='hue'>hue</option>
-                  <option value='saturation'>saturation</option>
-                  <option value='brightness'>brightness</option>
-                  <option value='cluster'>cluster</option>
-                </select>
-              </div>
-              <div className='buttonStrip'>
-                <select style={selectStyle} value={this.state.colorBy} onChange={this.handleColorBy} title='highlight category'>
-                  <option value='title_c'>title</option>
-                  <option value='author_c'>author</option>
-                  <option value='decade_c'>decade</option>
-                  <option value='specattr_c'>printmaker</option>
-                  <option value='specneg_c'>negativemaker</option>
-                  <option value='collection_c'>collection</option>
-                  <option value='sprocess_c'>process</option>
-                  <option value='cluster_c'>cluster</option>
-                </select>
-              </div>
-              <div className='buttonStrip'>
-                 <button title='highlight' className="material-icons md-light small" onClick={this.handleColor} style={colorStyle}>highlight</button>
-                 <button title='click mode' className="material-icons md-light small" onClick={this.handleClick} style={clickStyle}>highlight_alt</button>
-                 <button title='filter' className="material-icons md-light small" onClick={this.handleFilterModal} style={filterStyle}>filter_alt</button>
-                 <button title='remove filter' className="material-icons md-light small" onClick={this.handleFilter} style={filterModalStyle}>remove_circle</button>
-              </div>
-              <div className='buttonStrip'>
-                <button title='zoomed out' className="material-icons md-light small" onClick={this.handle30} style={style30}>menu</button>
-                <button title='middle zoom' className="material-icons md-light small" onClick={this.handle15} style={style15}>view_headline</button>
-                <button title='zoomed in' className="material-icons md-light small" onClick={this.handle5} style={style5}>format_align_justify</button>
-              </div>
-              <div className='buttonStrip'>
-                 <button title='nearest neighbor mode' className="material-icons md-light small" onClick={this.handleNNmode} style={nnStyle}>other_houses</button>
-              </div>
-            </div>
+          <div className='infoPanel' id='infoPanel'>
+            <div className='infoKeys' id='infoKeys'></div>
+            <div className='infoVals' id='infoVals'></div>
           </div>
-        );
-      }
+          <div className='selectPanel'>
+            <select style={selectStyle} value={this.state.orderBy} onChange={this.handleOrderBy} title='sort'>
+              <option value='KM'>KM</option>
+              <option value='title'>title</option>
+              <option value='author'>author</option>
+              <option value='year'>year</option>
+              <option value='specattr'>printmaker</option>
+              <option value='specneg'>negativemaker</option>
+              <option value='sprocess'>process</option>
+              <option value='collection'>collection</option>
+              <option value='cluster'>cluster</option>
+            </select>
+            <select style={selectStyle} value={this.state.colorBy} onChange={this.handleColorBy} title='highlight category'>
+              <option value='title_c'>title</option>
+              <option value='author_c'>author</option>
+              <option value='decade_c'>decade</option>
+              <option value='specattr_c'>printmaker</option>
+              <option value='specneg_c'>negativemaker</option>
+              <option value='collection_c'>collection</option>
+              <option value='sprocess_c'>process</option>
+              <option value='cluster_c'>cluster</option>
+            </select>
+            <button title='highlight' className="material-icons md-light small" onClick={this.handleColor} style={colorStyle}>highlight</button>
+            <button title='click mode' className="material-icons md-light small" onClick={this.handleClick} style={clickStyle}>highlight_alt</button>
+            <button title='filter' className="material-icons md-light small" onClick={this.handleFilterModal} style={filterStyle}>filter_alt</button>
+            <button title='remove filter' className="material-icons md-light small" onClick={this.handleFilter} style={filterModalStyle}>remove_circle</button>
+            <button title='zoomed out' className="material-icons md-light small" onClick={this.handle30} style={style30}>menu</button>
+            <button title='middle zoom' className="material-icons md-light small" onClick={this.handle15} style={style15}>view_headline</button>
+            <button title='zoomed in' className="material-icons md-light small" onClick={this.handle5} style={style5}>format_align_justify</button>
+            <button title='nearest neighbor mode' className="material-icons md-light small" onClick={this.handleNNmode} style={nnStyle}>other_houses</button>
+          </div>
+          {[0].map(() => { // hack
+            if (this.state.filterModal===true) {
+              return <div className='filterPanel'>
+                <div className='filterButtonsTop'>
+                  <div className='buttonStrip'>
+                     <button title='close pane' className="material-icons md-light small" onClick={this.handleFilterModal} style={filterModalStyle}>close</button>
+                     <button title='remove filter' className="material-icons md-light small" onClick={this.handleFilter} style={filterModalStyle}>remove_circle</button>
+                  </div>
+                </div>
+                {[{'userLabel':'BOOK TITLE','machineLabel':'title'},
+                  {'userLabel':'BOOK AUTHOR','machineLabel':'author'},
+                  {'userLabel':'YEAR','machineLabel':'year'},
+                  {'userLabel':'PRINT MAKER','machineLabel':'specattr'},
+                  {'userLabel':'NEGATIVE MAKER','machineLabel':'specneg'},
+                  {'userLabel':'PHOTO PROCESS','machineLabel':'sprocess'}].map( (b,j) => {
+                    return <div className='panelBox'>
+                      <p>{b.userLabel}</p>
+                      <div className='buttonStrip'>
+                         {filterOptions.filter(d => d.cat===b.machineLabel).map( (d,i) => {
+                           if (!filterLists[b.machineLabel].includes(d.val)) {
+                             return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:'1.5vh',borderWidth:'medium'}} onClick={this.addToFilter(b.machineLabel)} key={i}>{d.val}</button>
+                           } else {
+                             return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:'1.5vh',borderColor:'magenta',borderWidth:'medium'}} onClick={this.rmFromFilter(b.machineLabel)} key={i}>{d.val}</button>
+                           }
+                         }
+                       )}
+                      </div>
+                    </div>
+                  }
+                  )}
+              </div>
+            } else {
+              return null
+            }
+          })}
+        </div>
+      );
     } else {
       return null
     }

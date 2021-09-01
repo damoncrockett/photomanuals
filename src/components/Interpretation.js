@@ -105,7 +105,7 @@ class Interpretation extends Component {
                 <span>Adrienne Lundgren, Library of Congress</span>
               </div>
               <div className='pubBlurb'>
-                <span>From tintype plates to silver gelatin papers, 19th-century photographs were produced using manufactured supports and materials. These products are rarely identified and thus the history of this industry and the connection to their material output remains unexplored. Within the Library of Congress' vast holdings of photographic technology manuals, original 19th-century samples of identified photographic papers and products survive. Senior Photographic Conservator Adrienne Lundgren discusses how a pilot project to catalogue these samples revealed hidden trends in the early development of photography.</span>
+                <span>From tintype plates to silver gelatin papers, 19th-century photographs were produced using manufactured supports and materials. Within the Library of Congress' vast holdings of photographic technology manuals, original 19th-century samples of identified photographic papers and products survive and when examined reveal hidden trends in the early development of photography.</span>
               </div>
               <div className='pubLink'>
                 <a className='pubLink' target='_blank' href='https://www.loc.gov/item/webcast-8348'>
@@ -122,7 +122,7 @@ class Interpretation extends Component {
                 <span>Ronel Namde, The J. Paul Getty Museum and Joan M. Walker, National Gallery of Art</span>
               </div>
               <div className='pubBlurb'>
-                <span>This article discusses the history of the use of platinum salts in the production of silver print papers.  This additive imparted increased permanency as well as an aesthetic shift allowing these relatively inexpensive papers to emulate more expensive platinum papers of the time.  Platinum toning could be employed in concert with virtually any silver-based process but in the United States was most often used on matte collodion printing-out papers.  This article features an “Aristo-Platino” sample from the Library of Congress dataset to illustrate this point.</span>
+                <span>The use of platinum salts in the production of silver print papers imparted increased permanency as well as an aesthetic shift which allowed these relatively inexpensive papers to emulate more expensive platinum papers of the time.  This article features an “Aristo-Platino” sample from the Library of Congress dataset to illustrate this point.</span>
               </div>
               <div className='pubLink'>
                 <a className='pubLink' target='_blank' href='https://www.culturalheritage.org/publications/books-periodicals/shop/platinum-and-palladium-photographs'>
