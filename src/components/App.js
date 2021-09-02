@@ -14,7 +14,7 @@ class App extends Component {
       col5: false,
       ncol: 30,
       orderBy: 'KM',
-      colorBy: 'title_c',
+      colorBy: 'hasphoto_c',
       color: false,
       click: false,
       asc: 'asc',
@@ -26,10 +26,37 @@ class App extends Component {
         'author': [],
         'year': [],
         'specattr': [],
+        'specattrloc': [],
         'specneg': [],
+        'specnegloc': [],
+        'specop': [],
         'sprocess': [],
-        'collection': []
+        'photomech': [],
+        'hasphoto': [],
+        'paperman': [],
+        'paperbran': [],
+        'paperloc': [],
+        'negman': [],
+        'negbran': [],
+        'negloc': [],
+        'lensman': [],
+        'lensbran': [],
+        'lensloc': [],
+        'mountman': [],
+        'mountloc': [],
+        'coatman': [],
+        'coatloc': [],
+        'accman': [],
+        'accloc': [],
+        'subj': [],
+        'negman_k': [],
+        'mountman_k': [],
+        'lensman_k': [],
+        'accman_k': [],
+        'coatman_k': [],
+        'paperman_k': []
       },
+      filterExpandList: [],
       filterOptions: [],
       nn: null,
       nnMode: false
@@ -46,6 +73,7 @@ class App extends Component {
     this.handleFilter = this.handleFilter.bind(this);
     this.handleFilterModal = this.handleFilterModal.bind(this);
     this.addToFilter = this.addToFilter.bind(this);
+    this.handleFilterExpandList = this.handleFilterExpandList.bind(this);
     this.rmFromFilter = this.rmFromFilter.bind(this);
     this.handle30 = this.handle30.bind(this);
     this.handle15 = this.handle15.bind(this);
@@ -126,13 +154,41 @@ class App extends Component {
 
     this.setState(state => ({
       filter: false,
-      filterLists: {'title': [],
-      'author': [],
-      'year': [],
-      'specattr': [],
-      'specneg': [],
-      'sprocess': [],
-      'collection': []},
+      filterLists: {
+        'title': [],
+        'author': [],
+        'year': [],
+        'specattr': [],
+        'specattrloc': [],
+        'specneg': [],
+        'specnegloc': [],
+        'specop': [],
+        'sprocess': [],
+        'photomech': [],
+        'hasphoto': [],
+        'paperman': [],
+        'paperbran': [],
+        'paperloc': [],
+        'negman': [],
+        'negbran': [],
+        'negloc': [],
+        'lensman': [],
+        'lensbran': [],
+        'lensloc': [],
+        'mountman': [],
+        'mountloc': [],
+        'coatman': [],
+        'coatloc': [],
+        'accman': [],
+        'accloc': [],
+        'subj': [],
+        'negman_k': [],
+        'mountman_k': [],
+        'lensman_k': [],
+        'accman_k': [],
+        'coatman_k': [],
+        'paperman_k': []
+      },
       filterChangeSignal: !this.state.filterChangeSignal
     }));
   }
@@ -148,6 +204,24 @@ class App extends Component {
     } else if ( label === 'close' ) {
       this.setState(state => ({
         filterModal: false
+      }));
+    }
+  }
+
+  handleFilterExpandList(cat) {
+
+    let filterExpandList = this.state.filterExpandList;
+
+    return e => {
+
+      if (filterExpandList.includes(cat)) {
+        filterExpandList = filterExpandList.filter(d => d!==cat);
+      } else {
+        filterExpandList = [...filterExpandList,cat];
+      }
+
+      this.setState(state => ({
+        filterExpandList: filterExpandList
       }));
     }
   }
@@ -179,13 +253,41 @@ class App extends Component {
       filterLists[cat] = filterLists[cat].filter(d => d!==label)
 
       // if the filterLists are all empty
-      if ( isEqual(filterLists,{'title': [],
-      'author': [],
-      'year': [],
-      'specattr': [],
-      'specneg': [],
-      'sprocess': [],
-      'collection': []}) ) {
+      if ( isEqual(filterLists,{
+        'title': [],
+        'author': [],
+        'year': [],
+        'specattr': [],
+        'specattrloc': [],
+        'specneg': [],
+        'specnegloc': [],
+        'specop': [],
+        'sprocess': [],
+        'photomech': [],
+        'hasphoto': [],
+        'paperman': [],
+        'paperbran': [],
+        'paperloc': [],
+        'negman': [],
+        'negbran': [],
+        'negloc': [],
+        'lensman': [],
+        'lensbran': [],
+        'lensloc': [],
+        'mountman': [],
+        'mountloc': [],
+        'coatman': [],
+        'coatloc': [],
+        'accman': [],
+        'accloc': [],
+        'subj': [],
+        'negman_k': [],
+        'mountman_k': [],
+        'lensman_k': [],
+        'accman_k': [],
+        'coatman_k': [],
+        'paperman_k': []
+      }) ) {
         this.setState({filter:false})
       }
 
@@ -286,24 +388,76 @@ class App extends Component {
           <div className='selectPanel'>
             <select style={selectStyle} value={this.state.orderBy} onChange={this.handleOrderBy} title='sort'>
               <option value='KM'>KM</option>
+              <option value='hasphoto'>has photo</option>
+              <option value='photomech'>photomechanical</option>
+              <option value='negman_k'>has negative manuf. info</option>
+              <option value='mountman_k'>has mount manuf. info</option>
+              <option value='lensman_k'>has lens manuf. info</option>
+              <option value='accman_k'>has accessory manuf. info</option>
+              <option value='coatman_k'>has coating manuf. info</option>
+              <option value='paperman_k'>has paper manuf. info</option>
               <option value='title'>title</option>
               <option value='author'>author</option>
               <option value='year'>year</option>
               <option value='specattr'>printmaker</option>
+              <option value='specattrloc'>printmaker location</option>
               <option value='specneg'>negativemaker</option>
-              <option value='sprocess'>process</option>
-              <option value='collection'>collection</option>
+              <option value='specnegloc'>negativemaker location</option>
+              <option value='specop'>operator</option>
+              <option value='sprocess'>photo process</option>
+              <option value='paperman'>paper manufacturer</option>
+              <option value='paperbran'>paper brand</option>
+              <option value='paperloc'>paper manuf. location</option>
+              <option value='negman'>negative manufacturer</option>
+              <option value='negbran'>negative brand</option>
+              <option value='negloc'>negative manuf. location</option>
+              <option value='lensman'>lens manufacturer</option>
+              <option value='lensbran'>lens brand</option>
+              <option value='lensloc'>lens manuf. location</option>
+              <option value='mountman'>mount manufacturer</option>
+              <option value='mountloc'>mount manuf. location</option>
+              <option value='coatman'>coating manufacturer</option>
+              <option value='coatloc'>coating manuf. location</option>
+              <option value='accman'>accessory manufacturer</option>
+              <option value='accloc'>accessory manuf. location</option>
+              <option value='subj'>photo subject</option>
               <option value='cluster'>cluster</option>
             </select>
             <select style={selectStyle} value={this.state.colorBy} onChange={this.handleColorBy} title='highlight category'>
+              <option value='hasphoto_c'>has photo</option>
+              <option value='photomech_c'>photomechanical</option>
+              <option value='negman_k_c'>has negative manuf. info</option>
+              <option value='mountman_k_c'>has mount manuf. info</option>
+              <option value='lensman_k_c'>has lens manuf. info</option>
+              <option value='accman_k_c'>has accessory manuf. info</option>
+              <option value='coatman_k_c'>has coating manuf. info</option>
+              <option value='paperman_k_c'>has paper manuf. info</option>
               <option value='title_c'>title</option>
               <option value='author_c'>author</option>
               <option value='decade_c'>decade</option>
               <option value='specattr_c'>printmaker</option>
+              <option value='specattrloc_c'>printmaker location</option>
               <option value='specneg_c'>negativemaker</option>
-              <option value='collection_c'>collection</option>
-              <option value='sprocess_c'>process</option>
-              <option value='cluster_c'>cluster</option>
+              <option value='specnegloc_c'>negativemaker location</option>
+              <option value='specop_c'>operator</option>
+              <option value='sprocess_c'>photo process</option>
+              <option value='paperman_c'>paper manufacturer</option>
+              <option value='paperbran_c'>paper brand</option>
+              <option value='paperloc_c'>paper manuf. location</option>
+              <option value='negman_c'>negative manufacturer</option>
+              <option value='negbran_c'>negative brand</option>
+              <option value='negloc_c'>negative manuf. location</option>
+              <option value='lensman_c'>lens manufacturer</option>
+              <option value='lensbran_c'>lens brand</option>
+              <option value='lensloc_c'>lens manuf. location</option>
+              <option value='mountman_c'>mount manufacturer</option>
+              <option value='mountloc_c'>mount manuf. location</option>
+              <option value='coatman_c'>coating manufacturer</option>
+              <option value='coatloc_c'>coating manuf. location</option>
+              <option value='accman_c'>accessory manufacturer</option>
+              <option value='accloc_c'>accessory manuf. location</option>
+              <option value='subj_c'>photo subject</option>
+              <option value='cluster_c'>visual cluster</option>
             </select>
             <button title='highlight' className="material-icons md-light small" onClick={this.handleColor} style={colorStyle}>highlight</button>
             <button title='click mode' className="material-icons md-light small" onClick={this.handleClick} style={clickStyle}>highlight_alt</button>
@@ -323,24 +477,59 @@ class App extends Component {
                      <button title='remove filter' className="material-icons md-light small" onClick={this.handleFilter} style={filterModalStyle}>remove_circle</button>
                   </div>
                 </div>
-                {[{'userLabel':'BOOK TITLE','machineLabel':'title'},
+                {[
+                  {'userLabel':'HAS PHOTO','machineLabel':'hasphoto'},
+                  {'userLabel':'PHOTOMECHANICAL','machineLabel':'photomech'},
+                  {'userLabel':'HAS NEGATIVE MANUF. INFO','machineLabel':'negman_k'},
+                  {'userLabel':'HAS MOUNT MANUF. INFO','machineLabel':'mountman_k'},
+                  {'userLabel':'HAS LENS MANUF. INFO','machineLabel':'lensman_k'},
+                  {'userLabel':'HAS ACCESSORY MANUF. INFO','machineLabel':'accman_k'},
+                  {'userLabel':'HAS COATING MANUF. INFO','machineLabel':'coatman_k'},
+                  {'userLabel':'HAS PAPER MANUF. INFO','machineLabel':'paperman_k'},
+                  {'userLabel':'BOOK TITLE','machineLabel':'title'},
                   {'userLabel':'BOOK AUTHOR','machineLabel':'author'},
                   {'userLabel':'YEAR','machineLabel':'year'},
                   {'userLabel':'PRINT MAKER','machineLabel':'specattr'},
+                  {'userLabel':'PRINT MAKER LOCATION','machineLabel':'specattrloc'},
                   {'userLabel':'NEGATIVE MAKER','machineLabel':'specneg'},
-                  {'userLabel':'PHOTO PROCESS','machineLabel':'sprocess'}].map( (b,j) => {
+                  {'userLabel':'NEGATIVE MAKER LOCATION','machineLabel':'specnegloc'},
+                  {'userLabel':'OPERATOR','machineLabel':'specop'},
+                  {'userLabel':'PHOTO PROCESS','machineLabel':'sprocess'},
+                  {'userLabel':'PAPER MANUFACTURER','machineLabel':'paperman'},
+                  {'userLabel':'PAPER BRAND','machineLabel':'paperbran'},
+                  {'userLabel':'PAPER MANUF. LOCATION','machineLabel':'paperloc'},
+                  {'userLabel':'NEGATIVE MANUFACTURER','machineLabel':'negman'},
+                  {'userLabel':'NEGATIVE BRAND','machineLabel':'negbran'},
+                  {'userLabel':'NEGATIVE MANUF. LOCATION','machineLabel':'negloc'},
+                  {'userLabel':'LENS MANUFACTURER','machineLabel':'lensman'},
+                  {'userLabel':'LENS BRAND','machineLabel':'lensbran'},
+                  {'userLabel':'LENS MANUF. LOCATION','machineLabel':'lensloc'},
+                  {'userLabel':'MOUNT MANUFACTURER','machineLabel':'mountman'},
+                  {'userLabel':'MOUNT MANUF. LOCATION','machineLabel':'mountloc'},
+                  {'userLabel':'COATING MANUFACTURER','machineLabel':'coatman'},
+                  {'userLabel':'COATING MANUF. LOCATION','machineLabel':'coatloc'},
+                  {'userLabel':'ACCESSORY MANUFACTURER','machineLabel':'accman'},
+                  {'userLabel':'ACCESSORY MANUF. LOCATION','machineLabel':'accloc'},
+                  {'userLabel':'PHOTO SUBJECT','machineLabel':'subj'},
+                ].map( (b,j) => {
                     return <div className='panelBox'>
-                      <p>{b.userLabel}</p>
-                      <div className='buttonStrip'>
-                         {filterOptions.filter(d => d.cat===b.machineLabel).map( (d,i) => {
-                           if (!filterLists[b.machineLabel].includes(d.val)) {
-                             return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:'1.5vh',borderWidth:'medium'}} onClick={this.addToFilter(b.machineLabel)} key={i}>{d.val}</button>
-                           } else {
-                             return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:'1.5vh',borderColor:'magenta',borderWidth:'medium'}} onClick={this.rmFromFilter(b.machineLabel)} key={i}>{d.val}</button>
-                           }
-                         }
-                       )}
-                      </div>
+                      <button onClick={this.handleFilterExpandList(b.machineLabel)} >{b.userLabel}</button>
+                      {[0].map(() => {
+                        if (this.state.filterExpandList.includes(b.machineLabel)) {
+                          return <div className='buttonStrip'>
+                             {filterOptions.filter(d => d.cat===b.machineLabel).map( (d,i) => {
+                               if (!filterLists[b.machineLabel].includes(d.val)) {
+                                 return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:'1.5vh',borderWidth:'medium'}} onClick={this.addToFilter(b.machineLabel)} key={i}>{d.val}</button>
+                               } else {
+                                 return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:'1.5vh',borderColor:'magenta',borderWidth:'medium'}} onClick={this.rmFromFilter(b.machineLabel)} key={i}>{d.val}</button>
+                               }
+                             }
+                           )}
+                          </div>
+                        } else {
+                          return null
+                        }
+                      })}
                     </div>
                   }
                   )}

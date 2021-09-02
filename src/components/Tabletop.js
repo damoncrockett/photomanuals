@@ -142,8 +142,7 @@ class Tabletop extends Component {
       'year',
       'printmaker',
       'negative maker',
-      'photo process',
-      'collection'
+      'photo process'
     ];
 
     select('#infoKeys')
@@ -403,8 +402,7 @@ class Tabletop extends Component {
         'year',
         'specattr',
         'specneg',
-        'sprocess',
-        'collection'
+        'sprocess'
       ];
 
       select('#infoVals')
@@ -518,8 +516,7 @@ class Tabletop extends Component {
         'year',
         'specattr',
         'specneg',
-        'sprocess',
-        'collection'
+        'sprocess'
       ];
 
       select('#infoVals')
