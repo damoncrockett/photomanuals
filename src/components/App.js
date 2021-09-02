@@ -84,8 +84,8 @@ class App extends Component {
   }
 
   getData() {
-    fetch('http://localhost:8888/_data.json')
-    //fetch('_data.json')
+    //fetch('http://localhost:8888/_data.json')
+    fetch('_data.json')
       .then(response => response.json())
       .then(data => this.setState({
         data: data
