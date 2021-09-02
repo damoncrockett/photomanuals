@@ -45,6 +45,10 @@ module.exports = {
           { loader: "css-loader" },
         ]
       },
+      {
+        test: /\.jpg/,
+        type: 'asset/inline'
+      }
     ]
   },
   plugins: [
