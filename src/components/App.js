@@ -74,6 +74,8 @@ class App extends Component {
     this.handleFilterModal = this.handleFilterModal.bind(this);
     this.addToFilter = this.addToFilter.bind(this);
     this.handleFilterExpandList = this.handleFilterExpandList.bind(this);
+    this.handleExpand = this.handleExpand.bind(this);
+    this.handleCollapse = this.handleCollapse.bind(this);
     this.rmFromFilter = this.rmFromFilter.bind(this);
     this.handle30 = this.handle30.bind(this);
     this.handle15 = this.handle15.bind(this);
@@ -82,8 +84,8 @@ class App extends Component {
   }
 
   getData() {
-    //fetch('http://localhost:8888/_data.json')
-    fetch('_data.json')
+    fetch('http://localhost:8888/_data.json')
+    //fetch('_data.json')
       .then(response => response.json())
       .then(data => this.setState({
         data: data
@@ -224,6 +226,18 @@ class App extends Component {
         filterExpandList: filterExpandList
       }));
     }
+  }
+
+  handleExpand() {
+    this.setState(state => ({
+      filterExpandList: Object.keys(this.state.filterLists)
+    }));
+  }
+
+  handleCollapse() {
+    this.setState(state => ({
+      filterExpandList: []
+    }));
   }
 
   addToFilter(cat) {
@@ -475,6 +489,8 @@ class App extends Component {
                   <div className='buttonStrip'>
                      <button title='close pane' className="material-icons md-light small" onClick={this.handleFilterModal} style={filterModalStyle}>close</button>
                      <button title='remove filter' className="material-icons md-light small" onClick={this.handleFilter} style={filterModalStyle}>remove_circle</button>
+                     <button title='expand all' className="material-icons md-light small" onClick={this.handleExpand} style={filterModalStyle}>expand</button>
+                     <button title='collapse all' className="material-icons md-light small" onClick={this.handleCollapse} style={filterModalStyle}>unfold_less</button>
                   </div>
                 </div>
                 {[
@@ -513,7 +529,13 @@ class App extends Component {
                   {'userLabel':'PHOTO SUBJECT','machineLabel':'subj'},
                 ].map( (b,j) => {
                     return <div className='panelBox'>
-                      <button onClick={this.handleFilterExpandList(b.machineLabel)} >{b.userLabel}</button>
+                      {[0].map(()=>{
+                        if (filterLists[b.machineLabel].length===0) {
+                          return <button style={{margin:'1vw',borderRadius:'1vh',borderWidth:'medium'}} onClick={this.handleFilterExpandList(b.machineLabel)} >{b.userLabel}</button>
+                        } else {
+                          return <button style={{margin:'1vw',borderRadius:'1vh',borderWidth:'medium',borderColor:'magenta'}} onClick={this.handleFilterExpandList(b.machineLabel)} >{b.userLabel}</button>
+                        }
+                      })}
                       {[0].map(() => {
                         if (this.state.filterExpandList.includes(b.machineLabel)) {
                           return <div className='buttonStrip'>

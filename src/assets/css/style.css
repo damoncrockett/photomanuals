@@ -176,17 +176,17 @@ html {
   background-color: rgba(255, 255, 255, 0.9);
   position: fixed;
   height: 100%;
-  width: 45%;
+  width: 50%;
   overflow: auto;
   top: 0;
-  left: 55vw;
+  left: 50vw;
   z-index: 10;
 }
 
 .filterButtonsTop {
   position: fixed;
   top: 0.5vh;
-  left: 52vw;
+  left: 47vw;
   max-width: 1vw;
 }
 
@@ -255,7 +255,13 @@ html {
 }
 
 .panelBox {
-  margin: 0.5vh;
+  margin-top: 2vh;
+  margin-bottom: 2vh;
+  margin-left: 1vw;
+  margin-right: 1vw;
+  border-radius: 1vh;
+  background-color: rgba(191,191,191,0.25);
+  padding: 1vw;
 }
 
 button, button:focus, button:active {
