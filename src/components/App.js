@@ -82,8 +82,8 @@ class App extends Component {
   }
 
   getData() {
-    fetch('http://localhost:8888/_data.json')
-    //fetch('_data.json')
+    //fetch('http://localhost:8888/_data.json')
+    fetch('_data.json')
       .then(response => response.json())
       .then(data => this.setState({
         data: data
@@ -91,8 +91,8 @@ class App extends Component {
     }
 
   getFilter() {
-    fetch('http://localhost:8888/_filter.json')
-    //fetch('_filter.json')
+    //fetch('http://localhost:8888/_filter.json')
+    fetch('_filter.json')
       .then(response => response.json())
       .then(data => this.setState({
         filterOptions: data
@@ -100,8 +100,8 @@ class App extends Component {
     }
 
   getNN() {
-    fetch('http://localhost:8888/_nn.json')
-    //fetch('_nn.json')
+    //fetch('http://localhost:8888/_nn.json')
+    fetch('_nn.json')
       .then(response => response.json())
       .then(data => this.setState({
         nn: data
