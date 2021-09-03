@@ -22,6 +22,7 @@ class App extends Component {
       colorBy: 'decade_c',
       color: false,
       click: false,
+      infoCollapse: true,
       asc: 'asc',
       filter: false,
       filterModal: false,
@@ -84,6 +85,7 @@ class App extends Component {
     this.handleColorBy = this.handleColorBy.bind(this);
     this.handleColor = this.handleColor.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.handleInfoCollapse = this.handleInfoCollapse.bind(this);
     this.handleFilter = this.handleFilter.bind(this);
     this.handleFilterModal = this.handleFilterModal.bind(this);
     this.addToFilter = this.addToFilter.bind(this);
@@ -141,7 +143,7 @@ class App extends Component {
     const n = this.state.data.length;
     let x = 0;
 
-    if (this.state.filterModal===false) {
+    if (this.state.filterModal===false & this.state.infoCollapse===true) {
       x = Math.sqrt( n * aspectRatio );
     } else {
       x = Math.sqrt( n );
@@ -161,6 +163,10 @@ class App extends Component {
     }
 
     if (prevState.filterModal !== this.state.filterModal) {
+      this.setCol();
+    }
+
+    if (prevState.infoCollapse !== this.state.infoCollapse) {
       this.setCol();
     }
   }
@@ -186,6 +192,21 @@ class App extends Component {
       this.setState({ click: true, nnMode: false });
     } else if ( this.state.click === true ) {
       this.setState({ click: false });
+    }
+  }
+
+  handleInfoCollapse(e) {
+
+    const label = e.target.innerText;
+
+    if ( label === 'expand_more' ) {
+      this.setState(state => ({
+        infoCollapse: true
+      }));
+    } else if ( label === 'expand_less' ) {
+      this.setState(state => ({
+        infoCollapse: false
+      }));
     }
   }
 
@@ -393,6 +414,11 @@ class App extends Component {
       color: this.state.click ? bkgd : stroke
     };
 
+    const infoCollapseStyle = {
+      backgroundColor: '#bd5319',
+      color: stroke
+    };
+
     const filterModalStyle = {
       backgroundColor: this.state.filterModal ? stroke : bkgd,
       color: this.state.filterModal ? bkgd : stroke
@@ -436,6 +462,7 @@ class App extends Component {
               colorBy={this.state.colorBy}
               color={this.state.color}
               click={this.state.click}
+              infoCollapse={this.state.infoCollapse}
               asc={this.state.asc}
               filterLists={this.state.filterLists}
               filterChangeSignal={this.state.filterChangeSignal}
@@ -444,9 +471,20 @@ class App extends Component {
               nnMode={this.state.nnMode}
             />
           </div>
-          <div className='infoPanel' id='infoPanel'>
-            <div className='infoKeys' id='infoKeys'></div>
-            <div className='infoVals' id='infoVals'></div>
+          <div className={this.state.infoCollapse? 'infoPanelCollapsed' : 'infoPanel'} id='infoPanel'>
+            {[0].map(()=>{
+              if ( this.state.infoCollapse===true ) {
+                return <div className='infoButton'><button title='expand info panel' className="material-icons md-light small" onClick={this.handleInfoCollapse} style={infoCollapseStyle}>expand_less</button></div>
+              } else {
+                return <div className='infoButton'><button title='collapse info panel' className="material-icons md-light small" onClick={this.handleInfoCollapse} style={infoCollapseStyle}>expand_more</button></div>
+              }
+            })}
+            <div className={this.state.infoCollapse? 'imgBoxCollapsed' : 'imgBox'} id='imgBox'>
+            </div>
+            <div className={this.state.infoCollapse? 'infoBoxCollapsed' : 'infoBox'} id='infoBox'>
+              <div className='infoKeys' id='infoKeys'></div>
+              <div className='infoVals' id='infoVals'></div>
+            </div>
           </div>
           <div className='selectPanel'>
             <select style={selectStyle} value={this.state.orderBy} onChange={this.handleOrderBy} title='sort'>

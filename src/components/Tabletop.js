@@ -37,6 +37,7 @@ class Tabletop extends Component {
 
     this.setSize = this.setSize.bind(this);
     this.drawSVG = this.drawSVG.bind(this);
+    this.drawInfoKeys = this.drawInfoKeys.bind(this);
     this.drawTabletop = this.drawTabletop.bind(this);
     this.sortTabletop = this.sortTabletop.bind(this);
     this.handleMouseover = this.handleMouseover.bind(this);
@@ -49,15 +50,18 @@ class Tabletop extends Component {
   // needed bc does not mount on site load like it used to
   componentDidMount() {
     this.setSize();
+    this.drawInfoKeys();
   }
 
   componentDidUpdate(prevProps, prevState) {
     // conditional prevents infinite loop
     if (prevProps.data === null && prevProps.data !== this.props.data) {
       this.setSize();
+      this.drawInfoKeys();
     }
 
     if (prevProps.orderBy !== this.props.orderBy) {
+      this.drawInfoKeys();
       this.sortTabletop();
     }
 
@@ -80,6 +84,11 @@ class Tabletop extends Component {
     if (prevProps.filterChangeSignal !== this.props.filterChangeSignal) {
       this.drawTabletop();
     }
+
+    if (prevProps.infoCollapse !== this.props.infoCollapse) {
+      this.drawInfoKeys();
+      this.setSize();
+    }
   }
 
   returnDomain() {
@@ -93,7 +102,7 @@ class Tabletop extends Component {
 
     let plotW = 0;
 
-    if (this.props.filterModal===false) {
+    if (this.props.filterModal===false & this.props.infoCollapse===true) {
       plotW = innerW;
     } else {
       plotW = innerW / 2;
@@ -126,6 +135,90 @@ class Tabletop extends Component {
       .attr('class', 'plotCanvas') // purely semantic
       .attr('transform', `translate(${margin.left},${margin.top})`);
 
+  }
+
+  drawInfoKeys() {
+
+    select('#infoVals')
+      .selectAll('p')
+      .remove()
+
+    select('#infoPanel')
+      .selectAll('img')
+      .remove()
+
+    select('#infoKeys')
+      .selectAll('p')
+      .remove()
+
+    if ( this.props.infoCollapse===true ) {
+
+      const keys = [this.props.orderBy];
+
+      select('#infoKeys')
+        .selectAll('p')
+        .data(keys)
+        .enter()
+        .append('p')
+        .text(d => d)
+        .style('color', 'hsl(0, 0%, 90%)')
+        .style('background-color', '#bd5319')
+        .style('text-align', 'right')
+        .style('border-radius', '0.5vh')
+        .style('width','max-content')
+        .style('padding', '0.35vh')
+        .style('font-size', '1.25vh')
+        .style('margin', '0.25vh')
+        .style('float','right')
+
+    } else {
+
+      const keys = [
+        'book title',
+        'book author',
+        'year',
+        'print maker',
+        'print maker location',
+        'negative maker',
+        'negative maker location',
+        'operator',
+        'photo process',
+        'photomechanical',
+        'has photo',
+        'paper manufacturer',
+        'paper brand',
+        'paper manuf. location',
+        'negative manufacturer',
+        'negative brand',
+        'negative manuf. location',
+        'lens manufacturer',
+        'lens brand',
+        'lens manufacturer location',
+        'mount manufacturer',
+        'mount manuf. location',
+        'coating manufacturer',
+        'coating manuf. location',
+        'accessory manufacturer',
+        'accessory manuf. location',
+        'photographic subject'
+      ];
+
+      select('#infoKeys')
+        .selectAll('p')
+        .data(keys)
+        .enter()
+        .append('p')
+        .text(d => d)
+        .style('color', 'hsl(0, 0%, 90%)')
+        .style('background-color', '#bd5319')
+        .style('text-align', 'right')
+        .style('border-radius', '0.5vh')
+        .style('width','max-content')
+        .style('padding', '0.35vh')
+        .style('font-size', '1.25vh')
+        .style('margin', '0.25vh')
+        .style('float','right')
+    }
   }
 
   drawTabletop() {
@@ -333,9 +426,6 @@ class Tabletop extends Component {
   handleMouseover(e, d) {
 
     const squareSide = this.state.squareSide;
-    //const svgH = this.state.svgH;
-
-    //const svgPanel = this.svgPanel.current;
 
     select('#t' + d.KM + '_spec')
       .attr('width', squareSide * 1.25 )
@@ -349,13 +439,83 @@ class Tabletop extends Component {
       .attr('width', squareSide * 1.25 )
       .attr('height', squareSide * 1.25 )
 
+    if ( this.props.click === false ) {
+
+      if ( this.props.infoCollapse===true ) {
+
+        const keys = [this.props.orderBy];
+
+        select('#infoVals')
+          .selectAll('p')
+          .data(keys)
+          .enter()
+          .append('p')
+          .text(datum => d[datum])
+          .style('color', 'hsl(0,0%,90%)')
+          .style('text-align', 'left')
+          .style('width','max-content')
+          .style('padding', '0.35vh')
+          .style('font-size', '1.25vh')
+          .style('margin', '0.25vh')
+          .style('float','left')
+
+      } else {
+
+        select('#imgBox')
+          .append('img')
+          .attr('src', this.returnDomain() + d.fullspecpath)
+
+        const keys = [
+          'title',
+          'author',
+          'year',
+          'specattr',
+          'specattrloc',
+          'specneg',
+          'specnegloc',
+          'specop',
+          'sprocess',
+          'photomech',
+          'hasphoto',
+          'paperman',
+          'paperbran',
+          'paperloc',
+          'negman',
+          'negbran',
+          'negloc',
+          'lensman',
+          'lensbran',
+          'lensloc',
+          'mountman',
+          'mountloc',
+          'coatman',
+          'coatloc',
+          'accman',
+          'accloc',
+          'subj'
+          ];
+
+        select('#infoVals')
+          .selectAll('p')
+          .data(keys)
+          .enter()
+          .append('p')
+          .text(datum => d[datum])
+          .style('color', 'hsl(0,0%,90%)')
+          .style('text-align', 'left')
+          .style('width','max-content')
+          .style('padding', '0.35vh')
+          .style('font-size', '1.25vh')
+          .style('margin', '0.25vh')
+          .style('float','left')
+      }
+    }
   }
 
   handleMouseout(e, d) {
 
-    const squareSide = this.state.squareSide;
     const svgNode = this.svgNode.current;
-    //const svgPanel = this.svgPanel.current;
+    const squareSide = this.state.squareSide;
 
     select('#t' + d.KM + '_spec')
       .attr('width', squareSide )
@@ -369,15 +529,133 @@ class Tabletop extends Component {
       .attr('width', squareSide * 1.125 )
       .attr('height', squareSide * 1.125 )
 
+    if ( this.props.click === false ) {
+
+      select(svgNode)
+        .select('g.plotCanvas')
+        .selectAll('rect.target').remove()
+
+      select('#infoVals')
+        .selectAll('p')
+        .remove()
+
+      select('#infoPanel')
+        .selectAll('img')
+        .remove()
+    }
   }
 
   handleClick(e, d) {
 
-    if (this.props.click === false && this.props.nnMode === true ) {
+    const squareSide = this.state.squareSide;
+    const svgNode = this.svgNode.current;
 
-        const squareSide = this.state.squareSide;
+    if ( this.props.click === true ) {
+
+      this.setState({ clickId: d.KM });
+
+      // remove stuff
+      select(svgNode)
+        .select('g.plotCanvas')
+        .selectAll('rect.target').remove()
+
+      select('#infoVals')
+        .selectAll('p')
+        .remove()
+
+      select('#infoPanel')
+        .selectAll('img')
+        .remove()
+
+      // add stuff
+      select(svgNode)
+        .select('g.plotCanvas')
+        .selectAll('rect.target')
+        .data([0])
+        .enter()
+        .append('rect')
+        .attr('class', 'target')
+        .attr('id', 'target')
+        .attr('width', squareSide )
+        .attr('height', squareSide )
+        .attr('x', select('#t' + d.KM + '_spec').attr('x'))
+        .attr('y', select('#t' + d.KM + '_spec').attr('y'))
+        .attr('stroke', 'magenta')
+        .attr('stroke-width', 4)
+        .attr('fill', 'none')
+
+      if ( this.props.infoCollapse===true ) {
+
+        const keys = [this.props.orderBy];
+
+        select('#infoVals')
+          .selectAll('p')
+          .data(keys)
+          .enter()
+          .append('p')
+          .text(datum => d[datum])
+          .style('color', 'hsl(0,0%,90%)')
+          .style('text-align', 'left')
+          .style('width','max-content')
+          .style('padding', '0.35vh')
+          .style('font-size', '1.25vh')
+          .style('margin', '0.25vh')
+          .style('float','left')
+
+      } else {
+
+        select('#imgBox')
+          .append('img')
+          .attr('src', this.returnDomain() + d.fullspecpath)
+
+        const keys = [
+          'title',
+          'author',
+          'year',
+          'specattr',
+          'specattrloc',
+          'specneg',
+          'specnegloc',
+          'specop',
+          'sprocess',
+          'photomech',
+          'hasphoto',
+          'paperman',
+          'paperbran',
+          'paperloc',
+          'negman',
+          'negbran',
+          'negloc',
+          'lensman',
+          'lensbran',
+          'lensloc',
+          'mountman',
+          'mountloc',
+          'coatman',
+          'coatloc',
+          'accman',
+          'accloc',
+          'subj'
+          ];
+
+        select('#infoVals')
+          .selectAll('p')
+          .data(keys)
+          .enter()
+          .append('p')
+          .text(datum => d[datum])
+          .style('color', 'hsl(0,0%,90%)')
+          .style('text-align', 'left')
+          .style('width','max-content')
+          .style('padding', '0.35vh')
+          .style('font-size', '1.25vh')
+          .style('margin', '0.25vh')
+          .style('float','left')
+      }
+
+    } else if (this.props.click === false && this.props.nnMode === true ) {
+
         const transitionSettings = transition().duration(1000);
-        const svgNode = this.svgNode.current;
 
         // create grid coords
         const n = this.props.data.length;

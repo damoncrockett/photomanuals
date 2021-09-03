@@ -117,6 +117,16 @@ body::-webkit-scrollbar { /* WebKit */
     height: 0;
 }
 
+.infoPanel::-webkit-scrollbar { /* WebKit */
+    width: 0;
+    height: 0;
+}
+
+.filterPanel::-webkit-scrollbar { /* WebKit */
+    width: 0;
+    height: 0;
+}
+
 g {
   font-family: var(--font);
   fill: var(--panel-stroke);
@@ -138,15 +148,10 @@ html {
   top: 0;
   left: 0;
   width: 100%;
-  /*background-color: rgba(0, 0, 255, 0.25);*/
   background-color: var(--panel-background-light);
   z-index: 9;
   padding: 0vh;
-  /*
-  -moz-box-shadow:    inset 0 -5px 5px -5px var(--panel-stroke);
-  -webkit-box-shadow: inset 0 -5px 5px -5px var(--panel-stroke);
-  box-shadow:    inset 0 -5px 5px -5px var(--panel-stroke);
-  */
+
 }
 
 .title, .title:active, .title:focus {
@@ -173,83 +178,120 @@ html {
 }
 
 .filterPanel {
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(34, 34, 34, 0.9);
   position: fixed;
   height: 100%;
-  width: 50%;
+  width: 45vw;
   overflow: auto;
   top: 0;
-  left: 50vw;
+  left: 55vw;
   z-index: 10;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE */
 }
 
 .filterButtonsTop {
   position: fixed;
   top: 0.5vh;
-  left: 47vw;
+  left: 52vw;
   max-width: 1vw;
 }
 
 .fieldPlot {
 	float: left;
   margin-top: 9vh;
-  /*background-color: rgba(0, 255, 255, 0.25)*/
 }
 
-.fieldPanel {
+.infoButton {
   position: fixed;
-  top: 14vh;
-  left: 55vw;
-  margin-left: 0.5vh;
-  margin-bottom: 0.5vh;
-  background-color: var(--panel-background);
-  /*background-color: rgba(0, 255, 0, 0.25);*/
-  /*border-color: var(--border);
-	border-width: 1px;
-	border-style: solid;*/
+  bottom: 1.5vh;
+  left: 52vw;
+  max-width: 1vw;
 }
 
 .infoPanel {
+  background-color: rgba(34, 34, 34, 0.9);
   position: fixed;
-  top: 80vh;
-  left: 60vw;
-  margin-left: 0.5vh;
-  background-color: var(--panel-background);
-  max-height: 1vh;
-  /*background-color: rgba(255, 0, 0, 0.25);*/
-  /*border-color: var(--border);
-	border-width: 1px;
-	border-style: solid;*/
+  height: 100vh;
+  width: 45vw;
+  overflow: auto;
+  top: 0;
+  left: 55vw;
+  z-index: 9;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE */
+}
+
+.infoPanelCollapsed {
+  background-color: rgba(34, 34, 34, 0.9);
+  position: fixed;
+  height: 4vh;
+  width: 40vw;
+  overflow: auto;
+  bottom: 1.5vh;
+  left: 55vw;
+  z-index: 9;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE */
+  border-radius: 2vh;
+  border-color: var(--panel-stroke);
+  border-width: 0.25vh;
+  border-style: solid;
+}
+
+.imgBox {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 50vh;
+  width: 45vw;
+  text-align: center;
+  background-color: rgba(34, 34, 34, 0.9);
+}
+
+.imgBoxCollapsed {
+  height: 0;
+  width: 0;
+}
+
+.imgBox img {
+  height: 100%;
+}
+
+.infoBox {
+  position: absolute;
+  top: 50vh;
+  left: 0;
+  margin-left: 10vw;
+  margin-top: 2vh;
+}
+
+.infoBoxCollapsed {
+  position: absolute;
+  top: 20%;
+  left: 0;
+  margin-left: 10vw;
 }
 
 .infoKeys {
-  float:left;
+  float: left;
   max-width: 1vw;
 }
 
 .infoVals {
   float: left;
-  max-width: 1vw;
+  max-width: 1vw;;
 }
 
 .selectPanel {
-  /*position: fixed;
-  top: 77vh;
-  left: 84vw;
-  max-width: 20vh;*/
 
   position: fixed;
   bottom: 1vh;
   left: 0vw;
   max-width: 55vw;
-
   margin-top: 0.5vh;
   margin-left: 3vh;
 	background-color: var(--panel-background-alpha);
-  /*background-color: rgba(255, 255, 0, 0.25);*/
-	/*border-color: var(--border);
-	border-width: 1px;
-	border-style: solid;*/
   text-align: center; /* for centering buttonStrip */
   display: inline-block;
 }
@@ -260,7 +302,7 @@ html {
   margin-left: 1vw;
   margin-right: 1vw;
   border-radius: 1vh;
-  background-color: rgba(191,191,191,0.25);
+  background-color: rgba(191,191,191,0.2);
   padding: 1vw;
 }
 
