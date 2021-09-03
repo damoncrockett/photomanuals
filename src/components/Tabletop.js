@@ -5,17 +5,10 @@ import { gridCoords } from '../lib/plottools';
 import { orderBy } from 'lodash';
 import { intersection } from 'lodash';
 
-const screenH = window.innerHeight * window.devicePixelRatio;
-const screenW = window.innerWidth * window.devicePixelRatio;
-console.log(screenW);
-console.log(screenH);
-const marginInt = Math.round( screenH / 45 );
+const innerW = window.innerWidth;
+const innerH = window.innerHeight;
+const marginInt = 0;
 const margin = {top: marginInt, right: marginInt, bottom: marginInt, left: marginInt};
-const plotW = Math.round( screenH / 2.4 );
-const svgW = plotW + margin.left + margin.right;
-const incr = 0.02 * svgW;
-const panelSide = svgW * 0.7;
-console.log(svgW);
 
 const blankColor = 'rgba(0,0,0,0)';
 const filteredColor = 'rgba(0,27,46,0.75)'; // the background color
@@ -36,6 +29,7 @@ class Tabletop extends Component {
 
     this.state = {
       squareSide: 0,
+      svgW: 0,
       svgH: 0,
       clickId: null,
       nnData: null
@@ -43,27 +37,24 @@ class Tabletop extends Component {
 
     this.setSize = this.setSize.bind(this);
     this.drawSVG = this.drawSVG.bind(this);
-    this.drawInfoKeys = this.drawInfoKeys.bind(this);
     this.drawTabletop = this.drawTabletop.bind(this);
     this.sortTabletop = this.sortTabletop.bind(this);
     this.handleMouseover = this.handleMouseover.bind(this);
     this.handleMouseout = this.handleMouseout.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.returnDomain = this.returnDomain.bind(this);
     this.svgNode = React.createRef();
-    this.svgPanel = React.createRef();
   }
 
   // needed bc does not mount on site load like it used to
   componentDidMount() {
     this.setSize();
-    this.drawInfoKeys();
   }
 
   componentDidUpdate(prevProps, prevState) {
     // conditional prevents infinite loop
     if (prevProps.data === null && prevProps.data !== this.props.data) {
       this.setSize();
-      this.drawInfoKeys();
     }
 
     if (prevProps.orderBy !== this.props.orderBy) {
@@ -91,18 +82,32 @@ class Tabletop extends Component {
     }
   }
 
+  returnDomain() {
+    const production = process.env.NODE_ENV === 'production';
+    return production ? '' : 'http://localhost:8888/'
+  }
+
   setSize() {
     const n = this.props.data.length;
     const ncol = this.props.ncol;
-    const squareSideDivisor = ncol * 2.275;
-    const squareSide = Math.round( screenH / squareSideDivisor );
+
+    let plotW = 0;
+
+    if (this.props.filterModal===false) {
+      plotW = innerW;
+    } else {
+      plotW = innerW / 2;
+    }
+
+    const svgW = plotW + margin.left + margin.right;
+    const squareSide = Math.round( svgW / ncol );
 
     const nrow = Math.ceil( n / ncol );
     const plotH = squareSide * nrow;
     const svgH = plotH + margin.top + margin.bottom;
 
     this.setState(
-      { squareSide: squareSide, svgH: svgH },
+      { squareSide: squareSide, svgW: svgW, svgH: svgH },
       () => {
         this.drawSVG();
         this.drawTabletop();
@@ -112,7 +117,6 @@ class Tabletop extends Component {
 
   drawSVG() {
     const svgNode = this.svgNode.current;
-    const svgPanel = this.svgPanel.current;
 
     select(svgNode)
       .selectAll('g.plotCanvas')
@@ -122,44 +126,6 @@ class Tabletop extends Component {
       .attr('class', 'plotCanvas') // purely semantic
       .attr('transform', `translate(${margin.left},${margin.top})`);
 
-    select(svgPanel)
-      .selectAll('g.panelCanvas')
-      .data([0]) // bc enter selection, prevents appending new 'g' on re-render
-      .enter()
-      .append('g')
-      .attr('class', 'panelCanvas') // purely semantic
-      .attr('transform', `translate(${margin.left},${margin.top})`);
-
-    if ( this.props.ncol === 30 ) {
-      window.scrollTo(0,document.body.scrollHeight);
-    }
-  }
-
-  drawInfoKeys() {
-    const keys = [
-      'book title',
-      'book author',
-      'year',
-      'printmaker',
-      'negative maker',
-      'photo process'
-    ];
-
-    select('#infoKeys')
-      .selectAll('p')
-      .data(keys)
-      .enter()
-      .append('p')
-      .text(d => d)
-      .style('color', 'rgb(0,27,46)')
-      .style('background-color', 'rgba(255,255,255,0.9)')
-      .style('text-align', 'right')
-      .style('border-radius', '0.5vh')
-      .style('width','max-content')
-      .style('padding', '0.35vh')
-      .style('font-size', '1.25vh')
-      .style('margin', '0.25vh')
-      .style('float','right')
   }
 
   drawTabletop() {
@@ -176,8 +142,7 @@ class Tabletop extends Component {
       .enter()
       .append('image')
       .attr('id', d => 't' + d.KM + '_spec')
-      //.attr('xlink:href', d => "http://localhost:8888/" + d.specpath )
-      .attr('xlink:href', d => d.specpath )
+      .attr('xlink:href', d => this.returnDomain() + d.specpath )
       .attr('width', squareSide )
       .attr('height', squareSide )
       .on('mouseover', this.handleMouseover)
@@ -368,66 +333,29 @@ class Tabletop extends Component {
   handleMouseover(e, d) {
 
     const squareSide = this.state.squareSide;
-    const svgH = this.state.svgH;
+    //const svgH = this.state.svgH;
 
-    const svgPanel = this.svgPanel.current;
+    //const svgPanel = this.svgPanel.current;
 
     select('#t' + d.KM + '_spec')
-      .attr('width', squareSide * 1.125 )
-      .attr('height', squareSide * 1.125 )
+      .attr('width', squareSide * 1.25 )
+      .attr('height', squareSide * 1.25 )
 
     select('#t' + d.KM + '_highlight')
-      .attr('width', squareSide * 1.125 )
-      .attr('height', squareSide * 1.125 )
+      .attr('width', squareSide * 1.25 )
+      .attr('height', squareSide * 1.25 )
 
     select('#t' + d.KM + '_filter')
-      .attr('width', squareSide * 1.125 )
-      .attr('height', squareSide * 1.125 )
+      .attr('width', squareSide * 1.25 )
+      .attr('height', squareSide * 1.25 )
 
-    if ( this.props.click === false ) {
-
-      select(svgPanel)
-        .select('g.panelCanvas')
-        .append('image')
-        .attr('xlink:href', d.fullspecpath)
-        //.attr('xlink:href', "http://localhost:8888/" + d.fullspecpath)
-        .attr('width', panelSide )
-        .attr('height', panelSide )
-        .attr('x', -marginInt )
-        .attr('y', -marginInt )
-
-      const keys = [
-        'title',
-        'author',
-        'year',
-        'specattr',
-        'specneg',
-        'sprocess'
-      ];
-
-      select('#infoVals')
-        .selectAll('p')
-        .data(keys)
-        .enter()
-        .append('p')
-        .text(datum => d[datum])
-        .style('color', 'rgba(255,255,255,0.9)')
-        .style('text-align', 'left')
-        .style('width','max-content')
-        .style('padding', '0.35vh')
-        .style('font-size', '1.25vh')
-        .style('margin', '0.25vh')
-        .style('float','left')
-
-
-    }
   }
 
   handleMouseout(e, d) {
 
     const squareSide = this.state.squareSide;
     const svgNode = this.svgNode.current;
-    const svgPanel = this.svgPanel.current;
+    //const svgPanel = this.svgPanel.current;
 
     select('#t' + d.KM + '_spec')
       .attr('width', squareSide )
@@ -441,99 +369,11 @@ class Tabletop extends Component {
       .attr('width', squareSide * 1.125 )
       .attr('height', squareSide * 1.125 )
 
-    if ( this.props.click === false ) {
-
-      select(svgNode)
-        .select('g.plotCanvas')
-        .selectAll('rect.target').remove()
-
-      select(svgPanel)
-        .select('g.panelCanvas')
-        .selectAll('image').remove()
-
-      select('#infoVals')
-        .selectAll('p')
-        .remove()
-
-
-    }
   }
 
   handleClick(e, d) {
 
-    if ( this.props.click === true ) {
-
-      this.setState({ clickId: d.KM });
-
-      const svgPanel = this.svgPanel.current;
-      const svgNode = this.svgNode.current;
-      const squareSide = this.state.squareSide;
-
-      select(svgNode)
-        .select('g.plotCanvas')
-        .selectAll('rect.target').remove()
-
-      select(svgPanel)
-        .select('g.panelCanvas')
-        .selectAll('image').remove()
-
-      select('#infoVals')
-        .selectAll('p')
-        .remove()
-
-      select(svgNode)
-        .select('g.plotCanvas')
-        .selectAll('rect.target')
-        .data([0])
-        .enter()
-        .append('rect')
-        .attr('class', 'target')
-        .attr('id', 'target')
-        .attr('width', squareSide )
-        .attr('height', squareSide )
-        .attr('x', select('#t' + d.KM + '_spec').attr('x'))
-        .attr('y', select('#t' + d.KM + '_spec').attr('y'))
-        .attr('stroke', 'magenta')
-        .attr('stroke-width', 4)
-        .attr('fill', 'none')
-
-      select(svgPanel)
-        .select('g.panelCanvas')
-        .append('image')
-        .attr('xlink:href', d.fullspecpath)
-        //.attr('xlink:href', "http://localhost:8888/" + d.fullspecpath)
-        .attr('width', panelSide )
-        .attr('height', panelSide )
-        .attr('x', -marginInt )
-        .attr('y', -marginInt )
-        //.on('click', () => window.open("http://localhost:8888/" + d.tabspecpath, '_blank') )
-        .on('click', () => window.open(d.tabspecpath, '_blank') )
-
-
-      const keys = [
-        'title',
-        'author',
-        'year',
-        'specattr',
-        'specneg',
-        'sprocess'
-      ];
-
-      select('#infoVals')
-        .selectAll('p')
-        .data(keys)
-        .enter()
-        .append('p')
-        .text(datum => d[datum])
-        .style('color', 'rgba(255,255,255,0.9)')
-        .style('text-align', 'left')
-        .style('width','max-content')
-        .style('padding', '0.35vh')
-        .style('font-size', '1.25vh')
-        .style('margin', '0.25vh')
-        .style('float','left')
-
-      } else if (this.props.click === false && this.props.nnMode === true ) {
+    if (this.props.click === false && this.props.nnMode === true ) {
 
         const squareSide = this.state.squareSide;
         const transitionSettings = transition().duration(1000);
@@ -610,6 +450,7 @@ class Tabletop extends Component {
 
   render() {
 
+    const svgW = this.state.svgW;
     const svgH = this.state.svgH;
 
     return (
@@ -619,13 +460,6 @@ class Tabletop extends Component {
           ref={this.svgNode}
           width={svgW}
           height={svgH}
-          />
-        </div>
-        <div className='fieldPanel'>
-          <svg
-          ref={this.svgPanel}
-          width={panelSide}
-          height={panelSide}
           />
         </div>
       </div>

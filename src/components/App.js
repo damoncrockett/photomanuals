@@ -3,18 +3,23 @@ import Tabletop from './Tabletop';
 import { isEqual } from 'lodash';
 import { orderBy } from 'lodash';
 
+const innerW = window.innerWidth;
+const innerH = window.innerHeight;
+const aspectRatio = innerW / ( innerH * 0.9 ); // bc nav bar
+
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = { // global state
       data: null,
-      col30: true,
-      col15: false,
-      col5: false,
-      ncol: 30,
-      orderBy: 'KM',
-      colorBy: 'hasphoto_c',
+      colOut: true,
+      colMed: false,
+      colIn: false,
+      ncol: 0,
+      ncolOut: 0,
+      orderBy: 'year',
+      colorBy: 'decade_c',
       color: false,
       click: false,
       asc: 'asc',
@@ -56,7 +61,16 @@ class App extends Component {
         'coatman_k': [],
         'paperman_k': []
       },
-      filterExpandList: [],
+      filterExpandList: [
+        'hasphoto',
+        'photomech',
+        'negman_k',
+        'mountman_k',
+        'lensman_k',
+        'accman_k',
+        'coatman_k',
+        'paperman_k'
+      ],
       filterOptions: [],
       nn: null,
       nnMode: false
@@ -77,15 +91,16 @@ class App extends Component {
     this.handleExpand = this.handleExpand.bind(this);
     this.handleCollapse = this.handleCollapse.bind(this);
     this.rmFromFilter = this.rmFromFilter.bind(this);
-    this.handle30 = this.handle30.bind(this);
-    this.handle15 = this.handle15.bind(this);
-    this.handle5 = this.handle5.bind(this);
+    this.handleOut = this.handleOut.bind(this);
+    this.handleMed = this.handleMed.bind(this);
+    this.handleIn = this.handleIn.bind(this);
+    this.setCol = this.setCol.bind(this);
+    this.returnDomain = this.returnDomain.bind(this);
 
   }
 
   getData() {
-    //fetch('http://localhost:8888/_data.json')
-    fetch('_data.json')
+    fetch(this.returnDomain()+'_data.json')
       .then(response => response.json())
       .then(data => this.setState({
         data: data
@@ -93,8 +108,7 @@ class App extends Component {
     }
 
   getFilter() {
-    //fetch('http://localhost:8888/_filter.json')
-    fetch('_filter.json')
+    fetch(this.returnDomain()+'_filter.json')
       .then(response => response.json())
       .then(data => this.setState({
         filterOptions: data
@@ -102,8 +116,7 @@ class App extends Component {
     }
 
   getNN() {
-    //fetch('http://localhost:8888/_nn.json')
-    fetch('_nn.json')
+    fetch(this.returnDomain()+'_nn.json')
       .then(response => response.json())
       .then(data => this.setState({
         nn: data
@@ -124,8 +137,32 @@ class App extends Component {
     this.getNN();
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  setCol() {
+    const n = this.state.data.length;
+    let x = 0;
 
+    if (this.state.filterModal===false) {
+      x = Math.sqrt( n * aspectRatio );
+    } else {
+      x = Math.sqrt( n );
+    }
+
+    const ncol = Math.round(x);
+
+    this.setState(state => ({
+      ncol: ncol,
+      ncolOut: ncol
+    }));
+  }
+
+  componentDidUpdate(prevProps,prevState) {
+    if (prevState.data === null & prevState.data !== this.state.data) {
+      this.setCol();
+    }
+
+    if (prevState.filterModal !== this.state.filterModal) {
+      this.setCol();
+    }
   }
 
   handleOrderBy(e) {
@@ -312,16 +349,27 @@ class App extends Component {
     }
   }
 
-  handle30() {
-    this.setState({ ncol: 30, col30: true, col15: false, col5: false });
+  handleOut() {
+    this.setState(state => ({
+      ncol: this.state.ncolOut, colOut: true, colMed: false, colIn: false
+    }));
   }
 
-  handle15() {
-    this.setState({ ncol: 15, col30: false, col15: true, col5: false });
+  handleMed() {
+    this.setState(state => ({
+      ncol: Math.round(this.state.ncolOut / 2 ), colOut: false, colMed: true, colIn: false
+    }));
   }
 
-  handle5() {
-    this.setState({ ncol: 5, col30: false, col15: false, col5: true });
+  handleIn() {
+    this.setState(state => ({
+      ncol: Math.round(this.state.ncolOut / 4 ), colOut: false, colMed: false, colIn: true
+    }));
+  }
+
+  returnDomain() {
+    const production = process.env.NODE_ENV === 'production';
+    return production ? '' : 'http://localhost:8888/'
   }
 
   render() {
@@ -355,19 +403,19 @@ class App extends Component {
       color: this.state.filter ? bkgd : stroke
     };
 
-    const style30 = {
-      backgroundColor: this.state.col30 ? stroke : bkgd,
-      color: this.state.col30 ? bkgd : stroke
+    const styleOut = {
+      backgroundColor: this.state.colOut ? stroke : bkgd,
+      color: this.state.colOut ? bkgd : stroke
     };
 
-    const style15 = {
-      backgroundColor: this.state.col15 ? stroke : bkgd,
-      color: this.state.col15 ? bkgd : stroke
+    const styleMed = {
+      backgroundColor: this.state.colMed ? stroke : bkgd,
+      color: this.state.colMed ? bkgd : stroke
     };
 
-    const style5 = {
-      backgroundColor: this.state.col5 ? stroke : bkgd,
-      color: this.state.col5 ? bkgd : stroke
+    const styleIn = {
+      backgroundColor: this.state.colIn ? stroke : bkgd,
+      color: this.state.colIn ? bkgd : stroke
     };
 
     const nnStyle = {
@@ -391,6 +439,7 @@ class App extends Component {
               asc={this.state.asc}
               filterLists={this.state.filterLists}
               filterChangeSignal={this.state.filterChangeSignal}
+              filterModal={this.state.filterModal}
               nn={this.state.nn}
               nnMode={this.state.nnMode}
             />
@@ -401,7 +450,7 @@ class App extends Component {
           </div>
           <div className='selectPanel'>
             <select style={selectStyle} value={this.state.orderBy} onChange={this.handleOrderBy} title='sort'>
-              <option value='KM'>KM</option>
+              <option value='year'>year</option>
               <option value='hasphoto'>has photo</option>
               <option value='photomech'>photomechanical</option>
               <option value='negman_k'>has negative manuf. info</option>
@@ -412,7 +461,6 @@ class App extends Component {
               <option value='paperman_k'>has paper manuf. info</option>
               <option value='title'>title</option>
               <option value='author'>author</option>
-              <option value='year'>year</option>
               <option value='specattr'>printmaker</option>
               <option value='specattrloc'>printmaker location</option>
               <option value='specneg'>negativemaker</option>
@@ -438,6 +486,7 @@ class App extends Component {
               <option value='cluster'>cluster</option>
             </select>
             <select style={selectStyle} value={this.state.colorBy} onChange={this.handleColorBy} title='highlight category'>
+              <option value='decade_c'>decade</option>
               <option value='hasphoto_c'>has photo</option>
               <option value='photomech_c'>photomechanical</option>
               <option value='negman_k_c'>has negative manuf. info</option>
@@ -448,7 +497,6 @@ class App extends Component {
               <option value='paperman_k_c'>has paper manuf. info</option>
               <option value='title_c'>title</option>
               <option value='author_c'>author</option>
-              <option value='decade_c'>decade</option>
               <option value='specattr_c'>printmaker</option>
               <option value='specattrloc_c'>printmaker location</option>
               <option value='specneg_c'>negativemaker</option>
@@ -477,9 +525,9 @@ class App extends Component {
             <button title='click mode' className="material-icons md-light small" onClick={this.handleClick} style={clickStyle}>highlight_alt</button>
             <button title='filter' className="material-icons md-light small" onClick={this.handleFilterModal} style={filterStyle}>filter_alt</button>
             <button title='remove filter' className="material-icons md-light small" onClick={this.handleFilter} style={filterModalStyle}>remove_circle</button>
-            <button title='zoomed out' className="material-icons md-light small" onClick={this.handle30} style={style30}>menu</button>
-            <button title='middle zoom' className="material-icons md-light small" onClick={this.handle15} style={style15}>view_headline</button>
-            <button title='zoomed in' className="material-icons md-light small" onClick={this.handle5} style={style5}>format_align_justify</button>
+            <button title='zoomed out' className="material-icons md-light small" onClick={this.handleOut} style={styleOut}>menu</button>
+            <button title='middle zoom' className="material-icons md-light small" onClick={this.handleMed} style={styleMed}>view_headline</button>
+            <button title='zoomed in' className="material-icons md-light small" onClick={this.handleIn} style={styleIn}>format_align_justify</button>
             <button title='nearest neighbor mode' className="material-icons md-light small" onClick={this.handleNNmode} style={nnStyle}>other_houses</button>
           </div>
           {[0].map(() => { // hack
