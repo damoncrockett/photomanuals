@@ -268,7 +268,7 @@ html {
 
 .infoBoxCollapsed {
   position: absolute;
-  top: 0;
+  top: 0.33vh;
   left: 0;
   margin-left: 10vw;
 }

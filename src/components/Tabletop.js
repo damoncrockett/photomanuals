@@ -227,14 +227,25 @@ class Tabletop extends Component {
 
     if ( this.props.infoCollapse===true ) {
 
+      const orderKey = this.props.orderBy;
       const colorKey = this.props.colorBy.split('_')[0];
-      let keys = [];
 
-      if (colorKey=='decade') {
-        keys = [keyTranslate[this.props.orderBy],colorKey];
+      let orderKeyTranslated = '';
+      let colorKeyTranslated = '';
+
+      if (colorKey=='decade' || colorKey=='cluster') {
+        colorKeyTranslated = colorKey;
       } else {
-        keys = [keyTranslate[this.props.orderBy],keyTranslate[colorKey]];
+        colorKeyTranslated = keyTranslate[colorKey]
       }
+
+      if (orderKey=='decade' || orderKey=='cluster') {
+        orderKeyTranslated = orderKey;
+      } else {
+        orderKeyTranslated = keyTranslate[orderKey]
+      }
+
+      const keys = [orderKeyTranslated,colorKeyTranslated];
 
       select('#infoKeys')
         .selectAll('p')
