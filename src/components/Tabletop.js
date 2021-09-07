@@ -4,6 +4,7 @@ import { transition } from 'd3-transition';
 import { gridCoords } from '../lib/plottools';
 import { orderBy } from 'lodash';
 import { intersection } from 'lodash';
+import { zipObject } from 'lodash';
 
 const innerW = window.innerWidth;
 const innerH = window.innerHeight;
@@ -22,6 +23,68 @@ const clusterColors = {
   6: 'rgba(255,0,255,0.5)', //magenta
   7: 'rgba(0,0,0,0.5)' // grey
 };
+
+const humanKeys = [
+  'book title',
+  'book author',
+  'year',
+  'print maker',
+  'print maker location',
+  'negative maker',
+  'negative maker location',
+  'operator',
+  'photo process',
+  'photomechanical',
+  'has photo',
+  'paper manufacturer',
+  'paper brand',
+  'paper manuf. location',
+  'negative manufacturer',
+  'negative brand',
+  'negative manuf. location',
+  'lens manufacturer',
+  'lens brand',
+  'lens manufacturer location',
+  'mount manufacturer',
+  'mount manuf. location',
+  'coating manufacturer',
+  'coating manuf. location',
+  'accessory manufacturer',
+  'accessory manuf. location',
+  'photographic subject'
+];
+
+const machineKeys = [
+  'title',
+  'author',
+  'year',
+  'specattr',
+  'specattrloc',
+  'specneg',
+  'specnegloc',
+  'specop',
+  'sprocess',
+  'photomech',
+  'hasphoto',
+  'paperman',
+  'paperbran',
+  'paperloc',
+  'negman',
+  'negbran',
+  'negloc',
+  'lensman',
+  'lensbran',
+  'lensloc',
+  'mountman',
+  'mountloc',
+  'coatman',
+  'coatloc',
+  'accman',
+  'accloc',
+  'subj'
+  ];
+
+const keyTranslate = zipObject(machineKeys,humanKeys);
 
 class Tabletop extends Component {
   constructor(props) {
@@ -69,7 +132,11 @@ class Tabletop extends Component {
       this.sortTabletop();
     }
 
-    if (prevProps.ncol !== this.props.ncol) {
+    if (prevProps.ncolDivisor !== this.props.ncolDivisor) {
+      this.setSize();
+    }
+
+    if (prevProps.ncolOut !== this.props.ncolOut) {
       this.setSize();
     }
 
@@ -79,6 +146,11 @@ class Tabletop extends Component {
 
     if (prevProps.colorBy !== this.props.colorBy && this.props.color === true) {
       this.drawTabletop();
+      this.drawInfoKeys();
+    }
+
+    if (prevProps.colorBy !== this.props.colorBy) {
+      this.drawInfoKeys();
     }
 
     if (prevProps.filterChangeSignal !== this.props.filterChangeSignal) {
@@ -98,7 +170,9 @@ class Tabletop extends Component {
 
   setSize() {
     const n = this.props.data.length;
-    const ncol = this.props.ncol;
+    const ncolOut = this.props.ncolOut;
+    const ncolDivisor = this.props.ncolDivisor;
+    const ncol = Math.round(ncolOut / ncolDivisor);
 
     let plotW = 0;
 
@@ -153,7 +227,14 @@ class Tabletop extends Component {
 
     if ( this.props.infoCollapse===true ) {
 
-      const keys = [this.props.orderBy];
+      const colorKey = this.props.colorBy.split('_')[0];
+      let keys = [];
+
+      if (colorKey=='decade') {
+        keys = [keyTranslate[this.props.orderBy],colorKey];
+      } else {
+        keys = [keyTranslate[this.props.orderBy],keyTranslate[colorKey]];
+      }
 
       select('#infoKeys')
         .selectAll('p')
@@ -173,39 +254,9 @@ class Tabletop extends Component {
 
     } else {
 
-      const keys = [
-        'book title',
-        'book author',
-        'year',
-        'print maker',
-        'print maker location',
-        'negative maker',
-        'negative maker location',
-        'operator',
-        'photo process',
-        'photomechanical',
-        'has photo',
-        'paper manufacturer',
-        'paper brand',
-        'paper manuf. location',
-        'negative manufacturer',
-        'negative brand',
-        'negative manuf. location',
-        'lens manufacturer',
-        'lens brand',
-        'lens manufacturer location',
-        'mount manufacturer',
-        'mount manuf. location',
-        'coating manufacturer',
-        'coating manuf. location',
-        'accessory manufacturer',
-        'accessory manuf. location',
-        'photographic subject'
-      ];
-
       select('#infoKeys')
         .selectAll('p')
-        .data(keys)
+        .data(humanKeys)
         .enter()
         .append('p')
         .text(d => d)
@@ -292,7 +343,11 @@ class Tabletop extends Component {
 
     // now the xy coords
     const n = data.length;
-    const ncol = this.props.ncol;
+
+    const ncolOut = this.props.ncolOut;
+    const ncolDivisor = this.props.ncolDivisor;
+    const ncol = Math.round(ncolOut / ncolDivisor);
+
     const coords = gridCoords(n,ncol)
     const x = coords[0];
     const y = coords[1];
@@ -369,7 +424,11 @@ class Tabletop extends Component {
 
     // create grid coords
     const n = this.props.data.length;
-    const ncol = this.props.ncol;
+
+    const ncolOut = this.props.ncolOut;
+    const ncolDivisor = this.props.ncolDivisor;
+    const ncol = Math.round(ncolOut / ncolDivisor);
+
     const coords = gridCoords(n,ncol)
     const x = coords[0];
     const y = coords[1];
@@ -443,7 +502,7 @@ class Tabletop extends Component {
 
       if ( this.props.infoCollapse===true ) {
 
-        const keys = [this.props.orderBy];
+        const keys = [this.props.orderBy,this.props.colorBy.split('_')[0]];
 
         select('#infoVals')
           .selectAll('p')
@@ -465,39 +524,9 @@ class Tabletop extends Component {
           .append('img')
           .attr('src', this.returnDomain() + d.fullspecpath)
 
-        const keys = [
-          'title',
-          'author',
-          'year',
-          'specattr',
-          'specattrloc',
-          'specneg',
-          'specnegloc',
-          'specop',
-          'sprocess',
-          'photomech',
-          'hasphoto',
-          'paperman',
-          'paperbran',
-          'paperloc',
-          'negman',
-          'negbran',
-          'negloc',
-          'lensman',
-          'lensbran',
-          'lensloc',
-          'mountman',
-          'mountloc',
-          'coatman',
-          'coatloc',
-          'accman',
-          'accloc',
-          'subj'
-          ];
-
         select('#infoVals')
           .selectAll('p')
-          .data(keys)
+          .data(machineKeys)
           .enter()
           .append('p')
           .text(datum => d[datum])
@@ -586,7 +615,7 @@ class Tabletop extends Component {
 
       if ( this.props.infoCollapse===true ) {
 
-        const keys = [this.props.orderBy];
+        const keys = [this.props.orderBy,this.props.colorBy.split('_')[0]];
 
         select('#infoVals')
           .selectAll('p')
@@ -608,39 +637,9 @@ class Tabletop extends Component {
           .append('img')
           .attr('src', this.returnDomain() + d.fullspecpath)
 
-        const keys = [
-          'title',
-          'author',
-          'year',
-          'specattr',
-          'specattrloc',
-          'specneg',
-          'specnegloc',
-          'specop',
-          'sprocess',
-          'photomech',
-          'hasphoto',
-          'paperman',
-          'paperbran',
-          'paperloc',
-          'negman',
-          'negbran',
-          'negloc',
-          'lensman',
-          'lensbran',
-          'lensloc',
-          'mountman',
-          'mountloc',
-          'coatman',
-          'coatloc',
-          'accman',
-          'accloc',
-          'subj'
-          ];
-
         select('#infoVals')
           .selectAll('p')
-          .data(keys)
+          .data(machineKeys)
           .enter()
           .append('p')
           .text(datum => d[datum])
@@ -659,7 +658,11 @@ class Tabletop extends Component {
 
         // create grid coords
         const n = this.props.data.length;
-        const ncol = this.props.ncol;
+
+        const ncolOut = this.props.ncolOut;
+        const ncolDivisor = this.props.ncolDivisor;
+        const ncol = Math.round(ncolOut / ncolDivisor);
+
         const coords = gridCoords(n,ncol)
         const x = coords[0];
         const y = coords[1];

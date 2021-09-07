@@ -225,7 +225,7 @@ html {
 .infoPanelCollapsed {
   background-color: rgba(34, 34, 34, 0.9);
   position: fixed;
-  height: 4vh;
+  height: 6vh;
   width: 40vw;
   overflow: auto;
   bottom: 1.5vh;
@@ -268,7 +268,7 @@ html {
 
 .infoBoxCollapsed {
   position: absolute;
-  top: 20%;
+  top: 0;
   left: 0;
   margin-left: 10vw;
 }

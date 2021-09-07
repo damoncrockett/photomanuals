@@ -16,7 +16,7 @@ class App extends Component {
       colOut: true,
       colMed: false,
       colIn: false,
-      ncol: 0,
+      ncolDivisor: 1,
       ncolOut: 0,
       orderBy: 'year',
       colorBy: 'decade_c',
@@ -149,11 +149,10 @@ class App extends Component {
       x = Math.sqrt( n );
     }
 
-    const ncol = Math.round(x);
+    const ncolOut = Math.round(x);
 
     this.setState(state => ({
-      ncol: ncol,
-      ncolOut: ncol
+      ncolOut: ncolOut
     }));
   }
 
@@ -372,19 +371,19 @@ class App extends Component {
 
   handleOut() {
     this.setState(state => ({
-      ncol: this.state.ncolOut, colOut: true, colMed: false, colIn: false
+      ncolDivisor: 1, colOut: true, colMed: false, colIn: false
     }));
   }
 
   handleMed() {
     this.setState(state => ({
-      ncol: Math.round(this.state.ncolOut / 2 ), colOut: false, colMed: true, colIn: false
+      ncolDivisor: 2, colOut: false, colMed: true, colIn: false
     }));
   }
 
   handleIn() {
     this.setState(state => ({
-      ncol: Math.round(this.state.ncolOut / 4 ), colOut: false, colMed: false, colIn: true
+      ncolDivisor: 4, colOut: false, colMed: false, colIn: true
     }));
   }
 
@@ -457,7 +456,8 @@ class App extends Component {
           <div className='field'>
             <Tabletop
               data={this.state.data}
-              ncol={this.state.ncol}
+              ncolDivisor={this.state.ncolDivisor}
+              ncolOut={this.state.ncolOut}
               orderBy={this.state.orderBy}
               colorBy={this.state.colorBy}
               color={this.state.color}
