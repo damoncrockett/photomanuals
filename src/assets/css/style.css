@@ -178,7 +178,7 @@ html {
 }
 
 .filterPanel {
-  background-color: rgba(34, 34, 34, 0.9);
+  background-color: rgba(34, 34, 34, 0.5);
   position: fixed;
   height: 100%;
   width: 45vw;
@@ -210,7 +210,7 @@ html {
 }
 
 .infoPanel {
-  background-color: rgba(34, 34, 34, 0.9);
+  background-color: rgba(34, 34, 34, 0.5);
   position: fixed;
   height: 100vh;
   width: 45vw;
@@ -223,7 +223,7 @@ html {
 }
 
 .infoPanelCollapsed {
-  background-color: rgba(34, 34, 34, 0.9);
+  background-color: rgba(34, 34, 34, 0.5);
   position: fixed;
   height: 6vh;
   width: 40vw;
@@ -246,7 +246,7 @@ html {
   height: 50vh;
   width: 45vw;
   text-align: center;
-  background-color: rgba(34, 34, 34, 0.9);
+  background-color: rgba(34, 34, 34, 0);
 }
 
 .imgBoxCollapsed {
@@ -284,7 +284,6 @@ html {
 }
 
 .selectPanel {
-
   position: fixed;
   bottom: 1vh;
   left: 0vw;
@@ -297,18 +296,30 @@ html {
 }
 
 .panelBox {
-  margin-top: 2vh;
-  margin-bottom: 2vh;
-  margin-left: 1vw;
-  margin-right: 1vw;
+  margin-top: 1vh;
+  margin-bottom: 1vh;
+  margin-left: 1vh;
+  margin-right: 1vh;
   border-radius: 1vh;
-  background-color: rgba(191,191,191,0.2);
-  padding: 1vw;
+  background-color: rgba(191,191,191,0.1);
+  padding: 1vh;
+  display: inline-block;
+}
+
+.panelBoxSmall {
+  margin-top: 1vh;
+  margin-bottom: 1vh;
+  margin-left: 1vh;
+  margin-right: 1vh;
+  border-radius: 1vh;
+  background-color: rgba(191,191,191,0.1);
+  padding: 1vh;
+  display: inline-block;
 }
 
 button, button:focus, button:active {
   font-family: var(--font);
-  font-size: 1.5vh;
+  font-size: 1.25vh;
   border-color: var(--panel-stroke);
   border-width: thin;
   border-style: solid;
@@ -316,6 +327,8 @@ button, button:focus, button:active {
   padding: 1vh;
   margin: 0.25vh;
   outline: none;
+  color: var(--panel-stroke);
+  background-color: var(--panel-background);
 }
 
 select, select:focus, select:active {

@@ -7,6 +7,17 @@ const innerW = window.innerWidth;
 const innerH = window.innerHeight;
 const aspectRatio = innerW / ( innerH * 0.9 ); // bc nav bar
 
+const kFilters = [
+  'negman_k',
+  'mountman_k',
+  'lensman_k',
+  'accman_k',
+  'coatman_k',
+  'paperman_k',
+  'photomech',
+  'hasphoto'
+]
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -63,14 +74,14 @@ class App extends Component {
         'paperman_k': []
       },
       filterExpandList: [
-        'hasphoto',
+        /*'hasphoto',
         'photomech',
         'negman_k',
         'mountman_k',
         'lensman_k',
         'accman_k',
         'coatman_k',
-        'paperman_k'
+        'paperman_k'*/
       ],
       filterOptions: [],
       nn: null,
@@ -471,7 +482,7 @@ class App extends Component {
               nnMode={this.state.nnMode}
             />
           </div>
-          <div className={this.state.infoCollapse? 'infoPanelCollapsed' : 'infoPanel'} id='infoPanel'>
+          <div className={this.state.infoCollapse ? 'infoPanelCollapsed' : 'infoPanel'} id='infoPanel'>
             {[0].map(()=>{
               if ( this.state.infoCollapse===true ) {
                 return <div className='infoButton'><button title='expand info panel' className="material-icons md-light small" onClick={this.handleInfoCollapse} style={infoCollapseStyle}>expand_less</button></div>
@@ -479,9 +490,9 @@ class App extends Component {
                 return <div className='infoButton'><button title='collapse info panel' className="material-icons md-light small" onClick={this.handleInfoCollapse} style={infoCollapseStyle}>expand_more</button></div>
               }
             })}
-            <div className={this.state.infoCollapse? 'imgBoxCollapsed' : 'imgBox'} id='imgBox'>
+            <div className={this.state.infoCollapse ? 'imgBoxCollapsed' : 'imgBox'} id='imgBox'>
             </div>
-            <div className={this.state.infoCollapse? 'infoBoxCollapsed' : 'infoBox'} id='infoBox'>
+            <div className={this.state.infoCollapse ? 'infoBoxCollapsed' : 'infoBox'} id='infoBox'>
               <div className='infoKeys' id='infoKeys'></div>
               <div className='infoVals' id='infoVals'></div>
             </div>
@@ -504,7 +515,7 @@ class App extends Component {
               <option value='specneg'>negativemaker</option>
               <option value='specnegloc'>negativemaker location</option>
               <option value='specop'>operator</option>
-              <option value='sprocess'>photo process</option>
+              <option value='sprocess'>process</option>
               <option value='paperman'>paper manufacturer</option>
               <option value='paperbran'>paper brand</option>
               <option value='paperloc'>paper manuf. location</option>
@@ -540,7 +551,7 @@ class App extends Component {
               <option value='specneg_c'>negativemaker</option>
               <option value='specnegloc_c'>negativemaker location</option>
               <option value='specop_c'>operator</option>
-              <option value='sprocess_c'>photo process</option>
+              <option value='sprocess_c'>process</option>
               <option value='paperman_c'>paper manufacturer</option>
               <option value='paperbran_c'>paper brand</option>
               <option value='paperloc_c'>paper manuf. location</option>
@@ -596,7 +607,7 @@ class App extends Component {
                   {'userLabel':'NEGATIVE MAKER','machineLabel':'specneg'},
                   {'userLabel':'NEGATIVE MAKER LOCATION','machineLabel':'specnegloc'},
                   {'userLabel':'OPERATOR','machineLabel':'specop'},
-                  {'userLabel':'PHOTO PROCESS','machineLabel':'sprocess'},
+                  {'userLabel':'PROCESS','machineLabel':'sprocess'},
                   {'userLabel':'PAPER MANUFACTURER','machineLabel':'paperman'},
                   {'userLabel':'PAPER BRAND','machineLabel':'paperbran'},
                   {'userLabel':'PAPER MANUF. LOCATION','machineLabel':'paperloc'},
@@ -614,12 +625,12 @@ class App extends Component {
                   {'userLabel':'ACCESSORY MANUF. LOCATION','machineLabel':'accloc'},
                   {'userLabel':'PHOTO SUBJECT','machineLabel':'subj'},
                 ].map( (b,j) => {
-                    return <div className='panelBox'>
+                    return <div className={kFilters.includes(b.machineLabel) ? 'panelBoxSmall' : 'panelBox'}>
                       {[0].map(()=>{
                         if (filterLists[b.machineLabel].length===0) {
-                          return <button style={{margin:'1vw',borderRadius:'1vh',borderWidth:'medium'}} onClick={this.handleFilterExpandList(b.machineLabel)} >{b.userLabel}</button>
+                          return <button style={{margin:'1vh',borderRadius:'1vh',borderWidth:'thin'}} onClick={this.handleFilterExpandList(b.machineLabel)} >{b.userLabel}</button>
                         } else {
-                          return <button style={{margin:'1vw',borderRadius:'1vh',borderWidth:'medium',borderColor:'magenta'}} onClick={this.handleFilterExpandList(b.machineLabel)} >{b.userLabel}</button>
+                          return <button style={{margin:'1vh',borderRadius:'1vh',borderWidth:'thin',borderColor:'magenta'}} onClick={this.handleFilterExpandList(b.machineLabel)} >{b.userLabel}</button>
                         }
                       })}
                       {[0].map(() => {
@@ -627,9 +638,9 @@ class App extends Component {
                           return <div className='buttonStrip'>
                              {filterOptions.filter(d => d.cat===b.machineLabel).map( (d,i) => {
                                if (!filterLists[b.machineLabel].includes(d.val)) {
-                                 return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:'1.5vh',borderWidth:'medium'}} onClick={this.addToFilter(b.machineLabel)} key={i}>{d.val}</button>
+                                 return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:'1.25vh',borderWidth:'thin'}} onClick={this.addToFilter(b.machineLabel)} key={i}>{d.val}</button>
                                } else {
-                                 return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:'1.5vh',borderColor:'magenta',borderWidth:'medium'}} onClick={this.rmFromFilter(b.machineLabel)} key={i}>{d.val}</button>
+                                 return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:'1.25vh',borderColor:'magenta',borderWidth:'thin'}} onClick={this.rmFromFilter(b.machineLabel)} key={i}>{d.val}</button>
                                }
                              }
                            )}

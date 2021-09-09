@@ -24,6 +24,8 @@ const clusterColors = {
   7: 'rgba(0,0,0,0.5)' // grey
 };
 
+const keyColor = '#bd5319';
+
 const humanKeys = [
   'book title',
   'book author',
@@ -33,7 +35,7 @@ const humanKeys = [
   'negative maker',
   'negative maker location',
   'operator',
-  'photo process',
+  'process',
   'photomechanical',
   'has photo',
   'paper manufacturer',
@@ -254,7 +256,7 @@ class Tabletop extends Component {
         .append('p')
         .text(d => d)
         .style('color', 'hsl(0, 0%, 90%)')
-        .style('background-color', '#bd5319')
+        .style('background-color', keyColor)
         .style('text-align', 'right')
         .style('border-radius', '0.5vh')
         .style('width','max-content')
@@ -272,7 +274,7 @@ class Tabletop extends Component {
         .append('p')
         .text(d => d)
         .style('color', 'hsl(0, 0%, 90%)')
-        .style('background-color', '#bd5319')
+        .style('background-color', keyColor)
         .style('text-align', 'right')
         .style('border-radius', '0.5vh')
         .style('width','max-content')
