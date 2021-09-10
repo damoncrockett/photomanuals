@@ -53,7 +53,13 @@ const humanKeys = [
   'coating manuf. location',
   'accessory manufacturer',
   'accessory manuf. location',
-  'photographic subject'
+  'photographic subject',
+  'has negative manuf. info',
+  'has mount manuf. info',
+  'has lens manuf. info',
+  'has accessory manuf. info',
+  'has coating manuf. info',
+  'has paper manuf. info'
 ];
 
 const machineKeys = [
@@ -83,7 +89,13 @@ const machineKeys = [
   'coatloc',
   'accman',
   'accloc',
-  'subj'
+  'subj',
+  'negman_k',
+  'mountman_k',
+  'lensman_k',
+  'accman_k',
+  'coatman_k',
+  'paperman_k'
   ];
 
 const keyTranslate = zipObject(machineKeys,humanKeys);
