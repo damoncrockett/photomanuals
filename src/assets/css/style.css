@@ -72,9 +72,9 @@
 }
 
 .nav:hover {
-  border-color: var(--panel-background-light);
-  color: hsl(0, 0%, 100%);
-  text-shadow: 0 0 0.125vh hsl(0, 0%, 90%), 0 0 0.125vh hsl(0, 0%, 90%);
+  border-color: var(--panel-background-light) !important;
+  /*color: hsl(0, 0%, 100%);
+  text-shadow: 0 0 0.125vh hsl(0, 0%, 90%), 0 0 0.125vh hsl(0, 0%, 90%);*/
 }
 
 .menu {
@@ -342,8 +342,8 @@ select, select:focus, select:active {
 }
 
 button:hover {
-  border-color: hsl(0, 0%, 50%) !important;
-  color: hsl(0, 0%, 50%);
+  border-color: hsl(0, 0%, 50%);
+  color: hsl(0, 0%, 50%) !important;
 }
 
 

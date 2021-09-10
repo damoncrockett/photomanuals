@@ -669,13 +669,13 @@ class App extends Component {
                                  if (filterIdxs.includes(d.idx)) {
                                    return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:'1.25vh',borderWidth:'thin'}} onClick={this.addToFilter(b.machineLabel)} key={i}>{d.val}</button>
                                  } else {
-                                   return <button style={{backgroundColor:'rgba(0,0,0,0)',color:'grey',fontSize:'1.25vh',borderWidth:'thin',borderColor:'rgba(0,0,0,0)'}} onClick={this.addToFilter(b.machineLabel)} key={i}>{d.val}</button>
+                                   return <button style={{backgroundColor:'rgba(0,0,0,0)',color:'hsl(0,0%,'+d.pct+'%)',fontSize:'1.25vh',borderWidth:'thin',borderColor:'hsl(0,0%,'+d.pct+'%)'}} onClick={this.addToFilter(b.machineLabel)} key={i}>{d.val}</button>
                                  }
                                } else {
                                  if (filterIdxs.includes(d.idx)) {
                                    return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:'1.25vh',borderColor:'magenta',borderWidth:'thin'}} onClick={this.rmFromFilter(b.machineLabel)} key={i}>{d.val}</button>
                                  } else {
-                                   return <button style={{backgroundColor:'rgba(0,0,0,0)',color:'grey',fontSize:'1.25vh',borderColor:'magenta',borderWidth:'thin'}} onClick={this.rmFromFilter(b.machineLabel)} key={i}>{d.val}</button>
+                                   return <button style={{backgroundColor:'rgba(0,0,0,0)',color:'hsl(0,0%,'+d.pct+'%)',fontSize:'1.25vh',borderColor:'magenta',borderWidth:'thin'}} onClick={this.rmFromFilter(b.machineLabel)} key={i}>{d.val}</button>
                                  }
                                }
                              }
