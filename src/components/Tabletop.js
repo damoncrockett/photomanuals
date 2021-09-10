@@ -3,7 +3,6 @@ import { select } from 'd3-selection';
 import { transition } from 'd3-transition';
 import { gridCoords } from '../lib/plottools';
 import { orderBy } from 'lodash';
-import { intersection } from 'lodash';
 import { zipObject } from 'lodash';
 
 const innerW = window.innerWidth;
@@ -155,7 +154,7 @@ class Tabletop extends Component {
       this.drawInfoKeys();
     }
 
-    if (prevProps.filterChangeSignal !== this.props.filterChangeSignal) {
+    if (prevProps.filterKMs !== this.props.filterKMs) {
       this.drawTabletop();
     }
 
@@ -320,24 +319,7 @@ class Tabletop extends Component {
       .on('mouseout', this.handleMouseout)
       .on('click', this.handleClick)
 
-    // we filter this.props.data for the _filter rects
-    const filterLists = this.props.filterLists;
-    let data = this.props.data; // we won't mutate it here, but later
-    let filterKMs = [];
-
-    // this is getting OR for each filter category (title, author, etc.)
-    Object.keys(filterLists).forEach((cat, i) => {
-      let catList = []; // probably not necessary to initialize as a list but whatevs
-      if ( filterLists[cat].length === 0 ) {
-        catList = data.map(d => d.KM);
-      } else {
-        catList = data.filter(d => filterLists[cat].includes(d[cat])).map(d => d.KM);
-      }
-      filterKMs = [ ...filterKMs, catList ];
-    });
-
-    // this gets AND across all categories
-    filterKMs = intersection(...filterKMs);
+    const filterKMs = this.props.filterKMs;
 
     select(svgNode)
       .select('g.plotCanvas')
@@ -355,6 +337,7 @@ class Tabletop extends Component {
       .on('click', this.handleClick)
 
     // now the xy coords
+    let data = this.props.data;
     const n = data.length;
 
     const ncolOut = this.props.ncolOut;

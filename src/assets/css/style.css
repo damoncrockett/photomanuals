@@ -342,7 +342,7 @@ select, select:focus, select:active {
 }
 
 button:hover {
-  border-color: hsl(0, 0%, 50%);
+  border-color: hsl(0, 0%, 50%) !important;
   color: hsl(0, 0%, 50%);
 }
 

@@ -2,21 +2,12 @@ import React, { Component } from 'react';
 import Tabletop from './Tabletop';
 import { isEqual } from 'lodash';
 import { orderBy } from 'lodash';
+import { intersection } from 'lodash';
+import { uniq } from 'lodash';
 
 const innerW = window.innerWidth;
 const innerH = window.innerHeight;
 const aspectRatio = innerW / ( innerH * 0.9 ); // bc nav bar
-
-const kFilters = [
-  'negman_k',
-  'mountman_k',
-  'lensman_k',
-  'accman_k',
-  'coatman_k',
-  'paperman_k',
-  'photomech',
-  'hasphoto'
-]
 
 class App extends Component {
   constructor(props) {
@@ -37,7 +28,6 @@ class App extends Component {
       asc: 'asc',
       filter: false,
       filterModal: false,
-      filterChangeSignal: false,
       filterLists: {
         'title': [],
         'author': [],
@@ -73,17 +63,11 @@ class App extends Component {
         'coatman_k': [],
         'paperman_k': []
       },
-      filterExpandList: [
-        /*'hasphoto',
-        'photomech',
-        'negman_k',
-        'mountman_k',
-        'lensman_k',
-        'accman_k',
-        'coatman_k',
-        'paperman_k'*/
-      ],
-      filterOptions: [],
+      filterExpandList: [],
+      filterOptionsFixed: [],
+      filterIdxs: [],
+      filterChangeSignal: false,
+      filterKMs: [],
       nn: null,
       nnMode: false
     };
@@ -97,7 +81,8 @@ class App extends Component {
     this.handleColor = this.handleColor.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleInfoCollapse = this.handleInfoCollapse.bind(this);
-    this.handleFilter = this.handleFilter.bind(this);
+    this.updateFilterOptions = this.updateFilterOptions.bind(this);
+    this.removeFilter = this.removeFilter.bind(this);
     this.handleFilterModal = this.handleFilterModal.bind(this);
     this.addToFilter = this.addToFilter.bind(this);
     this.handleFilterExpandList = this.handleFilterExpandList.bind(this);
@@ -124,7 +109,7 @@ class App extends Component {
     fetch(this.returnDomain()+'_filter.json')
       .then(response => response.json())
       .then(data => this.setState({
-        filterOptions: data
+        filterOptionsFixed: data
       }));
     }
 
@@ -170,6 +155,7 @@ class App extends Component {
   componentDidUpdate(prevProps,prevState) {
     if (prevState.data === null & prevState.data !== this.state.data) {
       this.setCol();
+      this.updateFilterOptions();
     }
 
     if (prevState.filterModal !== this.state.filterModal) {
@@ -178,6 +164,10 @@ class App extends Component {
 
     if (prevState.infoCollapse !== this.state.infoCollapse) {
       this.setCol();
+    }
+
+    if (prevState.filterChangeSignal !== this.state.filterChangeSignal) {
+      this.updateFilterOptions();
     }
   }
 
@@ -220,7 +210,45 @@ class App extends Component {
     }
   }
 
-  handleFilter() {
+  updateFilterOptions() {
+
+    // we filter this.props.data for the _filter rects
+    const filterLists = this.state.filterLists;
+    const data = this.state.data; // we won't mutate it here, but later
+    let filterKMs = [];
+
+    // this is getting OR for each filter category (title, author, etc.)
+    Object.keys(filterLists).forEach((cat, i) => {
+      let catList = []; // probably not necessary to initialize as a list but whatevs
+      if ( filterLists[cat].length === 0 ) {
+        catList = data.map(d => d.KM);
+      } else {
+        catList = data.filter(d => filterLists[cat].includes(d[cat])).map(d => d.KM);
+      }
+      filterKMs = [ ...filterKMs, catList ];
+    });
+
+    // this gets AND across all categories
+    filterKMs = intersection(...filterKMs);
+
+    // updating filter options
+    const filteredData = data.filter(d => filterKMs.includes(d.KM));
+    let filterOptions = this.state.filterOptionsFixed;
+    const filterCats = uniq(filterOptions.map(d => d.cat));
+
+    filterCats.forEach((item, i) => {
+      const validVals = uniq(filteredData.map(d => d[item]));
+      filterOptions = filterOptions.filter(d => d.cat!==item || ( d.cat===item && validVals.includes(d.val) ) );
+    });
+
+    this.setState(state => ({
+      filterKMs: filterKMs,
+      filterIdxs: filterOptions.map(d => d.idx)
+    }));
+
+  }
+
+  removeFilter() {
 
     this.setState(state => ({
       filter: false,
@@ -407,7 +435,9 @@ class App extends Component {
 
     const bkgd = '#001b2e';
     const stroke = 'hsl(0,0%,90%)';
-    const filterOptions = orderBy(this.state.filterOptions,'val','asc');
+    const filterOptions = orderBy(this.state.filterOptionsFixed,'val','asc');
+    const filterIdxs = this.state.filterIdxs;
+    const filterLists = this.state.filterLists;
 
     const selectStyle = {
       backgroundColor: bkgd,
@@ -459,8 +489,6 @@ class App extends Component {
       color: this.state.nnMode ? bkgd : stroke
     };
 
-    const filterLists = this.state.filterLists;
-
     if (this.props.AppSwitch===true) {
       return (
         <div className='app'>
@@ -475,7 +503,7 @@ class App extends Component {
               click={this.state.click}
               infoCollapse={this.state.infoCollapse}
               asc={this.state.asc}
-              filterLists={this.state.filterLists}
+              filterKMs={this.state.filterKMs}
               filterChangeSignal={this.state.filterChangeSignal}
               filterModal={this.state.filterModal}
               nn={this.state.nn}
@@ -573,7 +601,7 @@ class App extends Component {
             <button title='highlight' className="material-icons md-light small" onClick={this.handleColor} style={colorStyle}>highlight</button>
             <button title='click mode' className="material-icons md-light small" onClick={this.handleClick} style={clickStyle}>highlight_alt</button>
             <button title='filter' className="material-icons md-light small" onClick={this.handleFilterModal} style={filterStyle}>filter_alt</button>
-            <button title='remove filter' className="material-icons md-light small" onClick={this.handleFilter} style={filterModalStyle}>remove_circle</button>
+            <button title='remove filter' className="material-icons md-light small" onClick={this.removeFilter} style={filterModalStyle}>remove_circle</button>
             <button title='zoomed out' className="material-icons md-light small" onClick={this.handleOut} style={styleOut}>menu</button>
             <button title='middle zoom' className="material-icons md-light small" onClick={this.handleMed} style={styleMed}>view_headline</button>
             <button title='zoomed in' className="material-icons md-light small" onClick={this.handleIn} style={styleIn}>format_align_justify</button>
@@ -585,7 +613,7 @@ class App extends Component {
                 <div className='filterButtonsTop'>
                   <div className='buttonStrip'>
                      <button title='close pane' className="material-icons md-light small" onClick={this.handleFilterModal} style={filterModalStyle}>close</button>
-                     <button title='remove filter' className="material-icons md-light small" onClick={this.handleFilter} style={filterModalStyle}>remove_circle</button>
+                     <button title='remove filter' className="material-icons md-light small" onClick={this.removeFilter} style={filterModalStyle}>remove_circle</button>
                      <button title='expand all' className="material-icons md-light small" onClick={this.handleExpand} style={filterModalStyle}>expand</button>
                      <button title='collapse all' className="material-icons md-light small" onClick={this.handleCollapse} style={filterModalStyle}>unfold_less</button>
                   </div>
@@ -625,12 +653,12 @@ class App extends Component {
                   {'userLabel':'ACCESSORY MANUF. LOCATION','machineLabel':'accloc'},
                   {'userLabel':'PHOTO SUBJECT','machineLabel':'subj'},
                 ].map( (b,j) => {
-                    return <div className={kFilters.includes(b.machineLabel) ? 'panelBoxSmall' : 'panelBox'}>
+                    return <div className='panelBox'>
                       {[0].map(()=>{
                         if (filterLists[b.machineLabel].length===0) {
-                          return <button style={{margin:'1vh',borderRadius:'1vh',borderWidth:'thin'}} onClick={this.handleFilterExpandList(b.machineLabel)} >{b.userLabel}</button>
+                          return <button style={{margin:'1vh',borderRadius:'1vh',borderWidth:'thin'}} onClick={this.handleFilterExpandList(b.machineLabel)} key={j}>{b.userLabel}</button>
                         } else {
-                          return <button style={{margin:'1vh',borderRadius:'1vh',borderWidth:'thin',borderColor:'magenta'}} onClick={this.handleFilterExpandList(b.machineLabel)} >{b.userLabel}</button>
+                          return <button style={{margin:'1vh',borderRadius:'1vh',borderWidth:'thin',borderColor:'magenta'}} onClick={this.handleFilterExpandList(b.machineLabel)} key={j}>{b.userLabel}</button>
                         }
                       })}
                       {[0].map(() => {
@@ -638,9 +666,17 @@ class App extends Component {
                           return <div className='buttonStrip'>
                              {filterOptions.filter(d => d.cat===b.machineLabel).map( (d,i) => {
                                if (!filterLists[b.machineLabel].includes(d.val)) {
-                                 return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:'1.25vh',borderWidth:'thin'}} onClick={this.addToFilter(b.machineLabel)} key={i}>{d.val}</button>
+                                 if (filterIdxs.includes(d.idx)) {
+                                   return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:'1.25vh',borderWidth:'thin'}} onClick={this.addToFilter(b.machineLabel)} key={i}>{d.val}</button>
+                                 } else {
+                                   return <button style={{backgroundColor:'rgba(0,0,0,0)',color:'grey',fontSize:'1.25vh',borderWidth:'thin',borderColor:'rgba(0,0,0,0)'}} onClick={this.addToFilter(b.machineLabel)} key={i}>{d.val}</button>
+                                 }
                                } else {
-                                 return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:'1.25vh',borderColor:'magenta',borderWidth:'thin'}} onClick={this.rmFromFilter(b.machineLabel)} key={i}>{d.val}</button>
+                                 if (filterIdxs.includes(d.idx)) {
+                                   return <button style={{backgroundColor:'hsl(0,0%,'+d.pct+'%)',color:d.textcolor,fontSize:'1.25vh',borderColor:'magenta',borderWidth:'thin'}} onClick={this.rmFromFilter(b.machineLabel)} key={i}>{d.val}</button>
+                                 } else {
+                                   return <button style={{backgroundColor:'rgba(0,0,0,0)',color:'grey',fontSize:'1.25vh',borderColor:'magenta',borderWidth:'thin'}} onClick={this.rmFromFilter(b.machineLabel)} key={i}>{d.val}</button>
+                                 }
                                }
                              }
                            )}
