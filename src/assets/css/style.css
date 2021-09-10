@@ -44,6 +44,12 @@
   margin: 0.25vh;
 }
 
+.material-icons.mini {
+  font-size: 1vh;
+  padding: 0.5vh;
+  margin: 0.125vh;
+}
+
 .material-icons.medium {
   font-size: 3vh;
   margin-left: 1vw;
@@ -204,7 +210,7 @@ html {
 
 .infoButton {
   position: fixed;
-  bottom: 1.5vh;
+  bottom: 2vh;
   left: 52vw;
   max-width: 1vw;
 }
@@ -306,14 +312,15 @@ html {
   display: inline-block;
 }
 
-.panelBoxSmall {
-  margin-top: 1vh;
-  margin-bottom: 1vh;
-  margin-left: 1vh;
-  margin-right: 1vh;
-  border-radius: 1vh;
-  background-color: rgba(191,191,191,0.1);
-  padding: 1vh;
+.buttonStrip {
+
+}
+
+.topButtons {
+
+}
+
+.buttonStripClearSelect {
   display: inline-block;
 }
 

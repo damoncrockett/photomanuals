@@ -25,7 +25,7 @@ class App extends Component {
       color: false,
       click: false,
       infoCollapse: true,
-      asc: 'asc',
+      asc: true,
       filter: false,
       filterModal: false,
       filterLists: {
@@ -77,6 +77,7 @@ class App extends Component {
     this.getNN = this.getNN.bind(this);
     this.handleNNmode = this.handleNNmode.bind(this);
     this.handleOrderBy = this.handleOrderBy.bind(this);
+    this.handleAsc = this.handleAsc.bind(this);
     this.handleColorBy = this.handleColorBy.bind(this);
     this.handleColor = this.handleColor.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -174,6 +175,12 @@ class App extends Component {
   handleOrderBy(e) {
     const orderBy = e.target.value
     this.setState({ orderBy: orderBy });
+  }
+
+  handleAsc() {
+    this.setState(state => ({
+      asc: !this.state.asc
+    }));
   }
 
   handleColorBy(e) {
@@ -339,11 +346,16 @@ class App extends Component {
   addToFilter(cat) {
 
     let filterLists = this.state.filterLists;
+    const filterOptionsFixed = this.state.filterOptionsFixed;
 
     return e => {
       const label = e.target.innerText;
 
-      filterLists[cat] = [...filterLists[cat],label];
+      if (label==='done_all') {
+        filterLists[cat] = uniq(filterOptionsFixed.filter(d => d.cat===cat).map(d => d.val))
+      } else {
+        filterLists[cat] = [...filterLists[cat],label];
+      }
 
       this.setState(state => ({
         filterLists: filterLists,
@@ -360,7 +372,11 @@ class App extends Component {
     return e => {
       const label = e.target.innerText;
 
-      filterLists[cat] = filterLists[cat].filter(d => d!==label)
+      if (label==='remove_circle') {
+        filterLists[cat] = []
+      } else {
+        filterLists[cat] = filterLists[cat].filter(d => d!==label)
+      }
 
       // if the filterLists are all empty
       if ( isEqual(filterLists,{
@@ -443,6 +459,11 @@ class App extends Component {
       backgroundColor: bkgd,
       color: stroke
     };
+
+    const ascStyle = {
+      backgroundColor: this.state.asc ? stroke : bkgd,
+      color: this.state.asc ? bkgd : stroke
+    }
 
     const colorStyle = {
       backgroundColor: this.state.color ? stroke : bkgd,
@@ -562,6 +583,7 @@ class App extends Component {
               <option value='subj'>photo subject</option>
               <option value='cluster'>cluster</option>
             </select>
+            <button title='sort ascending' className="material-icons md-light small" onClick={this.handleAsc} style={ascStyle}>swap_vert</button>
             <select style={selectStyle} value={this.state.colorBy} onChange={this.handleColorBy} title='highlight category'>
               <option value='decade_c'>decade</option>
               <option value='hasphoto_c'>has photo</option>
@@ -654,13 +676,25 @@ class App extends Component {
                   {'userLabel':'PHOTO SUBJECT','machineLabel':'subj'},
                 ].map( (b,j) => {
                     return <div className='panelBox'>
-                      {[0].map(()=>{
-                        if (filterLists[b.machineLabel].length===0) {
-                          return <button style={{margin:'1vh',borderRadius:'1vh',borderWidth:'thin'}} onClick={this.handleFilterExpandList(b.machineLabel)} key={j}>{b.userLabel}</button>
-                        } else {
-                          return <button style={{margin:'1vh',borderRadius:'1vh',borderWidth:'thin',borderColor:'magenta'}} onClick={this.handleFilterExpandList(b.machineLabel)} key={j}>{b.userLabel}</button>
-                        }
-                      })}
+                      <div className='topButtons'>
+                        {[0].map(()=>{
+                          if (filterLists[b.machineLabel].length===0) {
+                            return <button style={{margin:'1vh',borderRadius:'1vh',borderWidth:'thin'}} onClick={this.handleFilterExpandList(b.machineLabel)} key={j}>{b.userLabel}</button>
+                          } else {
+                            return <button style={{margin:'1vh',borderRadius:'1vh',borderWidth:'thin',borderColor:'magenta'}} onClick={this.handleFilterExpandList(b.machineLabel)} key={j}>{b.userLabel}</button>
+                          }
+                        })}
+                        {[0].map(()=>{
+                          if (this.state.filterExpandList.includes(b.machineLabel)) {
+                            return <div className='buttonStripClearSelect'>
+                              <button title='select all' className="material-icons md-light mini" onClick={this.addToFilter(b.machineLabel)} style={selectStyle}>done_all</button>
+                              <button title='clear all' className="material-icons md-light mini" onClick={this.rmFromFilter(b.machineLabel)} style={selectStyle}>remove_circle</button>
+                            </div>
+                          } else {
+                            return null
+                          }
+                        })}
+                      </div>
                       {[0].map(() => {
                         if (this.state.filterExpandList.includes(b.machineLabel)) {
                           return <div className='buttonStrip'>

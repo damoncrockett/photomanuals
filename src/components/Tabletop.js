@@ -23,7 +23,8 @@ const clusterColors = {
   7: 'rgba(0,0,0,0.5)' // grey
 };
 
-const keyColor = '#bd5319';
+const keyBkgd = '#bd5319';
+const keyText = 'hsl(0,0%,90%)';
 
 const humanKeys = [
   'book title',
@@ -254,8 +255,8 @@ class Tabletop extends Component {
         .enter()
         .append('p')
         .text(d => d)
-        .style('color', 'hsl(0, 0%, 90%)')
-        .style('background-color', keyColor)
+        .style('color', keyText)
+        .style('background-color', keyBkgd)
         .style('text-align', 'right')
         .style('border-radius', '0.5vh')
         .style('width','max-content')
@@ -272,8 +273,8 @@ class Tabletop extends Component {
         .enter()
         .append('p')
         .text(d => d)
-        .style('color', 'hsl(0, 0%, 90%)')
-        .style('background-color', keyColor)
+        .style('color', keyText)
+        .style('background-color', keyBkgd)
         .style('text-align', 'right')
         .style('border-radius', '0.5vh')
         .style('width','max-content')
@@ -290,6 +291,13 @@ class Tabletop extends Component {
     const squareSide = this.state.squareSide;
     const slowTransition = transition().duration(1000);
     const fastTransition = transition().duration(1000);
+
+    let sortOrder = '';
+    if (this.props.asc===true) {
+      sortOrder = 'asc'
+    } else {
+      sortOrder = 'desc'
+    }
 
     select(svgNode)
       .select('g.plotCanvas')
@@ -351,7 +359,7 @@ class Tabletop extends Component {
     if ( this.state.nnData !== null ) {
       data = this.state.nnData;
     } else {
-      data = orderBy(data, [this.props.orderBy], [this.props.asc] );
+      data = orderBy(data, [this.props.orderBy], [sortOrder] );
     }
 
     data.forEach((item, i) => {
@@ -411,6 +419,13 @@ class Tabletop extends Component {
 
   sortTabletop() {
 
+    let sortOrder = '';
+    if (this.props.asc===true) {
+      sortOrder = 'asc'
+    } else {
+      sortOrder = 'desc'
+    }
+
     // we only nullify nnDAta when we resort; otherwise we want its sort
     this.setState({nnData: null});
 
@@ -431,7 +446,7 @@ class Tabletop extends Component {
 
     // attach to 'data'
     let data = this.props.data;
-    data = orderBy(data, [this.props.orderBy], [this.props.asc] );
+    data = orderBy(data, [this.props.orderBy], [sortOrder] );
     data.forEach((item, i) => {
       item.x = x[i];
       item.y = y[i];
