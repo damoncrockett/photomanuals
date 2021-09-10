@@ -506,8 +506,9 @@ class App extends Component {
     };
 
     const filterStyle = {
-      backgroundColor: this.state.filter ? stroke : bkgd,
-      color: this.state.filter ? bkgd : stroke
+      backgroundColor: this.state.filter ? bkgd : bkgd,
+      color: this.state.filter ? 'magenta' : stroke,
+      borderColor: this.state.filter ? 'magenta' : stroke
     };
 
     const styleOut = {
@@ -685,7 +686,7 @@ class App extends Component {
               <button title='highlight' className="material-icons md-light small" onClick={this.handleColor} style={colorStyle}>highlight</button>
               <button title='click mode' className="material-icons md-light small" onClick={this.handleClick} style={clickStyle}>highlight_alt</button>
               <button title='filter' className="material-icons md-light small" onClick={this.handleFilterModal} style={filterStyle}>filter_alt</button>
-              <button title='remove filter' className="material-icons md-light small" onClick={this.removeFilter} style={filterModalStyle}>remove_circle</button>
+              <button title='remove filter' className="material-icons md-light small" onClick={this.removeFilter} style={selectStyle}>remove_circle</button>
               <button title='zoomed out' className="material-icons md-light small" onClick={this.handleOut} style={styleOut}>menu</button>
               <button title='middle zoom' className="material-icons md-light small" onClick={this.handleMed} style={styleMed}>view_headline</button>
               <button title='zoomed in' className="material-icons md-light small" onClick={this.handleIn} style={styleIn}>format_align_justify</button>

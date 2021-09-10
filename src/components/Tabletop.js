@@ -688,8 +688,7 @@ class Tabletop extends Component {
       } else {
 
         select('#imgBox')
-          .append('img')
-          .attr('src', this.returnDomain() + d.fullspecpath)
+          .html("<a target='_blank' href="+this.returnDomain()+d.tabspecpath+"><img src="+this.returnDomain()+d.fullspecpath+">")
 
         select('#infoVals')
           .selectAll('p')
