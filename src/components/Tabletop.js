@@ -142,7 +142,16 @@ class Tabletop extends Component {
       this.sortTabletop();
     }
 
+    if (prevProps.orderBySecond !== this.props.orderBySecond) {
+      this.drawInfoKeys();
+      this.sortTabletop();
+    }
+
     if (prevProps.asc !== this.props.asc) {
+      this.sortTabletop();
+    }
+
+    if (prevProps.ascSecond !== this.props.ascSecond) {
       this.sortTabletop();
     }
 
@@ -242,9 +251,11 @@ class Tabletop extends Component {
     if ( this.props.infoCollapse===true ) {
 
       const orderKey = this.props.orderBy;
+      const orderKeySecond = this.props.orderBySecond;
       const colorKey = this.props.colorBy.split('_')[0];
 
       let orderKeyTranslated = '';
+      let orderKeySecondTranslated = '';
       let colorKeyTranslated = '';
 
       if (colorKey=='decade' || colorKey=='cluster') {
@@ -259,7 +270,13 @@ class Tabletop extends Component {
         orderKeyTranslated = keyTranslate[orderKey]
       }
 
-      const keys = [orderKeyTranslated,colorKeyTranslated];
+      if (orderKeySecond=='decade' || orderKeySecond=='cluster') {
+        orderKeySecondTranslated = orderKeySecond;
+      } else {
+        orderKeySecondTranslated = keyTranslate[orderKeySecond]
+      }
+
+      const keys = [orderKeyTranslated,orderKeySecondTranslated,colorKeyTranslated];
 
       select('#infoKeys')
         .selectAll('p')
@@ -309,6 +326,13 @@ class Tabletop extends Component {
       sortOrder = 'asc'
     } else {
       sortOrder = 'desc'
+    }
+
+    let sortOrderSecond = '';
+    if (this.props.ascSecond===true) {
+      sortOrderSecond = 'asc'
+    } else {
+      sortOrderSecond = 'desc'
     }
 
     select(svgNode)
@@ -371,7 +395,7 @@ class Tabletop extends Component {
     if ( this.state.nnData !== null ) {
       data = this.state.nnData;
     } else {
-      data = orderBy(data, [this.props.orderBy], [sortOrder] );
+      data = orderBy(data, [this.props.orderBy, this.props.orderBySecond], [sortOrder, sortOrderSecond] );
     }
 
     data.forEach((item, i) => {
@@ -438,6 +462,13 @@ class Tabletop extends Component {
       sortOrder = 'desc'
     }
 
+    let sortOrderSecond = '';
+    if (this.props.ascSecond===true) {
+      sortOrderSecond = 'asc'
+    } else {
+      sortOrderSecond = 'desc'
+    }
+
     // we only nullify nnDAta when we resort; otherwise we want its sort
     this.setState({nnData: null});
 
@@ -458,7 +489,7 @@ class Tabletop extends Component {
 
     // attach to 'data'
     let data = this.props.data;
-    data = orderBy(data, [this.props.orderBy], [sortOrder] );
+    data = orderBy(data, [this.props.orderBy, this.props.orderBySecond], [sortOrder, sortOrderSecond] );
     data.forEach((item, i) => {
       item.x = x[i];
       item.y = y[i];
@@ -525,7 +556,7 @@ class Tabletop extends Component {
 
       if ( this.props.infoCollapse===true ) {
 
-        const keys = [this.props.orderBy,this.props.colorBy.split('_')[0]];
+        const keys = [this.props.orderBy,this.props.orderBySecond,this.props.colorBy.split('_')[0]];
 
         select('#infoVals')
           .selectAll('p')

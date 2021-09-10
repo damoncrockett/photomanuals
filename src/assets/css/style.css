@@ -231,7 +231,7 @@ html {
 .infoPanelCollapsed {
   background-color: rgba(34, 34, 34, 0.5);
   position: fixed;
-  height: 6vh;
+  height: 9vh;
   width: 40vw;
   overflow: auto;
   bottom: 1.5vh;
@@ -289,7 +289,7 @@ html {
   max-width: 1vw;;
 }
 
-.selectPanel {
+.controlPanels {
   position: fixed;
   bottom: 1vh;
   left: 0vw;
@@ -298,6 +298,15 @@ html {
   margin-left: 3vh;
 	background-color: var(--panel-background-alpha);
   text-align: center; /* for centering buttonStrip */
+}
+
+.controlPanelSupplemental {
+  float: left;
+  display: inline-block;
+}
+
+.controlPanelMain {
+  float: left;
   display: inline-block;
 }
 

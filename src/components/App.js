@@ -21,11 +21,13 @@ class App extends Component {
       ncolDivisor: 1,
       ncolOut: 0,
       orderBy: 'year',
+      orderBySecond: 'year',
       colorBy: 'decade_c',
       color: false,
       click: false,
       infoCollapse: true,
       asc: true,
+      ascSecond: true,
       filter: false,
       filterModal: false,
       filterLists: {
@@ -77,7 +79,9 @@ class App extends Component {
     this.getNN = this.getNN.bind(this);
     this.handleNNmode = this.handleNNmode.bind(this);
     this.handleOrderBy = this.handleOrderBy.bind(this);
+    this.handleOrderBySecond = this.handleOrderBySecond.bind(this);
     this.handleAsc = this.handleAsc.bind(this);
+    this.handleAscSecond = this.handleAscSecond.bind(this);
     this.handleColorBy = this.handleColorBy.bind(this);
     this.handleColor = this.handleColor.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -173,8 +177,13 @@ class App extends Component {
   }
 
   handleOrderBy(e) {
-    const orderBy = e.target.value
+    const orderBy = e.target.value;
     this.setState({ orderBy: orderBy });
+  }
+
+  handleOrderBySecond(e) {
+    const orderBySecond = e.target.value;
+    this.setState({ orderBySecond: orderBySecond });
   }
 
   handleAsc() {
@@ -183,8 +192,14 @@ class App extends Component {
     }));
   }
 
+  handleAscSecond() {
+    this.setState(state => ({
+      ascSecond: !this.state.ascSecond
+    }));
+  }
+
   handleColorBy(e) {
-    const colorBy = e.target.value
+    const colorBy = e.target.value;
     this.setState({ colorBy: colorBy });
   }
 
@@ -465,6 +480,11 @@ class App extends Component {
       color: this.state.asc ? bkgd : stroke
     }
 
+    const ascSecondStyle = {
+      backgroundColor: this.state.ascSecond ? stroke : bkgd,
+      color: this.state.ascSecond ? bkgd : stroke
+    }
+
     const colorStyle = {
       backgroundColor: this.state.color ? stroke : bkgd,
       color: this.state.color ? bkgd : stroke
@@ -519,11 +539,13 @@ class App extends Component {
               ncolDivisor={this.state.ncolDivisor}
               ncolOut={this.state.ncolOut}
               orderBy={this.state.orderBy}
+              orderBySecond={this.state.orderBySecond}
               colorBy={this.state.colorBy}
               color={this.state.color}
               click={this.state.click}
               infoCollapse={this.state.infoCollapse}
               asc={this.state.asc}
+              ascSecond={this.state.ascSecond}
               filterKMs={this.state.filterKMs}
               filterChangeSignal={this.state.filterChangeSignal}
               filterModal={this.state.filterModal}
@@ -546,88 +568,129 @@ class App extends Component {
               <div className='infoVals' id='infoVals'></div>
             </div>
           </div>
-          <div className='selectPanel'>
-            <select style={selectStyle} value={this.state.orderBy} onChange={this.handleOrderBy} title='sort'>
-              <option value='year'>year</option>
-              <option value='hasphoto'>has photo</option>
-              <option value='photomech'>photomechanical</option>
-              <option value='negman_k'>has negative manuf. info</option>
-              <option value='mountman_k'>has mount manuf. info</option>
-              <option value='lensman_k'>has lens manuf. info</option>
-              <option value='accman_k'>has accessory manuf. info</option>
-              <option value='coatman_k'>has coating manuf. info</option>
-              <option value='paperman_k'>has paper manuf. info</option>
-              <option value='title'>title</option>
-              <option value='author'>author</option>
-              <option value='specattr'>printmaker</option>
-              <option value='specattrloc'>printmaker location</option>
-              <option value='specneg'>negativemaker</option>
-              <option value='specnegloc'>negativemaker location</option>
-              <option value='specop'>operator</option>
-              <option value='sprocess'>process</option>
-              <option value='paperman'>paper manufacturer</option>
-              <option value='paperbran'>paper brand</option>
-              <option value='paperloc'>paper manuf. location</option>
-              <option value='negman'>negative manufacturer</option>
-              <option value='negbran'>negative brand</option>
-              <option value='negloc'>negative manuf. location</option>
-              <option value='lensman'>lens manufacturer</option>
-              <option value='lensbran'>lens brand</option>
-              <option value='lensloc'>lens manuf. location</option>
-              <option value='mountman'>mount manufacturer</option>
-              <option value='mountloc'>mount manuf. location</option>
-              <option value='coatman'>coating manufacturer</option>
-              <option value='coatloc'>coating manuf. location</option>
-              <option value='accman'>accessory manufacturer</option>
-              <option value='accloc'>accessory manuf. location</option>
-              <option value='subj'>photo subject</option>
-              <option value='cluster'>cluster</option>
-            </select>
-            <button title='sort ascending' className="material-icons md-light small" onClick={this.handleAsc} style={ascStyle}>swap_vert</button>
-            <select style={selectStyle} value={this.state.colorBy} onChange={this.handleColorBy} title='highlight category'>
-              <option value='decade_c'>decade</option>
-              <option value='hasphoto_c'>has photo</option>
-              <option value='photomech_c'>photomechanical</option>
-              <option value='negman_k_c'>has negative manuf. info</option>
-              <option value='mountman_k_c'>has mount manuf. info</option>
-              <option value='lensman_k_c'>has lens manuf. info</option>
-              <option value='accman_k_c'>has accessory manuf. info</option>
-              <option value='coatman_k_c'>has coating manuf. info</option>
-              <option value='paperman_k_c'>has paper manuf. info</option>
-              <option value='title_c'>title</option>
-              <option value='author_c'>author</option>
-              <option value='specattr_c'>printmaker</option>
-              <option value='specattrloc_c'>printmaker location</option>
-              <option value='specneg_c'>negativemaker</option>
-              <option value='specnegloc_c'>negativemaker location</option>
-              <option value='specop_c'>operator</option>
-              <option value='sprocess_c'>process</option>
-              <option value='paperman_c'>paper manufacturer</option>
-              <option value='paperbran_c'>paper brand</option>
-              <option value='paperloc_c'>paper manuf. location</option>
-              <option value='negman_c'>negative manufacturer</option>
-              <option value='negbran_c'>negative brand</option>
-              <option value='negloc_c'>negative manuf. location</option>
-              <option value='lensman_c'>lens manufacturer</option>
-              <option value='lensbran_c'>lens brand</option>
-              <option value='lensloc_c'>lens manuf. location</option>
-              <option value='mountman_c'>mount manufacturer</option>
-              <option value='mountloc_c'>mount manuf. location</option>
-              <option value='coatman_c'>coating manufacturer</option>
-              <option value='coatloc_c'>coating manuf. location</option>
-              <option value='accman_c'>accessory manufacturer</option>
-              <option value='accloc_c'>accessory manuf. location</option>
-              <option value='subj_c'>photo subject</option>
-              <option value='cluster_c'>visual cluster</option>
-            </select>
-            <button title='highlight' className="material-icons md-light small" onClick={this.handleColor} style={colorStyle}>highlight</button>
-            <button title='click mode' className="material-icons md-light small" onClick={this.handleClick} style={clickStyle}>highlight_alt</button>
-            <button title='filter' className="material-icons md-light small" onClick={this.handleFilterModal} style={filterStyle}>filter_alt</button>
-            <button title='remove filter' className="material-icons md-light small" onClick={this.removeFilter} style={filterModalStyle}>remove_circle</button>
-            <button title='zoomed out' className="material-icons md-light small" onClick={this.handleOut} style={styleOut}>menu</button>
-            <button title='middle zoom' className="material-icons md-light small" onClick={this.handleMed} style={styleMed}>view_headline</button>
-            <button title='zoomed in' className="material-icons md-light small" onClick={this.handleIn} style={styleIn}>format_align_justify</button>
-            <button title='nearest neighbor mode' className="material-icons md-light small" onClick={this.handleNNmode} style={nnStyle}>other_houses</button>
+          <div className='controlPanels'>
+            <div className='controlPanelSupplemental'>
+              <select style={selectStyle} value={this.state.orderBy} onChange={this.handleOrderBy} title='sort'>
+                <option value='year'>year</option>
+                <option value='hasphoto'>has photo</option>
+                <option value='photomech'>photomechanical</option>
+                <option value='negman_k'>has negative manuf. info</option>
+                <option value='mountman_k'>has mount manuf. info</option>
+                <option value='lensman_k'>has lens manuf. info</option>
+                <option value='accman_k'>has accessory manuf. info</option>
+                <option value='coatman_k'>has coating manuf. info</option>
+                <option value='paperman_k'>has paper manuf. info</option>
+                <option value='title'>title</option>
+                <option value='author'>author</option>
+                <option value='specattr'>printmaker</option>
+                <option value='specattrloc'>printmaker location</option>
+                <option value='specneg'>negativemaker</option>
+                <option value='specnegloc'>negativemaker location</option>
+                <option value='specop'>operator</option>
+                <option value='sprocess'>process</option>
+                <option value='paperman'>paper manufacturer</option>
+                <option value='paperbran'>paper brand</option>
+                <option value='paperloc'>paper manuf. location</option>
+                <option value='negman'>negative manufacturer</option>
+                <option value='negbran'>negative brand</option>
+                <option value='negloc'>negative manuf. location</option>
+                <option value='lensman'>lens manufacturer</option>
+                <option value='lensbran'>lens brand</option>
+                <option value='lensloc'>lens manuf. location</option>
+                <option value='mountman'>mount manufacturer</option>
+                <option value='mountloc'>mount manuf. location</option>
+                <option value='coatman'>coating manufacturer</option>
+                <option value='coatloc'>coating manuf. location</option>
+                <option value='accman'>accessory manufacturer</option>
+                <option value='accloc'>accessory manuf. location</option>
+                <option value='subj'>photo subject</option>
+                <option value='cluster'>cluster</option>
+              </select>
+              <button title='sort ascending' className="material-icons md-light small" onClick={this.handleAsc} style={ascStyle}>swap_vert</button>
+            </div>
+            <div className='controlPanelMain'>
+              <select style={selectStyle} value={this.state.orderBySecond} onChange={this.handleOrderBySecond} title='second sort'>
+                <option value='year'>year</option>
+                <option value='hasphoto'>has photo</option>
+                <option value='photomech'>photomechanical</option>
+                <option value='negman_k'>has negative manuf. info</option>
+                <option value='mountman_k'>has mount manuf. info</option>
+                <option value='lensman_k'>has lens manuf. info</option>
+                <option value='accman_k'>has accessory manuf. info</option>
+                <option value='coatman_k'>has coating manuf. info</option>
+                <option value='paperman_k'>has paper manuf. info</option>
+                <option value='title'>title</option>
+                <option value='author'>author</option>
+                <option value='specattr'>printmaker</option>
+                <option value='specattrloc'>printmaker location</option>
+                <option value='specneg'>negativemaker</option>
+                <option value='specnegloc'>negativemaker location</option>
+                <option value='specop'>operator</option>
+                <option value='sprocess'>process</option>
+                <option value='paperman'>paper manufacturer</option>
+                <option value='paperbran'>paper brand</option>
+                <option value='paperloc'>paper manuf. location</option>
+                <option value='negman'>negative manufacturer</option>
+                <option value='negbran'>negative brand</option>
+                <option value='negloc'>negative manuf. location</option>
+                <option value='lensman'>lens manufacturer</option>
+                <option value='lensbran'>lens brand</option>
+                <option value='lensloc'>lens manuf. location</option>
+                <option value='mountman'>mount manufacturer</option>
+                <option value='mountloc'>mount manuf. location</option>
+                <option value='coatman'>coating manufacturer</option>
+                <option value='coatloc'>coating manuf. location</option>
+                <option value='accman'>accessory manufacturer</option>
+                <option value='accloc'>accessory manuf. location</option>
+                <option value='subj'>photo subject</option>
+                <option value='cluster'>cluster</option>
+              </select>
+              <button title='sort ascending' className="material-icons md-light small" onClick={this.handleAscSecond} style={ascSecondStyle}>swap_vert</button>
+              <select style={selectStyle} value={this.state.colorBy} onChange={this.handleColorBy} title='highlight category'>
+                <option value='decade_c'>decade</option>
+                <option value='hasphoto_c'>has photo</option>
+                <option value='photomech_c'>photomechanical</option>
+                <option value='negman_k_c'>has negative manuf. info</option>
+                <option value='mountman_k_c'>has mount manuf. info</option>
+                <option value='lensman_k_c'>has lens manuf. info</option>
+                <option value='accman_k_c'>has accessory manuf. info</option>
+                <option value='coatman_k_c'>has coating manuf. info</option>
+                <option value='paperman_k_c'>has paper manuf. info</option>
+                <option value='title_c'>title</option>
+                <option value='author_c'>author</option>
+                <option value='specattr_c'>printmaker</option>
+                <option value='specattrloc_c'>printmaker location</option>
+                <option value='specneg_c'>negativemaker</option>
+                <option value='specnegloc_c'>negativemaker location</option>
+                <option value='specop_c'>operator</option>
+                <option value='sprocess_c'>process</option>
+                <option value='paperman_c'>paper manufacturer</option>
+                <option value='paperbran_c'>paper brand</option>
+                <option value='paperloc_c'>paper manuf. location</option>
+                <option value='negman_c'>negative manufacturer</option>
+                <option value='negbran_c'>negative brand</option>
+                <option value='negloc_c'>negative manuf. location</option>
+                <option value='lensman_c'>lens manufacturer</option>
+                <option value='lensbran_c'>lens brand</option>
+                <option value='lensloc_c'>lens manuf. location</option>
+                <option value='mountman_c'>mount manufacturer</option>
+                <option value='mountloc_c'>mount manuf. location</option>
+                <option value='coatman_c'>coating manufacturer</option>
+                <option value='coatloc_c'>coating manuf. location</option>
+                <option value='accman_c'>accessory manufacturer</option>
+                <option value='accloc_c'>accessory manuf. location</option>
+                <option value='subj_c'>photo subject</option>
+                <option value='cluster_c'>visual cluster</option>
+              </select>
+              <button title='highlight' className="material-icons md-light small" onClick={this.handleColor} style={colorStyle}>highlight</button>
+              <button title='click mode' className="material-icons md-light small" onClick={this.handleClick} style={clickStyle}>highlight_alt</button>
+              <button title='filter' className="material-icons md-light small" onClick={this.handleFilterModal} style={filterStyle}>filter_alt</button>
+              <button title='remove filter' className="material-icons md-light small" onClick={this.removeFilter} style={filterModalStyle}>remove_circle</button>
+              <button title='zoomed out' className="material-icons md-light small" onClick={this.handleOut} style={styleOut}>menu</button>
+              <button title='middle zoom' className="material-icons md-light small" onClick={this.handleMed} style={styleMed}>view_headline</button>
+              <button title='zoomed in' className="material-icons md-light small" onClick={this.handleIn} style={styleIn}>format_align_justify</button>
+              <button title='nearest neighbor mode' className="material-icons md-light small" onClick={this.handleNNmode} style={nnStyle}>other_houses</button>
+            </div>
           </div>
           {[0].map(() => { // hack
             if (this.state.filterModal===true) {
