@@ -184,7 +184,8 @@ html {
 }
 
 .filterPanel {
-  background-color: rgba(34, 34, 34, 0.5);
+  background-color: var(--panel-background);
+  /*background-color: rgba(34, 34, 34, 0.5);*/
   position: fixed;
   height: 100%;
   width: 45vw;
@@ -216,7 +217,7 @@ html {
 }
 
 .infoPanel {
-  background-color: rgba(34, 34, 34, 0.5);
+  background-color: rgba(34, 34, 34, 1);
   position: fixed;
   height: 100vh;
   width: 45vw;
