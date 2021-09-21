@@ -8,7 +8,7 @@ import { zipObject } from 'lodash';
 const innerW = window.innerWidth;
 const innerH = window.innerHeight;
 const marginInt = 0;
-const margin = {top: marginInt, right: marginInt, bottom: marginInt, left: marginInt};
+const margin = {top: marginInt, right: marginInt, bottom: innerH / 8, left: marginInt};
 
 const blankColor = 'rgba(0,0,0,0)';
 const filteredColor = 'rgba(0,27,46,0.75)'; // the background color

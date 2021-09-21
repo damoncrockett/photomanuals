@@ -35,7 +35,7 @@
 
 .material-icons.md-light {
   color: var(--panel-stroke);
-  background-color: var(--panel-background);
+  background-color: rgba(34, 34, 34, 0.5);
 }
 
 .material-icons.small {

@@ -227,7 +227,8 @@ class App extends Component {
       }));
     } else if ( label === 'expand_less' ) {
       this.setState(state => ({
-        infoCollapse: false
+        infoCollapse: false,
+        filterModal: false
       }));
     }
   }
@@ -319,7 +320,8 @@ class App extends Component {
 
     if ( label === 'filter_alt' ) {
       this.setState(state => ({
-        filterModal: true
+        filterModal: true,
+        infoCollapse: true
       }));
     } else if ( label === 'close' ) {
       this.setState(state => ({
@@ -464,7 +466,8 @@ class App extends Component {
 
   render() {
 
-    const bkgd = '#001b2e';
+    const siteBg = '#001b2e';
+    const bkgd = 'rgba(34, 34, 34, 0.5)';
     const stroke = 'hsl(0,0%,90%)';
     const filterOptions = orderBy(this.state.filterOptionsFixed,'val','asc');
     const filterIdxs = this.state.filterIdxs;
@@ -477,22 +480,22 @@ class App extends Component {
 
     const ascStyle = {
       backgroundColor: this.state.asc ? stroke : bkgd,
-      color: this.state.asc ? bkgd : stroke
+      color: this.state.asc ? siteBg : stroke
     }
 
     const ascSecondStyle = {
       backgroundColor: this.state.ascSecond ? stroke : bkgd,
-      color: this.state.ascSecond ? bkgd : stroke
+      color: this.state.ascSecond ? siteBg : stroke
     }
 
     const colorStyle = {
       backgroundColor: this.state.color ? stroke : bkgd,
-      color: this.state.color ? bkgd : stroke
+      color: this.state.color ? siteBg : stroke
     };
 
     const clickStyle = {
       backgroundColor: this.state.click ? stroke : bkgd,
-      color: this.state.click ? bkgd : stroke
+      color: this.state.click ? siteBg : stroke
     };
 
     const infoCollapseStyle = {
@@ -502,7 +505,7 @@ class App extends Component {
 
     const filterModalStyle = {
       backgroundColor: this.state.filterModal ? stroke : bkgd,
-      color: this.state.filterModal ? bkgd : stroke
+      color: this.state.filterModal ? siteBg : stroke
     };
 
     const filterStyle = {
@@ -513,22 +516,22 @@ class App extends Component {
 
     const styleOut = {
       backgroundColor: this.state.colOut ? stroke : bkgd,
-      color: this.state.colOut ? bkgd : stroke
+      color: this.state.colOut ? siteBg : stroke
     };
 
     const styleMed = {
       backgroundColor: this.state.colMed ? stroke : bkgd,
-      color: this.state.colMed ? bkgd : stroke
+      color: this.state.colMed ? siteBg : stroke
     };
 
     const styleIn = {
       backgroundColor: this.state.colIn ? stroke : bkgd,
-      color: this.state.colIn ? bkgd : stroke
+      color: this.state.colIn ? siteBg : stroke
     };
 
     const nnStyle = {
       backgroundColor: this.state.nnMode ? stroke : bkgd,
-      color: this.state.nnMode ? bkgd : stroke
+      color: this.state.nnMode ? siteBg : stroke
     };
 
     if (this.props.AppSwitch===true) {
