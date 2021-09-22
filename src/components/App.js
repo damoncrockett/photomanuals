@@ -371,7 +371,7 @@ class App extends Component {
     return e => {
       const label = e.target.innerText;
 
-      if (label==='done_all') {
+      if (label==='add') {
         const previousListCount = filterLists[cat].length;
         filterLists[cat] = uniq(filterOptionsFixed.filter(d => d.cat===cat).map(d => d.val))
         marginalCount = filterLists[cat].length - previousListCount;
@@ -397,7 +397,7 @@ class App extends Component {
     return e => {
       const label = e.target.innerText;
 
-      if (label==='remove_circle') {
+      if (label==='remove') {
         marginalCount = filterLists[cat].length;
         filterLists[cat] = [];
       } else {
@@ -585,43 +585,52 @@ class App extends Component {
           </div>
           <div className='controlPanels'>
             <div className='controlPanelSupplemental'>
-              <select style={selectStyle} value={this.state.orderBy} onChange={this.handleOrderBy} title='sort'>
-                <option value='year'>year</option>
-                <option value='hasphoto'>has photo</option>
-                <option value='photomech'>photomechanical</option>
-                <option value='negman_k'>has negative manuf. info</option>
-                <option value='mountman_k'>has mount manuf. info</option>
-                <option value='lensman_k'>has lens manuf. info</option>
-                <option value='accman_k'>has accessory manuf. info</option>
-                <option value='coatman_k'>has coating manuf. info</option>
-                <option value='paperman_k'>has paper manuf. info</option>
-                <option value='title'>title</option>
-                <option value='author'>author</option>
-                <option value='specattr'>printmaker</option>
-                <option value='specattrloc'>printmaker location</option>
-                <option value='specneg'>negativemaker</option>
-                <option value='specnegloc'>negativemaker location</option>
-                <option value='specop'>operator</option>
-                <option value='sprocess'>process</option>
-                <option value='paperman'>paper manufacturer</option>
-                <option value='paperbran'>paper brand</option>
-                <option value='paperloc'>paper manuf. location</option>
-                <option value='negman'>negative manufacturer</option>
-                <option value='negbran'>negative brand</option>
-                <option value='negloc'>negative manuf. location</option>
-                <option value='lensman'>lens manufacturer</option>
-                <option value='lensbran'>lens brand</option>
-                <option value='lensloc'>lens manuf. location</option>
-                <option value='mountman'>mount manufacturer</option>
-                <option value='mountloc'>mount manuf. location</option>
-                <option value='coatman'>coating manufacturer</option>
-                <option value='coatloc'>coating manuf. location</option>
-                <option value='accman'>accessory manufacturer</option>
-                <option value='accloc'>accessory manuf. location</option>
-                <option value='subj'>photo subject</option>
-                <option value='cluster'>cluster</option>
-              </select>
-              <button title='sort ascending' className="material-icons md-light small" onClick={this.handleAsc} style={ascStyle}>swap_vert</button>
+            <select style={selectStyle} value={this.state.orderBy} onChange={this.handleOrderBy} title='sort'>
+              <option value='year'>year</option>
+              <option value='hasphoto'>has photo</option>
+              <option value='photomech'>photomechanical</option>
+              <option value='negman_k'>has negative manuf. info</option>
+              <option value='mountman_k'>has mount manuf. info</option>
+              <option value='lensman_k'>has lens manuf. info</option>
+              <option value='accman_k'>has accessory manuf. info</option>
+              <option value='coatman_k'>has coating manuf. info</option>
+              <option value='paperman_k'>has paper manuf. info</option>
+              <option value='title'>title</option>
+              <option value='author'>author</option>
+              <option value='specattr'>printmaker</option>
+              <option value='specattrloc'>printmaker location</option>
+              <option value='specneg'>negativemaker</option>
+              <option value='specnegloc'>negativemaker location</option>
+              <option value='specop'>operator</option>
+              <option value='sprocess'>process</option>
+              <option value='paperman'>paper manufacturer</option>
+              <option value='paperbran'>paper brand</option>
+              <option value='paperloc'>paper manuf. location</option>
+              <option value='negman'>negative manufacturer</option>
+              <option value='negbran'>negative brand</option>
+              <option value='negloc'>negative manuf. location</option>
+              <option value='lensman'>lens manufacturer</option>
+              <option value='lensbran'>lens brand</option>
+              <option value='lensloc'>lens manuf. location</option>
+              <option value='mountman'>mount manufacturer</option>
+              <option value='mountloc'>mount manuf. location</option>
+              <option value='coatman'>coating manufacturer</option>
+              <option value='coatloc'>coating manuf. location</option>
+              <option value='accman'>accessory manufacturer</option>
+              <option value='accloc'>accessory manuf. location</option>
+              <option value='subj'>photo subject</option>
+              <option value='cluster'>cluster</option>
+            </select>
+            <button title='sort ascending' className="material-icons md-light small" onClick={this.handleAsc} style={ascStyle}>swap_vert</button>
+              <div className='buttonStrip'>
+                <button title='zoomed out' className="material-icons md-light small" onClick={this.handleOut} style={styleOut}>photo_size_select_small</button>
+                <button title='middle zoom' className="material-icons md-light small" onClick={this.handleMed} style={styleMed}>photo_size_select_large</button>
+                <button title='zoomed in' className="material-icons md-light small" onClick={this.handleIn} style={styleIn}>photo_size_select_actual</button>
+              </div>
+              <div className='buttonStrip'>
+                <button title='click mode' className="material-icons md-light small" onClick={this.handleClick} style={clickStyle}>mouse</button>
+                <button title='nearest neighbor mode' className="material-icons md-light small" onClick={this.handleNNmode} style={nnStyle}>near_me</button>
+              </div>
             </div>
             <div className='controlPanelMain'>
               <select style={selectStyle} value={this.state.orderBySecond} onChange={this.handleOrderBySecond} title='second sort'>
@@ -697,25 +706,22 @@ class App extends Component {
                 <option value='subj_c'>photo subject</option>
                 <option value='cluster_c'>visual cluster</option>
               </select>
-              <button title='highlight' className="material-icons md-light small" onClick={this.handleColor} style={colorStyle}>highlight</button>
-              <button title='click mode' className="material-icons md-light small" onClick={this.handleClick} style={clickStyle}>highlight_alt</button>
-              <div title='# active filters' className={this.state.filterCount===0 ? 'filterCounterZero' : 'filterCounter'}>{this.state.filterCount}</div>
-              <button title='filter' className="material-icons md-light small" onClick={this.handleFilterModal} style={filterStyle}>filter_alt</button>
-              <button title='remove filter' className="material-icons md-light small" onClick={this.removeFilter} style={selectStyle}>remove_circle</button>
-              <button title='zoomed out' className="material-icons md-light small" onClick={this.handleOut} style={styleOut}>menu</button>
-              <button title='middle zoom' className="material-icons md-light small" onClick={this.handleMed} style={styleMed}>view_headline</button>
-              <button title='zoomed in' className="material-icons md-light small" onClick={this.handleIn} style={styleIn}>format_align_justify</button>
-              <button title='nearest neighbor mode' className="material-icons md-light small" onClick={this.handleNNmode} style={nnStyle}>other_houses</button>
+              <button title='highlight' className="material-icons md-light small" onClick={this.handleColor} style={colorStyle}>colorize</button>
+              <div className='buttonStrip'>
+                <div title='# active filters' className={this.state.filterCount===0 ? 'filterCounterZero' : 'filterCounter'}>{this.state.filterCount}</div>
+                <button title='filter' className="material-icons md-light small" onClick={this.handleFilterModal} style={filterStyle}>filter_alt</button>
+                <button title='remove filter' className="material-icons md-light small" onClick={this.removeFilter} style={selectStyle}>remove</button>
+              </div>
             </div>
           </div>
           {[0].map(() => {
             if (this.state.filterModal===true) {
               return <div className='filterPanel'>
                 <div className='filterButtonsTop'>
-                  <div className='buttonStrip'>
+                  <div className='buttonStripTop'>
                      <button title='close pane' className="material-icons md-light small" onClick={this.handleFilterModal} style={filterModalStyle}>close</button>
-                     <button title='remove filter' className="material-icons md-light small" onClick={this.removeFilter} style={filterModalStyle}>remove_circle</button>
-                     <button title='expand all' className="material-icons md-light small" onClick={this.handleExpand} style={filterModalStyle}>expand</button>
+                     <button title='remove filter' className="material-icons md-light small" onClick={this.removeFilter} style={filterModalStyle}>remove</button>
+                     <button title='expand all' className="material-icons md-light small" onClick={this.handleExpand} style={filterModalStyle}>unfold_more</button>
                      <button title='collapse all' className="material-icons md-light small" onClick={this.handleCollapse} style={filterModalStyle}>unfold_less</button>
                   </div>
                 </div>
@@ -766,8 +772,8 @@ class App extends Component {
                         {[0].map(()=>{
                           if (this.state.filterExpandList.includes(b.machineLabel)) {
                             return <div className='buttonStripClearSelect'>
-                              <button title='select all' className="material-icons md-light mini" onClick={this.addToFilter(b.machineLabel)} style={selectStyle}>done_all</button>
-                              <button title='clear all' className="material-icons md-light mini" onClick={this.rmFromFilter(b.machineLabel)} style={selectStyle}>remove_circle</button>
+                              <button title='select all' className="material-icons md-light mini" onClick={this.addToFilter(b.machineLabel)} style={selectStyle}>add</button>
+                              <button title='clear all' className="material-icons md-light mini" onClick={this.rmFromFilter(b.machineLabel)} style={selectStyle}>remove</button>
                             </div>
                           } else {
                             return null

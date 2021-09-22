@@ -34,7 +34,7 @@ class Interpretation extends Component {
                 <span>Material Matters: The Transatlantic Trade in Photographic Materials during the Nineteenth Century</span>
               </div>
               <div className='pubAttribution'>
-                <span>Katherine Mintie, Harvard University</span>
+                <span>Katherine Mintie, Yale University</span>
               </div>
               <div className='pubBlurb'>
                 <span>Examines the transatlantic circulation of photographic papers (both raw stock and coated papers) and lenses between the United States and Europe during the nineteenth century.</span>
@@ -51,7 +51,7 @@ class Interpretation extends Component {
                 <span>A Portrait on the Move: Photography Literature and Transatlantic Exchanges in the Nineteenth Century</span>
               </div>
               <div className='pubAttribution'>
-                <span>Katherine Mintie, Harvard University</span>
+                <span>Katherine Mintie, Yale University</span>
               </div>
               <div className='pubBlurb'>
                 <span>Explores the international exchange of photographic prints through photography journals during the nineteenth century.</span>
@@ -68,7 +68,7 @@ class Interpretation extends Component {
                 <span>Commercially Manufactured Plain Papers in the United States, 1860-1900</span>
               </div>
               <div className='pubAttribution'>
-                <span>Katherine Mintie, Harvard University</span>
+                <span>Katherine Mintie, Yale University</span>
               </div>
               <div className='pubBlurb'>
                 <span>Using evidence from nineteenth-century photography periodicals, the author shows that salted paper prints were used more widely in the United States than previously understood.</span>
@@ -85,7 +85,7 @@ class Interpretation extends Component {
                 <span>Manufacturing Photography, 1860-1900</span>
               </div>
               <div className='pubAttribution'>
-                <span>Katherine Mintie, Harvard University</span>
+                <span>Katherine Mintie, Yale University</span>
               </div>
               <div className='pubBlurb'>
                 <span>A StoryMaps project to identify and map the manufacturers of various photographic materials–papers, dry plates, lenses, and other tool–used by photographers in the US and Europe during the nineteenth century.</span>

@@ -9,7 +9,7 @@
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100&display=swap');
 
-.material-icons {
+.material-icons, .material-icons-outlined {
   font-family: 'Material Icons' !important;
   font-weight: normal;
   font-style: normal;
@@ -33,12 +33,12 @@
   font-feature-settings: 'liga';
 }
 
-.material-icons.md-light {
+.material-icons.md-light, .material-icons-outlined.md-light {
   color: var(--panel-stroke);
   background-color: rgba(34, 34, 34, 0.5);
 }
 
-.material-icons.small {
+.material-icons.small, .material-icons-outlined.small {
   font-size: 2vh;
   padding: 1vh;
   margin: 0.25vh;
@@ -317,7 +317,8 @@ html {
 }
 
 .buttonStrip {
-
+  display: inline-block;
+  margin-left: 2vh;
 }
 
 .filterCounter {
