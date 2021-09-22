@@ -65,6 +65,7 @@ class App extends Component {
         'coatman_k': [],
         'paperman_k': []
       },
+      filterCount: 0,
       filterExpandList: [],
       filterOptionsFixed: [],
       filterIdxs: [],
@@ -310,7 +311,8 @@ class App extends Component {
         'coatman_k': [],
         'paperman_k': []
       },
-      filterChangeSignal: !this.state.filterChangeSignal
+      filterChangeSignal: !this.state.filterChangeSignal,
+      filterCount: 0
     }));
   }
 
@@ -363,21 +365,26 @@ class App extends Component {
   addToFilter(cat) {
 
     let filterLists = this.state.filterLists;
+    let marginalCount = 0;
     const filterOptionsFixed = this.state.filterOptionsFixed;
 
     return e => {
       const label = e.target.innerText;
 
       if (label==='done_all') {
+        const previousListCount = filterLists[cat].length;
         filterLists[cat] = uniq(filterOptionsFixed.filter(d => d.cat===cat).map(d => d.val))
+        marginalCount = filterLists[cat].length - previousListCount;
       } else {
         filterLists[cat] = [...filterLists[cat],label];
+        marginalCount = 1;
       }
 
       this.setState(state => ({
         filterLists: filterLists,
         filter: true,
-        filterChangeSignal: !this.state.filterChangeSignal
+        filterChangeSignal: !this.state.filterChangeSignal,
+        filterCount: this.state.filterCount + marginalCount
       }));
     }
   }
@@ -385,14 +392,17 @@ class App extends Component {
   rmFromFilter(cat) {
 
     let filterLists = this.state.filterLists;
+    let marginalCount = 0;
 
     return e => {
       const label = e.target.innerText;
 
       if (label==='remove_circle') {
-        filterLists[cat] = []
+        marginalCount = filterLists[cat].length;
+        filterLists[cat] = [];
       } else {
-        filterLists[cat] = filterLists[cat].filter(d => d!==label)
+        filterLists[cat] = filterLists[cat].filter(d => d!==label);
+        marginalCount = 1;
       }
 
       // if the filterLists are all empty
@@ -436,7 +446,8 @@ class App extends Component {
 
       this.setState(state => ({
         filterLists: filterLists,
-        filterChangeSignal: !this.state.filterChangeSignal
+        filterChangeSignal: !this.state.filterChangeSignal,
+        filterCount: this.state.filterCount - marginalCount
       }));
     }
   }
@@ -688,6 +699,7 @@ class App extends Component {
               </select>
               <button title='highlight' className="material-icons md-light small" onClick={this.handleColor} style={colorStyle}>highlight</button>
               <button title='click mode' className="material-icons md-light small" onClick={this.handleClick} style={clickStyle}>highlight_alt</button>
+              <div title='# active filters' className={this.state.filterCount===0 ? 'filterCounterZero' : 'filterCounter'}>{this.state.filterCount}</div>
               <button title='filter' className="material-icons md-light small" onClick={this.handleFilterModal} style={filterStyle}>filter_alt</button>
               <button title='remove filter' className="material-icons md-light small" onClick={this.removeFilter} style={selectStyle}>remove_circle</button>
               <button title='zoomed out' className="material-icons md-light small" onClick={this.handleOut} style={styleOut}>menu</button>
@@ -696,7 +708,7 @@ class App extends Component {
               <button title='nearest neighbor mode' className="material-icons md-light small" onClick={this.handleNNmode} style={nnStyle}>other_houses</button>
             </div>
           </div>
-          {[0].map(() => { // hack
+          {[0].map(() => {
             if (this.state.filterModal===true) {
               return <div className='filterPanel'>
                 <div className='filterButtonsTop'>

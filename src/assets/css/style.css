@@ -250,10 +250,11 @@ html {
   position: absolute;
   top: 0;
   left: 0;
-  height: 50vh;
+  height: 48vh;
   width: 45vw;
   text-align: center;
   background-color: rgba(34, 34, 34, 0);
+  margin-top: 2vh;
 }
 
 .imgBoxCollapsed {
@@ -311,6 +312,38 @@ html {
   display: inline-block;
 }
 
+.filterButtonStrip {
+  display: inline-block;
+}
+
+.buttonStrip {
+
+}
+
+.filterCounter {
+  display: inline-block;
+  position: absolute;
+  bottom: 0;
+  background-color: magenta;
+  border-radius: 1vh;
+  color: var(--panel-stroke);
+  font-family: var(--font);
+  font-size: 1vh;
+  padding: 0.33vh;
+}
+
+.filterCounterZero {
+  display: inline-block;
+  position: absolute;
+  bottom: 0;
+  background-color: rgba(0,0,0,0);
+  border-radius: 1vh;
+  color: rgba(0,0,0,0);
+  font-family: var(--font);
+  font-size: 1vh;
+  z-index: 1;
+}
+
 .panelBox {
   margin-top: 1vh;
   margin-bottom: 1vh;
@@ -320,10 +353,6 @@ html {
   background-color: rgba(191,191,191,0.1);
   padding: 1vh;
   display: inline-block;
-}
-
-.buttonStrip {
-
 }
 
 .topButtons {
