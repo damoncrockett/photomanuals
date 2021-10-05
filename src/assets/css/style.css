@@ -58,8 +58,8 @@
   border: none;
 }
 
-.material-icons.large, .material-icons.large:focus, .material-icons.large:active {
-  font-size: 10vh;
+.material-icons-outlined.large, .material-icons-outlined.large:focus, .material-icons-outlined.large:active {
+  font-size: 6vh;
   color: var(--panel-stroke);
 }
 
@@ -263,7 +263,7 @@ html {
   height: 100vh;
   padding-left: 6vw;
   padding-right: 6vw;
-  padding-top: 10vh;
+  padding-top: 6vh;
   background-color: rgba(0,0,0,0);
   color: var(--panel-stroke);
   float: left;
@@ -656,4 +656,54 @@ button:hover {
   float: left;
   max-width: 42vw;
   margin-top: 1vh;
+}
+
+.creditFrame {
+  width: 68vw;
+  margin-left: 16vw;
+
+}
+
+.credit {
+  display: inline-block;
+  width: 12vw;
+  margin-right: 2vw;
+}
+
+.creditImage {
+  height: 30vh;
+  width: auto;
+}
+
+.creditName {
+  font-family: 'Lato';
+  font-weight: 300;
+  font-size: 1.5vh;
+  color: var(--panel-stroke);
+  margin-top: 2vh;
+}
+
+.creditRole {
+  font-family: 'Lato';
+  font-weight: 300;
+  font-size: 1.5vh;
+  color:   hsl(0, 0%, 50%);
+  margin-top: 1vh;
+  font-style: italic;
+}
+
+.creditTitle {
+  margin-top: 2vh;
+  font-family: 'Roboto Slab';
+  font-size: 1.25vh;
+  color: var(--panel-stroke);
+}
+
+.creditTitleAffiliation {
+  font-style: italic;
+  color: var(--panel-stroke);
+}
+
+.creditLink {
+  margin-top: 4vh;
 }

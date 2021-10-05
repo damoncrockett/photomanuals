@@ -13,12 +13,18 @@ class Credits extends Component {
 
     this.state = {}
 
+    this.returnDomain = this.returnDomain.bind(this);
+
   }
 
   componentDidMount() {
 
   }
 
+  returnDomain() {
+    const production = process.env.NODE_ENV === 'production';
+    return production ? '' : 'http://localhost:8888/'
+  }
 
   render() {
     if (this.props.CreditSwitch===true) {
@@ -27,6 +33,36 @@ class Credits extends Component {
           <div className='sectionTitle'>
             <span>Credits</span>
             <div className='sectionLine'></div>
+          </div>
+          <div className='creditFrame'>
+            <div className='credit'>
+              <img className='creditImage' src={this.returnDomain()+'lundgren.jpg'} />
+              <div className='creditName'>ADRIENNE LUNDGREN</div>
+              <div className='creditRole'>concept, data collection and analysis</div>
+              <div className='creditTitle'>Senior Photographs Conservator, <span className='creditTitleAffiliation'>Library of Congress</span></div>
+              <div className='creditLink'></div>
+            </div>
+            <div className='credit'>
+              <img className='creditImage' src={this.returnDomain()+'mintie.jpg'} />
+              <div className='creditName'>KATHERINE 'KAPPY' MINTIE</div>
+              <div className='creditRole'>data collection and analysis</div>
+              <div className='creditTitle'>Senior Researcher, <span className='creditTitleAffiliation'>Lens Media Lab, Yale University</span></div>
+              <div className='creditLink'></div>
+            </div>
+            <div className='credit'>
+              <img className='creditImage' src={this.returnDomain()+'messier.jpg'} />
+              <div className='creditName'>PAUL MESSIER</div>
+              <div className='creditRole'>database design</div>
+              <div className='creditTitle'>Pritzker Director, <span className='creditTitleAffiliation'>Lens Media Lab, Yale University</span></div>
+              <div className='creditLink'></div>
+            </div>
+            <div className='credit'>
+              <img className='creditImage' src={this.returnDomain()+'crockett.jpg'} />
+              <div className='creditName'>DAMON CROCKETT</div>
+              <div className='creditRole'>application and website design</div>
+              <div className='creditTitle'>Principal Data Scientist, <span className='creditTitleAffiliation'>Lens Media Lab, Yale University</span></div>
+              <div className='creditLink'></div>
+            </div>
           </div>
         </div>
       )

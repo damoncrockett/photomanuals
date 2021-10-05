@@ -591,7 +591,10 @@ class App extends Component {
             })}
             <div className='instructionContent'>
               <div className='instructionText'>
-                <span>This application will render correctly only in <span className='instructionTextBold'>Chrome</span> or <span className='instructionTextBold'>Firefox. </span>For optimal appearance, maximize your browser window.</span>
+                <span className='material-icons-outlined large'>info</span>
+              </div>
+              <div className='instructionText'>
+                <span>This application will render correctly only in <span className='instructionTextBold'>Chrome</span> or <span className='instructionTextBold'>Firefox. </span>For optimal appearance, maximize your browser window and reload the page.</span>
               </div>
               <div className='instructionText'>
                 <span>A button's function is revealed as a tooltip when you hover over it for <span className='instructionTextBold'>at least 1.5s.</span></span>
