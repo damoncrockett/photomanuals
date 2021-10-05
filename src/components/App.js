@@ -72,7 +72,8 @@ class App extends Component {
       filterChangeSignal: false,
       filterKMs: [],
       nn: null,
-      nnMode: false
+      nnMode: false,
+      instructionModal: true
     };
 
     this.getData = this.getData.bind(this);
@@ -100,6 +101,7 @@ class App extends Component {
     this.handleIn = this.handleIn.bind(this);
     this.setCol = this.setCol.bind(this);
     this.returnDomain = this.returnDomain.bind(this);
+    this.handleInstructionModal = this.handleInstructionModal.bind(this);
 
   }
 
@@ -475,6 +477,12 @@ class App extends Component {
     return production ? '' : 'http://localhost:8888/'
   }
 
+  handleInstructionModal() {
+    this.setState(state => ({
+      instructionModal: !this.state.instructionModal
+    }));
+  }
+
   render() {
 
     const siteBg = '#001b2e';
@@ -507,6 +515,11 @@ class App extends Component {
     const clickStyle = {
       backgroundColor: this.state.click ? stroke : bkgd,
       color: this.state.click ? siteBg : stroke
+    };
+
+    const instructionModalStyle = {
+      backgroundColor: 'rgba(0,0,0,0)',
+      color: stroke
     };
 
     const infoCollapseStyle = {
@@ -567,6 +580,37 @@ class App extends Component {
               nn={this.state.nn}
               nnMode={this.state.nnMode}
             />
+          </div>
+          <div className={this.state.instructionModal ? 'instructionModal' : 'instructionModalCollapsed'} id='instructionModal'>
+            {[0].map(()=>{
+              if ( this.state.instructionModal===true ) {
+                return <div className='instructionButton'><button title='collapse instruction panel' className="material-icons md-light midlarge" onClick={this.handleInstructionModal} style={instructionModalStyle}>arrow_back_ios</button></div>
+              } else {
+                return <div className='instructionButtonCollapsed'><button title='expand instructional panel' className="material-icons md-light midlarge" onClick={this.handleInstructionModal} style={instructionModalStyle}>arrow_forward_ios</button></div>
+              }
+            })}
+            <div className='instructionContent'>
+              <div className='instructionText'>
+                <span>This application will render correctly only in <span className='instructionTextBold'>Chrome</span> or <span className='instructionTextBold'>Firefox. </span>For optimal appearance, maximize your browser window.</span>
+              </div>
+              <div className='instructionText'>
+                <span>A button's function is revealed as a tooltip when you hover over it for <span className='instructionTextBold'>at least 1.5s.</span></span>
+              </div>
+              <div className='instructionText'>
+                <span>For more detailed instructions, download and view our tutorial videos below.</span>
+              </div>
+              <div className='instructionTextLinks'>
+                <div className='instructionText'>
+                  <a className='instructionLink' href={this.returnDomain()+'basics.mov'} download><span className='material-icons medium'>videocam</span><span>  Basic Operation</span></a>
+                </div>
+                <div className='instructionText'>
+                  <a className='instructionLink' href={this.returnDomain()+'sortColor.mov'} download><span className='material-icons medium'>videocam</span><span>  Sort & Color</span></a>
+                </div>
+                <div className='instructionText'>
+                  <a className='instructionLink' href={this.returnDomain()+'sortColorFilter.mov'} download><span className='material-icons medium'>videocam</span><span>  Sort, Color & Filter</span></a>
+                </div>
+              </div>
+            </div>
           </div>
           <div className={this.state.infoCollapse ? 'infoPanelCollapsed' : 'infoPanel'} id='infoPanel'>
             {[0].map(()=>{

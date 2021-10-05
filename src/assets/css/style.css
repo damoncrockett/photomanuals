@@ -1,10 +1,8 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto');
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@200&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@100&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@200&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@800&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Train+One');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100&display=swap');
@@ -53,6 +51,11 @@
 .material-icons.medium {
   font-size: 3vh;
   margin-left: 1vw;
+}
+
+.material-icons.midlarge {
+  font-size: 6vh;
+  border: none;
 }
 
 .material-icons.large, .material-icons.large:focus, .material-icons.large:active {
@@ -209,6 +212,86 @@ html {
   margin-top: 9vh;
 }
 
+.field {
+  z-index: 8;
+}
+
+.instructionButton {
+  position: absolute;
+  top: 47%;
+  right: 1vw;
+}
+
+.instructionButtonCollapsed {
+  position: absolute;
+  top: 47%;
+  right: -5vw;
+}
+
+.instructionModal {
+  width: 40vw;
+  height: 100vh;
+  background-color: rgba(34, 34, 34, 0.9);
+  z-index: 11;
+  position: fixed;
+  top: 0;
+  left: 0;
+  transition: left 0.2s linear;
+  -webkit-transition: left 0.2s linear;
+  -moz-transition: left 0.2s linear;
+  -ms-transition: left 0.2s linear;
+  -o-transition: left 0.2s linear;
+}
+
+.instructionModalCollapsed {
+  width: 40vw;
+  height: 100vh;
+  background-color: rgba(34, 34, 34, 0.9);
+  z-index: 11;
+  position: fixed;
+  top: 0;
+  left: -40vw;
+  transition: left 0.2s linear;
+  -webkit-transition: left 0.2s linear;
+  -moz-transition: left 0.2s linear;
+  -ms-transition: left 0.2s linear;
+  -o-transition: left 0.2s linear;
+}
+
+.instructionContent {
+  width: 28vw;
+  height: 100vh;
+  padding-left: 6vw;
+  padding-right: 6vw;
+  padding-top: 10vh;
+  background-color: rgba(0,0,0,0);
+  color: var(--panel-stroke);
+  float: left;
+}
+
+.instructionText {
+  font-family: var(--text-font);
+  font-weight: 200;
+  font-size: 2.5vh;
+  margin-top: 4vh;
+}
+
+.instructionTextLinks {
+  margin-top: 8vh;
+}
+
+.instructionTextBold {
+  font-weight: 900;
+  color: rgb(189, 83, 25);
+}
+
+.instructionLink, .instructionLink:active, .instructionLink:focus {
+  text-decoration: none;
+  font-weight: 900;
+  color: #63aaff;
+
+}
+
 .infoButton {
   position: fixed;
   bottom: 2vh;
@@ -227,6 +310,11 @@ html {
   z-index: 9;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE */
+  transition: all 0.4s linear;
+  -webkit-transition: all 0.4s linear;
+  -moz-transition: all 0.4s linear;
+  -ms-transition: all 0.4s linear;
+  -o-transition: all 0.4s linear;
 }
 
 .infoPanelCollapsed {
@@ -244,6 +332,11 @@ html {
   border-color: var(--panel-stroke);
   border-width: 0.25vh;
   border-style: solid;
+  transition: all 0.4s linear;
+  -webkit-transition: all 0.4s linear;
+  -moz-transition: all 0.4s linear;
+  -ms-transition: all 0.4s linear;
+  -o-transition: all 0.4s linear;
 }
 
 .imgBox {

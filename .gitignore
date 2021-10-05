@@ -8,3 +8,4 @@ src/assets/json/specimens_resized_panel
 utils/__pycache__
 utils/.ipynb_checkpoints
 utils/*.ipynb
+src/assets/json/*.mov
