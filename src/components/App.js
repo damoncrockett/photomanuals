@@ -32,13 +32,13 @@ class App extends Component {
       filterModal: false,
       filterLists: {
         'title': [],
-        'author': [],
+        'author_sort': [],
         'year': [],
-        'specattr': [],
+        'specattr_sort': [],
         'specattrloc': [],
-        'specneg': [],
+        'specneg_sort': [],
         'specnegloc': [],
-        'specop': [],
+        'specop_sort': [],
         'sprocess': [],
         'photomech': [],
         'hasphoto': [],
@@ -280,13 +280,13 @@ class App extends Component {
       filter: false,
       filterLists: {
         'title': [],
-        'author': [],
+        'author_sort': [],
         'year': [],
-        'specattr': [],
+        'specattr_sort': [],
         'specattrloc': [],
-        'specneg': [],
+        'specneg_sort': [],
         'specnegloc': [],
-        'specop': [],
+        'specop_sort': [],
         'sprocess': [],
         'photomech': [],
         'hasphoto': [],
@@ -410,13 +410,13 @@ class App extends Component {
       // if the filterLists are all empty
       if ( isEqual(filterLists,{
         'title': [],
-        'author': [],
+        'author_sort': [],
         'year': [],
-        'specattr': [],
+        'specattr_sort': [],
         'specattrloc': [],
-        'specneg': [],
+        'specneg_sort': [],
         'specnegloc': [],
-        'specop': [],
+        'specop_sort': [],
         'sprocess': [],
         'photomech': [],
         'hasphoto': [],
@@ -594,7 +594,7 @@ class App extends Component {
                 <span className='material-icons-outlined large'>info</span>
               </div>
               <div className='instructionText'>
-                <span>This application will render correctly only in <span className='instructionTextBold'>Chrome</span> or <span className='instructionTextBold'>Firefox. </span>For optimal appearance, maximize your browser window and reload the page.</span>
+                <span>This application will render best in <span className='instructionTextBold'>Chrome</span> or <span className='instructionTextBold'>Firefox. </span>For optimal appearance, maximize your browser window and reload the page.</span>
               </div>
               <div className='instructionText'>
                 <span>A button's function is revealed as a tooltip when you hover over it for <span className='instructionTextBold'>at least 1.5s.</span></span>
@@ -607,10 +607,18 @@ class App extends Component {
                   <a className='instructionLink' href={this.returnDomain()+'basics.mov'} download><span className='material-icons medium'>videocam</span><span>  Basic Operation</span></a>
                 </div>
                 <div className='instructionText'>
-                  <a className='instructionLink' href={this.returnDomain()+'sortColor.mov'} download><span className='material-icons medium'>videocam</span><span>  Sort & Color</span></a>
+                  <a className='instructionLink' href={this.returnDomain()+'tipps-tutorial-sort-color.mov'} download><span className='material-icons medium'>videocam</span><span>  Sort & Color</span></a>
                 </div>
                 <div className='instructionText'>
-                  <a className='instructionLink' href={this.returnDomain()+'sortColorFilter.mov'} download><span className='material-icons medium'>videocam</span><span>  Sort, Color & Filter</span></a>
+                  <a className='instructionLink' href={this.returnDomain()+'tipps-tutorial-sort-color-filter.mov'} download><span className='material-icons medium'>videocam</span><span>  Sort, Color & Filter</span></a>
+                </div>
+              </div>
+              <div className='instructionText'>
+                <span>If you'd like to access the database directly, download our database file below.</span>
+              </div>
+              <div className='instructionTextLinks'>
+                <div className='instructionText'>
+                  <a className='instructionLink' href={this.returnDomain()+'tipps-master-file.xlsx'} download><span className='material-icons medium'>table_chart</span><span>  TIPPs database</span></a>
                 </div>
               </div>
             </div>
@@ -782,13 +790,13 @@ class App extends Component {
                   {'userLabel':'HAS COATING MANUF. INFO','machineLabel':'coatman_k'},
                   {'userLabel':'HAS PAPER MANUF. INFO','machineLabel':'paperman_k'},
                   {'userLabel':'BOOK TITLE','machineLabel':'title'},
-                  {'userLabel':'BOOK AUTHOR','machineLabel':'author'},
+                  {'userLabel':'BOOK AUTHOR','machineLabel':'author_sort'},
                   {'userLabel':'YEAR','machineLabel':'year'},
-                  {'userLabel':'PRINT MAKER','machineLabel':'specattr'},
+                  {'userLabel':'PRINT MAKER','machineLabel':'specattr_sort'},
                   {'userLabel':'PRINT MAKER LOCATION','machineLabel':'specattrloc'},
-                  {'userLabel':'NEGATIVE MAKER','machineLabel':'specneg'},
+                  {'userLabel':'NEGATIVE MAKER','machineLabel':'specneg_sort'},
                   {'userLabel':'NEGATIVE MAKER LOCATION','machineLabel':'specnegloc'},
-                  {'userLabel':'OPERATOR','machineLabel':'specop'},
+                  {'userLabel':'OPERATOR','machineLabel':'specop_sort'},
                   {'userLabel':'PROCESS','machineLabel':'sprocess'},
                   {'userLabel':'PAPER MANUFACTURER','machineLabel':'paperman'},
                   {'userLabel':'PAPER BRAND','machineLabel':'paperbran'},
