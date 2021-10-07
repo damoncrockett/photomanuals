@@ -117,7 +117,8 @@ class App extends Component {
     fetch(this.returnDomain()+'_filter.json')
       .then(response => response.json())
       .then(data => this.setState({
-        filterOptionsFixed: data
+        filterOptionsFixed: data,
+        filterIdxs: data.map(d => d.idx)
       }));
     }
 
