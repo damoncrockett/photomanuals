@@ -605,7 +605,7 @@ class App extends Component {
               </div>
               <div className='instructionTextLinks'>
                 <div className='instructionText'>
-                  <a className='instructionLink' href={this.returnDomain()+'basics.mov'} download><span className='material-icons medium'>videocam</span><span>  Basic Operation</span></a>
+                  <a className='instructionLink' href={this.returnDomain()+'tipps-basics.mov'} download><span className='material-icons medium'>videocam</span><span>  Basic Operation</span></a>
                 </div>
                 <div className='instructionText'>
                   <a className='instructionLink' href={this.returnDomain()+'tipps-tutorial-sort-color.mov'} download><span className='material-icons medium'>videocam</span><span>  Sort & Color</span></a>
