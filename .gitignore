@@ -9,3 +9,4 @@ utils/__pycache__
 utils/.ipynb_checkpoints
 utils/*.ipynb
 src/assets/json/*.mov
+src/assets/json/*.mp4

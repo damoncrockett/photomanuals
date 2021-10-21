@@ -13,10 +13,17 @@ class Interpretation extends Component {
 
     this.state = {}
 
+    this.returnDomain = this.returnDomain.bind(this);
+
   }
 
   componentDidMount() {
 
+  }
+
+  returnDomain() {
+    const production = process.env.NODE_ENV === 'production';
+    return production ? '' : 'http://localhost:8888/'
   }
 
 
@@ -128,6 +135,23 @@ class Interpretation extends Component {
                 <a className='pubLink' target='_blank' href='https://www.culturalheritage.org/publications/books-periodicals/shop/platinum-and-palladium-photographs'>
                   <span>View the Anthology</span>
                   <span className='material-icons medium'>description</span>
+                </a>
+              </div>
+            </div>
+            <div className='publication'>
+              <div className='pubTitle'>
+                <span>Approaching Photographs as Data: An Introduction to Methods and Tools</span>
+              </div>
+              <div className='pubAttribution'>
+                <span>Katherine Mintie, Yale University</span>
+              </div>
+              <div className='pubBlurb'>
+                <span>A talk about the TIPPs project given at the Photography Network Symposium, October 8, 2021.</span>
+              </div>
+              <div className='pubLink'>
+                <a className='pubLink' href={this.returnDomain()+'PhotographyNetworkOctober2021.mp4'} download>
+                  <span>View the Presentation</span>
+                  <span className='material-icons medium'>videocam</span>
                 </a>
               </div>
             </div>
