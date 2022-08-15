@@ -1,4 +1,4 @@
-core(PM Master Editing.xlsx) -> master
+core(tipps-master-file.xlsx) -> master
 
 extract(master) -> master_w_features
 
